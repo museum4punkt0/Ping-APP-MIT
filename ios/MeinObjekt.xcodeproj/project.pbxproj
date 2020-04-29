@@ -8,42 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MeinObjektTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MeinObjektTests.m */; };
-		037C479006E5437082698723 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8255373C25A48B2A27DFB54 /* Fontisto.ttf */; };
-		0D56EC07B0FC464896ADBB52 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 92529951E0C24E9392A1025C /* FontAwesome5_Brands.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		25D27861394B4E5D87B4FBEE /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D08A7F396E33431A8FBB8FA4 /* FontAwesome5_Solid.ttf */; };
-		2A732EC5F8DB4C60A6752E17 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 94167BD6BA4A4412ABDED836 /* FontAwesome.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* MeinObjektTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MeinObjektTests.m */; };
-		32F77315237DA8DA00783A0E /* libRNTensorflow.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 32EF16F6237AC5EA0077DA67 /* libRNTensorflow.a */; };
 		3399A58A74DDC715BD950623 /* libPods-MeinObjekt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 446F43DE946CDCB4D96CF945 /* libPods-MeinObjekt.a */; };
 		41FA77AE88E8478492227C4B /* meinobjekt.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35B19C3EE80C45E0AFCFF6B3 /* meinobjekt.ttf */; };
 		4895D8AFA32D8A9389C1DD56 /* libPods-MeinObjekt-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F2B1DD09343EB9626557335 /* libPods-MeinObjekt-tvOS.a */; };
-		58AEC4B01DE44F80ADB1DCB1 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E9E9C0B8A4EA47B0960E1D98 /* SimpleLineIcons.ttf */; };
 		5A9D559B68C246FFB3C77C39 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DB4EC9B7F0964CD3AA597E6E /* libz.tbd */; };
 		6254C7A171BF0ACBA8F777F0 /* libPods-MeinObjekt-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1C06EC3451EF0BD5721573 /* libPods-MeinObjekt-tvOSTests.a */; };
 		6F27E0088D8164A9ABA9227E /* libPods-MeinObjektTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74C1ED3C2DEEDAD37826A61A /* libPods-MeinObjektTests.a */; };
 		744562B9A2754E5FB3610C2A /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B971340F1E574B7FA23A1A17 /* SF-Pro-Text-Semibold.otf */; };
-		95482E3BE76B469E97651F06 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E5126ED8D977449A9F4262A1 /* Zocial.ttf */; };
-		9727F0FCE6A6443AAECDDB10 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5C2090C75D2740FF94526F00 /* Octicons.ttf */; };
-		9A9AFC2808EF43F4933BD499 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4F7863398E78466BB293D52B /* Ionicons.ttf */; };
-		B2DAEB5836504CA4B7332868 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A2245CCE4B34299B32FCDC4 /* Foundation.ttf */; };
-		B432146C33FE49B9B7A9DD3B /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6864309F34604D9DA301CA40 /* EvilIcons.ttf */; };
-		B61793F765D1433FB065A7F3 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7ADFF44353BF4225A78AF8E8 /* MaterialCommunityIcons.ttf */; };
 		C44931D1B05A477D8698A24F /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 90C8669BBEDF4262B5A44A6E /* libc++.tbd */; };
-		C77F511AFAE44904B2FC7517 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B05C5A07D73B4B4BA5C80015 /* AntDesign.ttf */; };
-		C8096291BDD34FCF9E8B8A0C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B57C5B57D15C4231B4B9EF4A /* MaterialIcons.ttf */; };
-		CFE1C1AAC334407BB65ACB33 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3822FDA374F04999A2C996CD /* Feather.ttf */; };
-		D51926EC54A44D0A9A0A58EA /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 748D9179370C4AF8813151F4 /* FontAwesome5_Regular.ttf */; };
 		E575444C6E2F447D850011A9 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 702A7617A4424AAFAA7CEE6B /* SF-Pro-Text-Regular.otf */; };
 		EDF223AC8BD4416B8122133D /* Pacifico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C53B5EF139C40AE84D489B8 /* Pacifico-Regular.ttf */; };
 		EEA4F8F8F8B447269B0BCB5D /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E5DF5186BB4498BB868758 /* libRealmReact.a */; };
-		F81965293D794DE68A34234D /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BE5BB851853B4F3EBA5283D7 /* Entypo.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,7 +137,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				32F77315237DA8DA00783A0E /* libRNTensorflow.a in Frameworks */,
 				EEA4F8F8F8B447269B0BCB5D /* libRealmReact.a in Frameworks */,
 				C44931D1B05A477D8698A24F /* libc++.tbd in Frameworks */,
 				5A9D559B68C246FFB3C77C39 /* libz.tbd in Frameworks */,
@@ -524,22 +506,6 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				C77F511AFAE44904B2FC7517 /* AntDesign.ttf in Resources */,
-				F81965293D794DE68A34234D /* Entypo.ttf in Resources */,
-				B432146C33FE49B9B7A9DD3B /* EvilIcons.ttf in Resources */,
-				CFE1C1AAC334407BB65ACB33 /* Feather.ttf in Resources */,
-				2A732EC5F8DB4C60A6752E17 /* FontAwesome.ttf in Resources */,
-				0D56EC07B0FC464896ADBB52 /* FontAwesome5_Brands.ttf in Resources */,
-				D51926EC54A44D0A9A0A58EA /* FontAwesome5_Regular.ttf in Resources */,
-				25D27861394B4E5D87B4FBEE /* FontAwesome5_Solid.ttf in Resources */,
-				037C479006E5437082698723 /* Fontisto.ttf in Resources */,
-				B2DAEB5836504CA4B7332868 /* Foundation.ttf in Resources */,
-				9A9AFC2808EF43F4933BD499 /* Ionicons.ttf in Resources */,
-				B61793F765D1433FB065A7F3 /* MaterialCommunityIcons.ttf in Resources */,
-				C8096291BDD34FCF9E8B8A0C /* MaterialIcons.ttf in Resources */,
-				9727F0FCE6A6443AAECDDB10 /* Octicons.ttf in Resources */,
-				58AEC4B01DE44F80ADB1DCB1 /* SimpleLineIcons.ttf in Resources */,
-				95482E3BE76B469E97651F06 /* Zocial.ttf in Resources */,
 				41FA77AE88E8478492227C4B /* meinobjekt.ttf in Resources */,
 				EDF223AC8BD4416B8122133D /* Pacifico-Regular.ttf in Resources */,
 				E575444C6E2F447D850011A9 /* SF-Pro-Text-Regular.otf in Resources */,
@@ -577,7 +543,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
