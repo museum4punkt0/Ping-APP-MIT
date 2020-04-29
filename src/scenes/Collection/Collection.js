@@ -13,7 +13,7 @@ import Toaster, {ToasterTypes} from "../../components/Popup";
 import styles, { colors } from '../../config/styles';
 import { convertToArray, getLocalization, getImage, showToast } from '../../config/helpers';
 import { getObjects, getCategories } from '../../db/controllers/museums';
-import { getCollections, createCollection } from '../../actions/collections';
+import { getCollections, createCollection, toObjectCounter, getInitialCounter } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
 
@@ -26,14 +26,14 @@ class CollectionScene extends Component {
       categoryID:'',
       congratulationsDialog:false,
       isModalOpen:false,
-      confetti:false,
-      counter: 0
+      confetti:false
     }
     this.dialog = { isActive:true }
   }
   
   async componentWillMount() {
-    const { getCollections, createCollection, image, object, getUser, settings } = this.props;
+    const { getCollections, createCollection, image, object, getUser, settings, getInitialCounter } = this.props;
+    getInitialCounter();
     const collections = getCollections();
     const categories = getCategories()
     const user = getUser();
@@ -93,7 +93,7 @@ class CollectionScene extends Component {
     updateUser({ ...user, category:categoryID });
     this.dialog.isActive = false;
     this.setState({ categoryID })
-  }
+  } 
   
   // eslint-disable-next-line
   handleCollectionButtonPress(collection){
@@ -104,11 +104,12 @@ class CollectionScene extends Component {
   }
 
   render() {
-    const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti, counter} = this.state;
+    const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti} = this.state;
+    const {toObjectCounter, counter} = this.props;
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
-        {counter <= 2 ? <Dialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false, counter: counter+1})} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
+        {counter <= 2 ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); toObjectCounter();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
         {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}
         <ScrollView>
           {categories.map( category => {
@@ -143,8 +144,11 @@ CollectionScene.propTypes = {
   getCollections: PropTypes.func.isRequired,
   createCollection: PropTypes.func.isRequired,
   updateUser: PropTypes.func.isRequired,
+  toObjectCounter: PropTypes.func.isRequired,
+  getInitialCounter: PropTypes.func.isRequired,
   getUser: PropTypes.func.isRequired,
   settings: PropTypes.object.isRequired,
+  counter: PropTypes.number.isRequired,
   object: PropTypes.object,
   image: PropTypes.string
 };
@@ -154,7 +158,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user }) => ({ settings: user.settings }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user, collections }) => ({ settings: user.settings, counter: collections.counter }) , {getCollections, createCollection, updateUser, getUser, toObjectCounter, getInitialCounter})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;
