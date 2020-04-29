@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import {  
     getCollections as getCollectionsFromDB,
     setCollection
@@ -21,23 +20,3 @@ export const createCollection = (params) => (dispatch) => new Promise((resolve, 
         .catch((error) => reject(error))
 })
 
-export const  toObjectCounter = () => (dispatch) => {
-    dispatch({ type: userTypes.TO_OBJECT_COUNTER });
-}
-
-export const getInitialCounter = () => (dispatch) => {
-    AsyncStorage.getItem('counter').then(value => {
-        if (value) {
-            dispatch({
-                type: userTypes.GET_INITIAL_TO_OBJECT_COUNTER,
-                payload: JSON.parse(value)
-            });
-        } else {
-            AsyncStorage.setItem('counter', JSON.stringify(0));
-            dispatch({
-                type: userTypes.GET_INITIAL_TO_OBJECT_COUNTER,
-                payload: 0
-            });
-        }
-    });
-}
