@@ -75,7 +75,8 @@ LoaderScene.propTypes = {
 export default connect(() => ({ }), { getUser, updateUser })(LoaderScene);
 
 const AppStartComponent = (props) => {
-  const {onUserChanged, language, handleAppStart} = props;
+  // eslint-disable-next-line react/prop-types
+  const {onUserChanged, language, handleAppStart, font_size} = props;
   return(
     <View style={{margin:15}}>
       <Option title={strings.chooseYourLanguage}>
@@ -88,7 +89,7 @@ const AppStartComponent = (props) => {
           useNativeAndroidPickerStyle={false}
         />
       </Option>
-      {/* <Option title='FONT SIZE' style={{marginTop:5}}>
+      <Option title='FONT SIZE' style={{marginTop:5}}>
         <Picker
           items={constant.fontSizes}
           onValueChange={(value) => onUserChanged('font_size',value)}
@@ -97,11 +98,12 @@ const AppStartComponent = (props) => {
           Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
           useNativeAndroidPickerStyle={false}
         />
-      </Option> */}
+      </Option>
       <Button containerStyle={{backgroundColor:colors.darkGrey, marginVertical:10}} onPress={handleAppStart} title={strings.appStart} />
     </View>
   )
 }
+
 AppStartComponent.propTypes = {
   onUserChanged: PropTypes.func.isRequired,
   handleAppStart: PropTypes.func.isRequired,
