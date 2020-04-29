@@ -26,7 +26,8 @@ class CollectionScene extends Component {
       categoryID:'',
       congratulationsDialog:false,
       isModalOpen:false,
-      confetti:false
+      confetti:false,
+      counter: 0
     }
     this.dialog = { isActive:true }
   }
@@ -103,11 +104,11 @@ class CollectionScene extends Component {
   }
 
   render() {
-    const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti} = this.state;
+    const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti, counter} = this.state;
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
-        <Dialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} />
+        {counter <= 2 ? <Dialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false, counter: counter+1})} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
         {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}
         <ScrollView>
           {categories.map( category => {
