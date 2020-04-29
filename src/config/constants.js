@@ -13,6 +13,6 @@ export default {
    
     base: 'api/v1/',
     lang:[{label: 'English', value: 'en', key: 'en'}, {label: 'Deutsch', value: 'de', key: 'de'}],
-    fontSizes:[{label: 'Small', value: 'small', key: 'small'}, {label: 'Medium', value: 'medium', key: 'medium'}, {label: 'Large', value: 'large', key: 'large'}]
+    fontSizes:[{label: 'Normal', value: 'normal', key: 'normal'}, {label: 'Groß', value: 'groß', key: 'groß'}, {label: 'Extra groß', value: 'extra groß', key: 'extra groß'}]
 };
   
