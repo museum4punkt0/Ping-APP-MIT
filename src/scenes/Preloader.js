@@ -54,13 +54,9 @@ class LoaderScene extends Component {
     return (
       <Scene navigator={false} isHaderShow={false}>
         <View style={{flex:1, justifyContent:'center'}}>
-          <Image source={logo} style={{width:300, height:70, alignSelf:'center'}} resizeMode="contain"  />
+          <Image source={logo} style={{width: 150, height: 150, alignSelf:'center'}} resizeMode="contain"  />
+          <Text style={styles.common.preloaderMessageDescription}>Mein Objekt</Text>
           {(isAppStart) && <AppStartComponent onUserChanged={this.onUserChanged.bind(this)} language={language} font_size={font_size} handleAppStart={() => Actions.AppGuideScreen()} />}
-          
-          <View style={styles.common.preloaderMessageContainer}>
-            <Text style={styles.common.preloaderMessageTitle}>POWERED BY</Text>
-            <Text style={styles.common.preloaderMessageDescription}>MeinObjekt</Text>
-          </View>
         </View>
       </Scene>
     );
