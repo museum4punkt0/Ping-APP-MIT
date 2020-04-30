@@ -154,7 +154,8 @@ export const common = StyleSheet.create({
   preloaderMessageDescription:{
     fontWeight:'bold',
     fontSize:16,
-    color:colors.white
+    color:colors.white,
+    alignSelf: 'center'
   }
 })
 

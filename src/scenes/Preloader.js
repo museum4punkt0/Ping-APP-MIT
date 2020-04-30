@@ -54,13 +54,9 @@ class LoaderScene extends Component {
     return (
       <Scene navigator={false} isHaderShow={false}>
         <View style={{flex:1, justifyContent:'center'}}>
-          <Image source={logo} style={{width:300, height:70, alignSelf:'center'}} resizeMode="contain"  />
+          <Image source={logo} style={{width: 150, height: 150, alignSelf:'center'}} resizeMode="contain"  />
+          <Text style={styles.common.preloaderMessageDescription}>Mein Objekt</Text>
           {(isAppStart) && <AppStartComponent onUserChanged={this.onUserChanged.bind(this)} language={language} font_size={font_size} handleAppStart={() => Actions.AppGuideScreen()} />}
-          
-          <View style={styles.common.preloaderMessageContainer}>
-            <Text style={styles.common.preloaderMessageTitle}>POWERED BY</Text>
-            <Text style={styles.common.preloaderMessageDescription}>MeinObjekt</Text>
-          </View>
         </View>
       </Scene>
     );
@@ -75,7 +71,8 @@ LoaderScene.propTypes = {
 export default connect(() => ({ }), { getUser, updateUser })(LoaderScene);
 
 const AppStartComponent = (props) => {
-  const {onUserChanged, language, handleAppStart} = props;
+  // eslint-disable-next-line react/prop-types
+  const {onUserChanged, language, handleAppStart, font_size} = props;
   return(
     <View style={{margin:15}}>
       <Option title={strings.chooseYourLanguage}>
@@ -88,7 +85,7 @@ const AppStartComponent = (props) => {
           useNativeAndroidPickerStyle={false}
         />
       </Option>
-      {/* <Option title='FONT SIZE' style={{marginTop:5}}>
+      <Option title='FONT SIZE' style={{marginTop:5}}>
         <Picker
           items={constant.fontSizes}
           onValueChange={(value) => onUserChanged('font_size',value)}
@@ -97,11 +94,12 @@ const AppStartComponent = (props) => {
           Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
           useNativeAndroidPickerStyle={false}
         />
-      </Option> */}
+      </Option>
       <Button containerStyle={{backgroundColor:colors.darkGrey, marginVertical:10}} onPress={handleAppStart} title={strings.appStart} />
     </View>
   )
 }
+
 AppStartComponent.propTypes = {
   onUserChanged: PropTypes.func.isRequired,
   handleAppStart: PropTypes.func.isRequired,

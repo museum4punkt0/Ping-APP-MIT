@@ -51,7 +51,8 @@ class MuseumsScene extends Component {
     .catch(() => Toaster.showMessage(strings.updatingError, ToasterTypes.ERROR))
     .finally(() => this.setState({loading: false}, () => AsyncStorage.setItem('museum', museum_id)));
     
-    let object = null; chats.forEach(chat => {if(!chat.finished) object = museum.objects.find(object => (!object.onboarding && object.sync_id === chat.object_id))});
+    let object = null; 
+    chats.forEach(chat => {if(!chat.finished) object = museum.objects.find(object => (!object.onboarding && object.sync_id === chat.object_id))});
     setObject(object || {});
     
     const first = await AsyncStorage.getItem('firstEntry');

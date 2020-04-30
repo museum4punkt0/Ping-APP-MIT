@@ -15,11 +15,12 @@ import { settingsTypes, userTypes, voteTypes } from './types';
 import strings from '../config/localization';
 
 export const setSettings = (settings) => (dispatch) => setSettingsToBD(settings)
-    .then((settings)=>{
+    .then((settings) => {
+        
         dispatch({ type: settingsTypes.SETTINGS_LOADED, payload: settings });
         return settings;
     })
-    .catch((error)=>Promise.reject(error));
+    .catch((error) => Promise.reject(error));
 
 export const getSettings = () => (dispatch) => {
     const settings = getSettingsFromDB();
