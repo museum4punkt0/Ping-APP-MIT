@@ -166,9 +166,9 @@ class ProfileInfoScene extends Component {
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
               <AvatarView spin={spin} level={user.level} avatar={avatar} handleChangeAvatarButtonPress={()=>this.handleChangeAvatarButtonPress()} />
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={styles.profile.profileTitle}>{`Level ${user.level}`}</Text>
+                <Text style={styles.profile.levelTitle}>{`Level ${user.level}`}</Text>
                 <TouchableOpacity onPress={()=>Toaster.showMessage(strings.levelInformation, ToasterTypes.MESSAGE)}>
-                  <FIcon color={colors.white} name="question-circle" size={20} style={{paddingTop:15}} />
+                  <FIcon color={colors.white} name="question-circle" size={20} style={{paddingTop:15, marginLeft: 10}} />
                 </TouchableOpacity>
               </View>
             </View>
