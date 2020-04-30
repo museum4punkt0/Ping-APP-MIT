@@ -19,6 +19,7 @@ export const colors = {
   white:'rgb(255,255,255)',
   red:'rgb(167,41,42)',
   green:'rgb(42,158,99)',
+  greenWithOpacity: 'rgba(42,158,99, 0.3)',
   blue:'rgb(42,96,158)',
   yellow:'#F4BA39'
 };
