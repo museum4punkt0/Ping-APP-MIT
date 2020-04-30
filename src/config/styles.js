@@ -478,6 +478,12 @@ const profile = StyleSheet.create({
       paddingHorizontal:15,
       paddingTop:15
     },
+    levelTitle:{
+      fontSize: 16,
+      color:colors.white,
+      fontWeight:'bold',
+      paddingTop:15
+    },
     profileDescription:{
       fontSize: 16,
       color:colors.white,
