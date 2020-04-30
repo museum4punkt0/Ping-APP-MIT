@@ -316,7 +316,7 @@ export const main = StyleSheet.create({
       height:170,
       backgroundColor:colors.green,
       borderRadius:10,
-      justifyContent:'flex-end',
+      justifyContent:'center',
       padding:15
     },
     toursButtonIcon:{
