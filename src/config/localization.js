@@ -27,6 +27,7 @@ const strings = new LocalizedStrings({
     typeYourName: 'Type your name…',
     termsAnd:'Terms and conditions',
     chooseYourLanguage:'CHOOSE YOUR LANGUAGE',
+    levelInformation: 'If you have collected at least 3 objects of one category, you will level up. Then new high-level objects become available!',
 
     //Tinder
     like:'Like',
@@ -158,6 +159,7 @@ const strings = new LocalizedStrings({
     typeYourName: 'Gib deinen Namen ein…',
     termsAnd:'Nutzungsbedingungen',
     chooseYourLanguage:'Wähle deine Sprache',
+    levelInformation: 'Wenn du mindestens 3 Objekte einer Kategorie in deiner Sammlung hast, steigst du ein Level auf. Dann werden neue High-Level-Objekte verfügbar!',
 
     //Tinder
     like:'Spannend',
