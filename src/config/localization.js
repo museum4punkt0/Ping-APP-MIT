@@ -19,6 +19,10 @@ const strings = new LocalizedStrings({
     museumIsCurrently:'Museum is currently unavailable',
 
     //Account info
+    nameLabel: 'NAME',
+    languageLabel: 'LANGUAGE',
+    fontSizeLabel: 'FONT SIZE',
+    chatIntervalLabel: 'CHAT INTERVAL',
     accountInfo: 'Account Settings',
     humboldtForm:'Humboldt Forum',
     humboldtDescription:'With the Humboldt Forum, a whole new cultural district is being created in the very heart of the city. It represents an approach that brings together diverse cultures and perspectives and seeks new insights into topical issues such as migration, religion and globalization.',
@@ -150,6 +154,10 @@ const strings = new LocalizedStrings({
     museumIsCurrently:'Dieses Museum ist derzeit nicht verfügbar',
     
     //Account info
+    nameLabel: 'NAME',
+    languageLabel: 'SPRACHE',
+    fontSizeLabel: 'SCHRIFTGRÖSSE',
+    chatIntervalLabel: 'CHAT INTERVALL',
     accountInfo: 'Kontoeinstellungen',
     humboldtForm:'Humboldt Forum',
     humboldtDescription:'Mit dem Humboldt Forum entsteht im Herzen der Stadt ein ganz neuer Kulturbezirk. Es stellt einen Ansatz dar, der verschiedene Kulturen und Perspektiven zusammenbringt und neue Einsichten in aktuelle Themen wie Migration, Religion und Globalisierung sucht.',
