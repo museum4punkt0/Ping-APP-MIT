@@ -19,3 +19,4 @@ export const createCollection = (params) => (dispatch) => new Promise((resolve, 
         })
         .catch((error) => reject(error))
 })
+

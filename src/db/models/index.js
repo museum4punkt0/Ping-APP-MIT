@@ -11,6 +11,7 @@ const realm = new Realm({
     ],
     schemaVersion:3
 });
+
   
 export default realm;
   

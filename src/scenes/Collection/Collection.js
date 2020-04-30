@@ -5,17 +5,20 @@ import PropTypes from 'prop-types';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
+import AsyncStorage from '@react-native-community/async-storage';
 import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import CongratulationsDialog from "../../components/Dialogs/CongratulationsDialog";
 import Dialog from "../../components/Dialogs/Dialog";
 import Toaster, {ToasterTypes} from "../../components/Popup";
 import styles, { colors } from '../../config/styles';
-import { convertToArray, getLocalization, getImage, showToast } from '../../config/helpers';
+import { convertToArray, getLocalization, getImage, showToast, showToObject } from '../../config/helpers';
 import { getObjects, getCategories } from '../../db/controllers/museums';
 import { getCollections, createCollection } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
+
+const MAX_OPENING = 2;
 
 class CollectionScene extends Component {
   constructor(props) {
@@ -92,7 +95,7 @@ class CollectionScene extends Component {
     updateUser({ ...user, category:categoryID });
     this.dialog.isActive = false;
     this.setState({ categoryID })
-  }
+  } 
   
   // eslint-disable-next-line
   handleCollectionButtonPress(collection){
@@ -107,7 +110,7 @@ class CollectionScene extends Component {
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
-        <Dialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} />
+        {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
         {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}
         <ScrollView>
           {categories.map( category => {
