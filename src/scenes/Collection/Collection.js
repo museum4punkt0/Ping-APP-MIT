@@ -18,6 +18,8 @@ import { getCollections, createCollection } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
 
+const MAX_OPENING = 2;
+
 class CollectionScene extends Component {
   constructor(props) {
     super(props);
@@ -108,7 +110,7 @@ class CollectionScene extends Component {
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
-        {AsyncStorage.getItem('toObject').then(value => value) <= 2 ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
+        {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
         {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}
         <ScrollView>
           {categories.map( category => {
