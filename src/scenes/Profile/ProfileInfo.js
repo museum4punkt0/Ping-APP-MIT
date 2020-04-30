@@ -164,7 +164,7 @@ class ProfileInfoScene extends Component {
           <View style={styles.profile.settingContainer}>
             <AvatarView spin={spin} level={user.level} avatar={avatar} handleChangeAvatarButtonPress={()=>this.handleChangeAvatarButtonPress()} />
             <View style={styles.profile.optionsContainer}>  
-              <Option title='NAME' style={{marginBottom:5}}>
+              <Option title={strings.nameLabel} style={{marginBottom:5}}>
                 <TextInput
                   value={input}
                   onChangeText={(input)=>this.setState({input})}
@@ -174,7 +174,7 @@ class ProfileInfoScene extends Component {
                 />
               </Option>            
 
-              <Option title='LANGUAGE' style={{marginTop:5}}>
+              <Option title={strings.languageLabel} style={{marginTop:5}}>
                 <Picker
                   items={constant.lang}
                   onValueChange={(value) => this.onUserChanged('language', value)}
@@ -185,7 +185,7 @@ class ProfileInfoScene extends Component {
                 />
               </Option>
 
-              <Option title='FONT SIZE' style={{marginTop:5}}>
+              <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
                 <Picker
                   items={constant.fontSizes}
                   onValueChange={(value) => this.onUserChanged('font_size',value)}
@@ -196,7 +196,7 @@ class ProfileInfoScene extends Component {
                 />
               </Option>
 
-              <Option title='CHAT INTERVAL' style={{marginTop:5}}>
+              <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
                 <TextInput
                   value={speed}
                   onChangeText={speed => this.setState({speed})}
