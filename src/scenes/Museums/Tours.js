@@ -18,10 +18,21 @@ class Tours extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      noPlannedDialog:false 
+      noPlannedDialog:false,
+      isPlannedChats:false
     }
   }
 
+  componentWillMount() {
+    const {getChats} = this.props;
+    const chats = getChats();
+    const isPlanned = chats.find(chat => chat.planned);
+    if(!isPlanned) return this.setState({noPlannedDialog:true})
+    this.setState({
+      isPlannedChats: isPlanned.planned
+    })
+  }
+  
   onPressTourButton(tour){
     const {setTour, first} = this.props;
     setTour(tour);
@@ -36,10 +47,7 @@ class Tours extends Component {
   }
 
   onPressPlanetButton(){
-    const {setTour, setPlanMode, getChats} = this.props;
-    const chats = getChats();
-    const isPlannedChats = chats.find(chat => chat.planned);
-    if(!isPlannedChats) return this.setState({noPlannedDialog:true})
+    const {setTour, setPlanMode} = this.props;
     setTour({localizations:[{title:strings.plannedTour, language:'en'}]});
     setPlanMode(4);
     Actions.ChatsListScene();
@@ -47,21 +55,24 @@ class Tours extends Component {
 
   render() {
     const {museums, user} = this.props;
-    const {noPlannedDialog} = this.state;
+    const {noPlannedDialog, isPlannedChats} = this.state;
     return (
       <Scene label='Tours' backBtnFunc={()=>Actions.pop()} navigator={false} style={{flex:1, padding:15}}>
         <View style={{flexDirection:'row'}}>
-          <TouchableOpacity style={[styles.main.toursButtonContainer, {marginRight:5}]} onPress={()=>this.onPressStartDiscoverButton()}>
-            <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>l</Icon>
-            <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)'}]}>i</Icon>
-            <Text style={styles.main.toursButtonLabel}>{strings.startDiscover}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.main.toursButtonContainer, {marginLeft:5}]} onPress={()=>this.onPressPlanetButton()}>
-            <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>m</Icon>
-            <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)', transform:[{ rotateY: '180deg'}]}]}>m</Icon>
-            <Text style={styles.main.toursButtonLabel}>{strings.startPlannedTour}</Text>
-          </TouchableOpacity>
+          {
+            isPlannedChats ? (
+              <TouchableOpacity style={[styles.main.toursButtonContainer, {marginLeft:5}]} onPress={()=>this.onPressPlanetButton()}>
+                <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>m</Icon>
+                <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)', transform:[{ rotateY: '180deg'}]}]}>m</Icon>
+                <Text style={styles.main.toursButtonLabel}>{strings.startPlannedTour}</Text>
+              </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={[styles.main.toursButtonContainer, {marginRight:5}]} onPress={()=>this.onPressStartDiscoverButton()}>
+              <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>l</Icon>
+              <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)'}]}>i</Icon>
+              <Text style={styles.main.toursButtonLabel}>{strings.startDiscover}</Text>
+            </TouchableOpacity>
+         )}
         </View>
         <Text style={styles.main.museumTourLabel}>{strings.museumTours}</Text>
         {museums.tours.map(tour => <ToursButton key={tour.sync_id} tour={tour} user={user} onPressTourButton={() => this.onPressTourButton(tour)} />)}

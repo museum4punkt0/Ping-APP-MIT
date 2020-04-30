@@ -327,7 +327,8 @@ export const main = StyleSheet.create({
     },
     toursButtonLabel:{
       fontSize:26,
-      color:colors.white
+      color:colors.white,
+      alignSelf: 'center'
     },
     appGuideButtonContainer:{
       flexDirection:'row',
