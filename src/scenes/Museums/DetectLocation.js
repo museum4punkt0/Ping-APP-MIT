@@ -188,8 +188,8 @@ export const DetectedMuseum = ({title, logo, handleSelectMuseumButton, handleCho
       <Text style={styles.main.locationTitleRow}>{`${strings.weDetectedThatYou} ${title}`}</Text>
     </View>
     <View style={{padding:15}}>
-      <Button onPress={() => handleChooseMuseum(museum_id, 2)} title={strings.startTour} />
-      <Button containerStyle={{backgroundColor:colors.blue, marginVertical:10}} onPress={() => handleChooseMuseum(museum_id, 1)} title={strings.planTour} />
+      <Button containerStyle={{height: 100}} onPress={() => handleChooseMuseum(museum_id, 2)} title={strings.startTour} />
+      <Button containerStyle={{backgroundColor:colors.dark, marginVertical:10}} onPress={() => handleChooseMuseum(museum_id, 1)} title={strings.planTour} />
       <Text style={styles.main.locationInfoRow}>{strings.areWeWrong.toUpperCase()}</Text>
       <Button containerStyle={{backgroundColor:colors.dark, marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.chooseAnotherMuseum} />
     </View>
