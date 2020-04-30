@@ -13,6 +13,7 @@ export default {
    
     base: 'api/v1/',
     lang:[{label: 'English', value: 'en', key: 'en'}, {label: 'Deutsch', value: 'de', key: 'de'}],
-    fontSizes:[{label: 'Normal', value: 'normal', key: 'normal'}, {label: 'Groß', value: 'groß', key: 'groß'}, {label: 'Extra groß', value: 'extra groß', key: 'extra groß'}]
+    fontSizes:[{label: 'Normal', value: 'normal', key: 'normal'}, {label: 'Groß', value: 'groß', key: 'groß'}, {label: 'Extra groß', value: 'extra groß', key: 'extra groß'}],
+    chatInterval:[{label: 'Slow', value: 'slow', key: 'slow'}, {label: 'Normal', value: 'normal', key: 'normal'}, {label: 'Fast', value: 'fast', key: 'fast'}, {label: 'Very fast', value: 'very fast', key: 'very fast'}]
 };
   

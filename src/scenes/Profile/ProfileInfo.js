@@ -44,7 +44,6 @@ class ProfileInfoScene extends Component {
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
-      speed:'1500'
     }
     this.spinValue = new Animated.Value(0)
   }
@@ -60,7 +59,7 @@ class ProfileInfoScene extends Component {
   async componentDidMount(){
     const speed = await AsyncStorage.getItem('speed');
     // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({speed: speed || '1500'});
+    this.setState({speed: speed || 'normal'});
   }
 
   showAnimation(){
@@ -197,13 +196,13 @@ class ProfileInfoScene extends Component {
               </Option>
 
               <Option title='CHAT INTERVAL' style={{marginTop:5}}>
-                <TextInput
+                <Picker
+                  items={constant.chatInterval}
+                  onValueChange={value => this.setState({speed: value})}
                   value={speed}
-                  onChangeText={speed => this.setState({speed})}
-                  style={styles.profile.nameTextInput}
-                  placeholderTextColor={colors.white}
-                  placeholder="Milliseconds"
-                  keyboardType='numeric'
+                  style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
+                  Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
+                  useNativeAndroidPickerStyle={false}
                 />
               </Option> 
             </View>
