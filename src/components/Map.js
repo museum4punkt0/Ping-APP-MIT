@@ -41,18 +41,19 @@ class MapImage extends Component {
       const markerImage = (marker) => {
         const {cropped_avatar, avatar} = marker;
         switch (marker.type) {
-          // case 1: return <View style={{ width:40, height:40, backgroundColor:'rgba(42,158,99,0.3)', borderRadius:20, alignItems:getPosition(this.getRandomInt(3)), justifyContent:getPosition(this.getRandomInt(3)) }}><Image source={n_mark} style={{width:15, height:15}} /></View>;
+          case 1: return <View style={{ width:40, height:40, backgroundColor:'rgba(42,158,99,0.3)', borderColor:colors.green, borderWidth:4, borderRadius:25 }} />;// Searched Object
           // case 1: return <View style={{ width:50, height:50, backgroundColor:'rgba(42,158,99,0.5)', borderRadius:25}} />;
-          case 1: return <Image source={{uri: getImage(cropped_avatar || avatar)}} style={{width:30, height:30, borderColor:colors.green, borderRadius:15, borderWidth:4}} />; // Searched Object
+          //case 1: return <Image source={{uri: getImage(cropped_avatar || avatar)}} style={{width:30, height:30, borderColor:colors.green, borderRadius:15, borderWidth:4}} />; // Searched Object
           // case 2: return <ImageBackground source={c_mark} style={{ width:30, height:30, alignItems:'center' }}><Image source={object} style={{ width:12, height:12, marginTop:5}} /></ImageBackground>;
           case 2: return <Image source={{uri: getImage(avatar)}} style={{ width:30, height:30, borderColor:colors.gray, borderRadius:15, borderWidth:2 }} /> // Object in collection
+          //case 3: return <View style={{ width: 40, height: 40, backgroundColor: colors.yellow, activeOpacity: 0.3, borderColor: colors.yellow, borderWidth:2, borderRadius: 25}} />;
           case 3: return <Image source={{uri: getImage(cropped_avatar || avatar)}} style={{ width:30, height:30, borderColor:colors.yellow, borderRadius:15, borderWidth:2}} /* source={s_mark}*/ />; // Semantic relation object 
         }
       };
       const searchedObject = map.markers.find(obj=>obj.type === 1)
       const marker = (object) =>(
         <TouchableOpacity onPress={() => handleOpenInfoPage(object)} style={{ position:'absolute',  left:10, top:10}}>
-          <Image source={{uri: getImage(object.avatar)}} style={{width:100, height:50, borderColor:colors.green, borderRadius:15, borderWidth:4}} />
+          <Image source={{uri: getImage(object.avatar)}} style={{width:70, height:70, borderColor:colors.green, borderWidth:4}} resizeMode='cover' />
         </TouchableOpacity>
       )
       return(
