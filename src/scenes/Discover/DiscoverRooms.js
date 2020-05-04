@@ -3,7 +3,6 @@ import { View, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import AsyncStorage from '@react-native-community/async-storage';
 import Scene from '../../components/Scene'
 import Text from '../../components/Text'
 import Swiper from '../../components/Tinder/Swiper'
@@ -13,7 +12,7 @@ import StartChatDialog from "../../components/Chat/StartChatDialog";
 import { getCollections } from '../../actions/collections';
 import { createChat } from "../../actions/chats";
 import styles, {Shadow, colors} from '../../config/styles'
-import {convertToArray, showToast} from '../../config/helpers'
+import {convertToArray, getStorageItem} from '../../config/helpers'
 import strings from '../../config/localization';
 import Tips from '../../components/Tips';
 
@@ -61,17 +60,11 @@ class DiscoverScreen extends Component {
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)})
     if (object) {
-      const storageItem = AsyncStorage.getItem('firstDiscovery');
-      if(storageItem) {
-        this.setState({
-          isModalOpen: false
-        });
-      } else {
-        AsyncStorage.setItem('firstDiscovery','true');
-        this.setState({
-          isModalOpen: true
-        });
-      }
+      let isOpen = false;
+      getStorageItem('firstDiscovery').then(value => isOpen = value);
+      this.setState({
+        isModalOpen: isOpen
+      });
     }
   }
 

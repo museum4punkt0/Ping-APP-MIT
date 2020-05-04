@@ -9,11 +9,12 @@ import Scene from '../../components/Scene'
 import CardComponent from "../../components/Tinder/Tinder";
 import OnboardingDialog from "../../components/Tinder/Onboarding";
 import styles, { colors } from '../../config/styles';
-import {getLocalization, convertToArray, showToast} from '../../config/helpers';
+import {getLocalization, convertToArray, getStorageItem, showToast} from '../../config/helpers';
 import { getChats } from '../../actions/chats'
 import { getUser, voteUpdate, updateUser, getVotes } from '../../actions/user'
 import strings from '../../config/localization';
 import { getScore } from '../../services/voting';
+import Tips from '../../components/Tips';
 
 class Tinder extends Component{
   constructor(props) {
@@ -22,7 +23,8 @@ class Tinder extends Component{
       chats:[],
       cardArray: [],
       user:{},
-      onboarding:false
+      onboarding:false,
+      isModalOpen: false,
     }
     this.isSwiperAvailable = true;
   }
@@ -89,13 +91,17 @@ class Tinder extends Component{
   onSwipedLeft(index){
     const { voteUpdate } = this.props;
     const { cardArray } = this.state;
-    showToast('firstDislike',strings.youDidNotLike);
+    let isOpen = false;
+    getStorageItem('firstDislike').then(value => isOpen = value);
+    this.setState({
+      isModalOpen: isOpen
+    });
     if(cardArray[index]) voteUpdate({object_id:cardArray[index].sync_id, vote:false, style:cardArray[index].language_style})
   }
 
   render(){ 
     const { settings, museums, plan } = this.props;
-    const {cardArray, user, onboarding} = this.state;
+    const {cardArray, user, onboarding, isModalOpen} = this.state;
     return(
       <Scene label={strings.objects} isFooterShow index={1}>
         <Swiper
@@ -142,6 +148,7 @@ class Tinder extends Component{
           </TouchableOpacity>
         </View>
         {onboarding && <OnboardingDialog visible={onboarding} onRequestClose={()=>this.setState({onboarding:false})} />}
+        {isModalOpen ? <Tips visible={isModalOpen} title={strings.youDidNotLike} onRequestClose={()=>this.setState({isModalOpen:false})} screen='tinder' /> : null}
       </Scene>
     )
   }

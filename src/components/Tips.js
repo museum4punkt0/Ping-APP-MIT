@@ -14,7 +14,7 @@ class Tips extends React.Component {
 
   componentDidMount = () => {
     const {screen} = this.props;
-    if (screen === 'discoverRooms') {
+    if (screen === 'discoverRooms' || 'tinder') {
       this.setState({
         bottomPosition: Dimensions.get('screen').height/2
       });
@@ -43,7 +43,19 @@ class Tips extends React.Component {
             </Mask>
             <Circle id="Circle" r={100} cx={width/2} cy={height - width/3} stroke="green" strokeWidth="4" />
           </Defs>
-        )
+        );
+
+      case 'tinder':
+        return (
+          <Defs>
+            <Mask id="mask" x="0" y="0" height={height} width={width}>
+              <Rect height="100%" width="100%" fill="white" />
+              <Circle id="Circle" r={100} cx={width/2 - 90} cy={height - width/3} stroke="green" strokeWidth="4" />
+            </Mask>
+            <Circle id="Circle" r={100} cx={width/2 - 90} cy={height - width/3} stroke="green" strokeWidth="4" />
+          </Defs>
+        );
+        
       default:
         return null;
     }

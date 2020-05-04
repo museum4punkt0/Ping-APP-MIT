@@ -43,6 +43,13 @@ export const showToast = async (item = '', string) => {
   return true
 }
 
+export const getStorageItem = async (item = '') => {
+  const storageItem = await AsyncStorage.getItem(item);
+  if(storageItem) return false;
+  AsyncStorage.setItem(item,'true');
+  return true
+}
+
 export const showToObject = async () => {
   let currentValue = await AsyncStorage.getItem('toObject');
   currentValue = +JSON.parse(currentValue) + 1;
