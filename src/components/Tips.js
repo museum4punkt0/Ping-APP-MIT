@@ -8,6 +8,18 @@ import Button from './Button';
 import strings from '../config/localization';
 
 class Tips extends React.Component {
+  state = {
+    bottomPosition: 25
+  }
+
+  componentDidMount = () => {
+    const {screen} = this.props;
+    if (screen === 'discoverRooms') {
+      this.setState({
+        bottomPosition: Dimensions.get('screen').height/2
+      });
+    }
+  }
   renderCircle = (screen) => {
     const width = Dimensions.get('window').width, height = Dimensions.get('window').height;
     switch (screen) {
@@ -20,11 +32,25 @@ class Tips extends React.Component {
             </Mask>
             <Circle id="Circle" r={width/2} cx={width/2} cy={height - width/2 - 155 - 155} stroke="green" strokeWidth="4" />
           </Defs>
+        );
+      
+      case 'discoverRooms':
+        return (
+          <Defs>
+            <Mask id="mask" x="0" y="0" height={height} width={width}>
+              <Rect height="100%" width="100%" fill="white" />
+              <Circle id="Circle" r={100} cx={width/2} cy={height - width/3} stroke="green" strokeWidth="4" />
+            </Mask>
+            <Circle id="Circle" r={100} cx={width/2} cy={height - width/3} stroke="green" strokeWidth="4" />
+          </Defs>
         )
+      default:
+        return null;
     }
   }
   render(){
-    const {onRequestClose, visible, screen} = this.props;
+    const {onRequestClose, visible, screen, title} = this.props;
+    const {bottomPosition} = this.state;
     const width = Dimensions.get('window').width, height = Dimensions.get('window').height;
     return (
       <View>
@@ -34,8 +60,8 @@ class Tips extends React.Component {
             <Rect height="100%" width="100%" fill="rgba(0, 0, 0, 0.9)" mask="url(#mask)" fill-opacity="0" />
             <Use href="#Circle" fill="none" />
           </Svg>
-          <View style={[styles.main.dialogContentContainer, {position:'absolute', alignSelf:'center', bottom:25}]}> 
-            <Text style={styles.main.dialogContentText}>{strings.weThing}</Text>
+          <View style={[styles.main.dialogContentContainer, {position:'absolute', alignSelf:'center', bottom: bottomPosition}]}> 
+            <Text style={styles.main.dialogContentText}>{title}</Text>
             <Button onPress={onRequestClose} title={strings.gotIt} />            
           </View>
         </Modal>
@@ -55,5 +81,4 @@ Tips.defaultProps = {
   visible: false,
   screen: ''
 }
-
 export default Tips;

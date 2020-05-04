@@ -52,7 +52,7 @@ class MatchScreen extends Component {
   return (  
     <View style={{ flex:1, alignItems:'center', justifyContent:'center', backgroundColor:colors.black }}>
       {/* <MathDialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.perfectMatch} bodyText={strings.weThing} btnTetx={strings.gotIt} /> */}
-      <Tips visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} screen='matchScreen' />
+      <Tips visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} screen='matchScreen' title={strings.weThing} />
       <Image source={Match} style={{width:270, height:50}} resizeMode="contain"  />     
 
       <View style={{ flexDirection:'row', marginVertical:25}}>

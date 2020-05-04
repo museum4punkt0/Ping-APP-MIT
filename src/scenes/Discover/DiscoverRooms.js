@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import AsyncStorage from '@react-native-community/async-storage';
 import Scene from '../../components/Scene'
 import Text from '../../components/Text'
 import Swiper from '../../components/Tinder/Swiper'
@@ -14,6 +15,7 @@ import { createChat } from "../../actions/chats";
 import styles, {Shadow, colors} from '../../config/styles'
 import {convertToArray, showToast} from '../../config/helpers'
 import strings from '../../config/localization';
+import Tips from '../../components/Tips';
 
 class DiscoverScreen extends Component {
   constructor(props) {
@@ -24,7 +26,8 @@ class DiscoverScreen extends Component {
       isZoomImageDialogShow:false,
       image:{image:''},
       startChatDialog:false,
-      object:{}
+      object:{},
+      isModalOpen: false
     }
   }
 
@@ -54,10 +57,22 @@ class DiscoverScreen extends Component {
             collectionArr.push({ description:item.localization, type:3, ...object});
           })
       }
-      images.push({...image, floor, type, markers:collectionArr})
+      images.push({...image, floor, type, markers:collectionArr});
     });
-    if(object) showToast('firstDiscovery', strings.youAreInvited)
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)})
+    if (object) {
+      const storageItem = AsyncStorage.getItem('firstDiscovery');
+      if(storageItem) {
+        this.setState({
+          isModalOpen: false
+        });
+      } else {
+        AsyncStorage.setItem('firstDiscovery','true');
+        this.setState({
+          isModalOpen: true
+        });
+      }
+    }
   }
 
   showFoundButton() {
@@ -90,10 +105,11 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object} = this.state;
+    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen} = this.state;
     const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
+        {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} /> : null}
         <Swiper           
           style={{ flex: 1 }}
           currentSelectIndex={currentSelectIndex}
