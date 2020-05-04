@@ -42,8 +42,7 @@ componentWillMount(){
     Geolocation.getCurrentPosition(
       location => getMuseumsList(location.coords.latitude, location.coords.longitude)
         .then(museums => {
-          // const museum = museums.find(museum => museum.located);
-          const museum = museums.find(museum => museum);
+          const museum = museums.find(museum => museum.located);
           if(!museum) return this.setState({type:2});
           this.setState({museum, type:1})
         }).catch(() => this.setState({type:0})),
