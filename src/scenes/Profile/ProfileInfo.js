@@ -44,6 +44,7 @@ class ProfileInfoScene extends Component {
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
+      speed: '1500'
     }
     this.spinValue = new Animated.Value(0)
   }
