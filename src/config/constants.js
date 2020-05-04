@@ -14,6 +14,6 @@ export default {
     base: 'api/v1/',
     lang:[{label: 'English', value: 'en', key: 'en'}, {label: 'Deutsch', value: 'de', key: 'de'}],
     fontSizes:[{label: 'Normal', value: 'normal', key: 'normal'}, {label: 'Groß', value: 'groß', key: 'groß'}, {label: 'Extra groß', value: 'extra groß', key: 'extra groß'}],
-    chatInterval:[{label: 'Slow', value: '2300', key: '2300'}, {label: 'Normal', value: '1500', key: '1500'}, {label: 'Fast', value: '800', key: '800'}, {label: 'Very fast', value: '300', key: '300'}]
+    chatInterval:[{label: 'Slow', value: '2300', key: 'slow'}, {label: 'Normal', value: '1500', key: 'normal'}, {label: 'Fast', value: '800', key: 'fast'}, {label: 'Very fast', value: '300', key: 'very fast'}]
 };
   
