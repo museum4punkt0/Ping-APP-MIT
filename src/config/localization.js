@@ -19,6 +19,10 @@ const strings = new LocalizedStrings({
     museumIsCurrently:'Museum is currently unavailable',
 
     //Account info
+    nameLabel: 'NAME',
+    languageLabel: 'LANGUAGE',
+    fontSizeLabel: 'FONT SIZE',
+    chatIntervalLabel: 'CHAT INTERVAL',
     accountInfo: 'Account Settings',
     humboldtForm:'Humboldt Forum',
     humboldtDescription:'With the Humboldt Forum, a whole new cultural district is being created in the very heart of the city. It represents an approach that brings together diverse cultures and perspectives and seeks new insights into topical issues such as migration, religion and globalization.',
@@ -27,6 +31,7 @@ const strings = new LocalizedStrings({
     typeYourName: 'Type your name…',
     termsAnd:'Terms and conditions',
     chooseYourLanguage:'CHOOSE YOUR LANGUAGE',
+    levelInformation: 'If you have collected at least 3 objects of one category, you will level up. Then new high-level objects become available!',
 
     //Tinder
     like:'Like',
@@ -150,6 +155,10 @@ const strings = new LocalizedStrings({
     museumIsCurrently:'Dieses Museum ist derzeit nicht verfügbar',
     
     //Account info
+    nameLabel: 'NAME',
+    languageLabel: 'SPRACHE',
+    fontSizeLabel: 'SCHRIFTGRÖSSE',
+    chatIntervalLabel: 'CHAT INTERVALL',
     accountInfo: 'Kontoeinstellungen',
     humboldtForm:'Humboldt Forum',
     humboldtDescription:'Mit dem Humboldt Forum entsteht im Herzen der Stadt ein ganz neuer Kulturbezirk. Es stellt einen Ansatz dar, der verschiedene Kulturen und Perspektiven zusammenbringt und neue Einsichten in aktuelle Themen wie Migration, Religion und Globalisierung sucht.',
@@ -158,6 +167,7 @@ const strings = new LocalizedStrings({
     typeYourName: 'Gib deinen Namen ein…',
     termsAnd:'Nutzungsbedingungen',
     chooseYourLanguage:'Wähle deine Sprache',
+    levelInformation: 'Wenn du mindestens 3 Objekte einer Kategorie in deiner Sammlung hast, steigst du ein Level auf. Dann werden neue High-Level-Objekte verfügbar!',
 
     //Tinder
     like:'Spannend',
@@ -224,8 +234,8 @@ const strings = new LocalizedStrings({
     areWeWrong:'Stimmt das nicht?',
     chooseAnotherMuseum:'Wähle ein anderes Museum',
     weDetectedThatYouOutside:'Wir haben festgestellt, dass du dich nicht in einem Museum befindest. Plane jetzt deinen nächsten Besuch!',
-    startDiscover:'Starte den Entdeckungsmodus',
-    startPlannedTour:'Starte deine vorher geplante Tour',
+    startDiscover:'Starte deine Entdeckungsreise',
+    startPlannedTour:'Starte deine geplante Tour',
     museumTours:'Museums-Touren',
     noPlannedTour:'Keine geplanten Touren',
     likeObjectsInPlanned:'Like Objekte im Plan-Modus, um mit ihnen zu chatten.',
