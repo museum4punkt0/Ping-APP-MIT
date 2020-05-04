@@ -27,7 +27,7 @@ import bronze from '../../assets/images/frame/bronze.png'
 const options = {
   title: 'Profile Picture',
   customButtons: [{ name: 'avatar', title: 'Choose Avatar' }],
-  quality:0.3,
+  quality: 0.3,
   storageOptions: {
     skipBackup: true,
   },
@@ -59,7 +59,7 @@ class ProfileInfoScene extends Component {
   async componentDidMount(){
     const speed = await AsyncStorage.getItem('speed');
     // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({speed: speed || 'normal'});
+    this.setState({speed: speed || '1500'});
   }
 
   showAnimation(){
