@@ -12,11 +12,12 @@ import CongratulationsDialog from "../../components/Dialogs/CongratulationsDialo
 import Dialog from "../../components/Dialogs/Dialog";
 import Toaster, {ToasterTypes} from "../../components/Popup";
 import styles, { colors } from '../../config/styles';
-import { convertToArray, getLocalization, getImage, showToast, showToObject } from '../../config/helpers';
+import { convertToArray, getLocalization, getImage, showToast, showToObject, getStorageItem } from '../../config/helpers';
 import { getObjects, getCategories } from '../../db/controllers/museums';
 import { getCollections, createCollection } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
+import Tips from '../../components/Tips';
 
 const MAX_OPENING = 2;
 
@@ -29,7 +30,13 @@ class CollectionScene extends Component {
       categoryID:'',
       congratulationsDialog:false,
       isModalOpen:false,
-      confetti:false
+      confetti:false,
+      position: {
+        horizontal: 1,
+        vertical: 1
+      },
+      isVisible: false,
+      title: ''
     }
     this.dialog = { isActive:true }
   }
@@ -57,21 +64,66 @@ class CollectionScene extends Component {
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
       categoriesCollectionArray.push(categories[i]);
     }
+
     const redirection_timout = settings.redirection_timout*1000;
     setTimeout(() => this.dialog.isActive && this.setState({isModalOpen:true}), redirection_timout || 5000)
     this.setState({ categories:categoriesCollectionArray, user, categoryID:user.category });
   }
 
   async shotToast(){
-    this.setState({confetti:true}, () => Toaster.showMessage(strings.startCollection, ToasterTypes.SUCCESS));
-    if(await showToast('firstCollection', strings.startCollection)){
-       setTimeout(() => {
-        showToast('firstCollection_2',strings.tappingOnTheObject);
-        setTimeout(() => showToast('firstCollection_3', strings.allObjectsBelong), 5500)
+    const {categories} = this.state;
+    //get position
+    categories.map((item, index) => {
+      item.collections.map((i, id) => {
+        if (i.category_id) {
+          const posXY = {
+            x: index + 1,
+            y: id + 1
+          };
+          this.setState({
+            position: posXY
+          });
+        }
+        return true;
+      });
+      return true;
+    });
+
+    this.setState({confetti:true}, () => {
+      this.setState({
+        isVisible: true,
+        title: strings.startCollection
+      });
+    });
+
+    if(await getStorageItem('firstCollection').then(value => value)) {
+      setTimeout(() => {
+        getStorageItem('firstCollection_2'); 
+        this.setState({
+          isVisible: true,
+          title: strings.tappingOnTheObject
+        });
+        setTimeout(() => {
+          getStorageItem('firstCollection_3');
+          this.setState({
+            isVisible: true,
+            title: strings.allObjectsBelong
+          });
+        }, 5500)
       }, 5500)
     } else {
-      showToast('firstCollection_4', strings.youHaveTwoObjects);
-      setTimeout(() => showToast('firstCollection_5', strings.toCollectMore), 5500)
+      getStorageItem('firstCollection_4'); 
+      this.setState({
+        isVisible: true,
+        title: strings.youHaveTwoObjects
+      });
+      setTimeout(() => {
+        getStorageItem('firstCollection_5');
+        this.setState({
+          isVisible: true,
+          title: strings.toCollectMore
+        });
+      }, 5500)
     }
   }
 
@@ -106,9 +158,11 @@ class CollectionScene extends Component {
   }
 
   render() {
-    const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti} = this.state;
+    const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti, isVisible, title, position} = this.state;
+
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
+        {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false})} screen='collection' position={position} /> : null}
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
         {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
         {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}

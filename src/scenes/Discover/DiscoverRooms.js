@@ -17,6 +17,7 @@ import strings from '../../config/localization';
 import Tips from '../../components/Tips';
 
 class DiscoverScreen extends Component {
+  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -28,6 +29,10 @@ class DiscoverScreen extends Component {
       object:{},
       isModalOpen: false
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   componentWillMount(){
@@ -59,7 +64,8 @@ class DiscoverScreen extends Component {
       images.push({...image, floor, type, markers:collectionArr});
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)})
-    if (object) {
+    this._isMounted = true;
+    if (object && this._isMounted) {
       let isOpen = false;
       getStorageItem('firstDiscovery').then(value => isOpen = value);
       this.setState({

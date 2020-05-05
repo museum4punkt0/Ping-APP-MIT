@@ -13,14 +13,18 @@ class Tips extends React.Component {
   }
 
   componentDidMount = () => {
-    const {screen} = this.props;
-    if (screen === 'discoverRooms' || 'tinder') {
+    const {screen, position} = this.props;
+    if (screen === 'discoverRooms' || screen === 'tinder' || screen === 'collection' && position >= 3) {
       this.setState({
         bottomPosition: Dimensions.get('screen').height/2
       });
+    } else if (screen === 'collection' && position < 3) {
+      this.setState({
+        bottomPosition: 25
+      });
     }
   }
-  renderCircle = (screen) => {
+  renderCircle = (screen, position) => {
     const width = Dimensions.get('window').width, height = Dimensions.get('window').height;
     switch (screen) {
       case 'matchScreen':
@@ -56,19 +60,36 @@ class Tips extends React.Component {
           </Defs>
         );
         
+      case 'collection':
+        // eslint-disable-next-line no-case-declarations
+        let cx = width/2;
+        if (position.horizontal === 1) {
+         cx = 60;
+        } else if (position.horizontal === 3) {
+          cx = width/2 + 3*40;
+        } 
+        return (
+          <Defs>
+            <Mask id="mask" x="0" y="0" height={height} width={width}>
+              <Rect height="100%" width="100%" fill="white" />
+              <Circle id="Circle" r={90} cx={cx} cy={position.vertical*180} stroke="green" strokeWidth="4" />
+            </Mask>
+            <Circle id="Circle" r={90} cx={cx} cy={position.vertical*180} stroke="green" strokeWidth="4" />
+          </Defs>
+        );
       default:
         return null;
     }
   }
   render(){
-    const {onRequestClose, visible, screen, title} = this.props;
+    const {onRequestClose, visible, screen, title, position} = this.props;
     const {bottomPosition} = this.state;
     const width = Dimensions.get('window').width, height = Dimensions.get('window').height;
     return (
       <View>
         <Modal visible={visible} onRequestClose={onRequestClose} transparent>
           <Svg height={height} width={width} viewBox={`0 0 ${width} ${height}`}>
-            {this.renderCircle(screen)}
+            {this.renderCircle(screen, position)}
             <Rect height="100%" width="100%" fill="rgba(0, 0, 0, 0.9)" mask="url(#mask)" fill-opacity="0" />
             <Use href="#Circle" fill="none" />
           </Svg>
@@ -85,12 +106,17 @@ class Tips extends React.Component {
 Tips.PropTypes = {
   onRequestClose: PropTypes.func,
   visible: PropTypes.bool,
-  screen: PropTypes.string
+  screen: PropTypes.string,
+  position: PropTypes.object,
 }
 
 Tips.defaultProps = {
   onRequestClose: () => {},
   visible: false,
-  screen: ''
+  screen: '',
+  position: {
+    vertical: 1,
+    horizontal: 1
+  }
 }
 export default Tips;
