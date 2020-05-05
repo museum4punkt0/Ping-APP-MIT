@@ -98,30 +98,34 @@ class CollectionScene extends Component {
 
     if(await getStorageItem('firstCollection').then(value => value)) {
       setTimeout(() => {
-        getStorageItem('firstCollection_2'); 
-        this.setState({
-          isVisible: true,
-          title: strings.tappingOnTheObject
+        getStorageItem('firstCollection_2').then(value => {
+          this.setState({
+            isVisible: typeof value !== 'string',
+            title: strings.tappingOnTheObject
+          });
         });
         setTimeout(() => {
-          getStorageItem('firstCollection_3');
-          this.setState({
-            isVisible: true,
-            title: strings.allObjectsBelong
+          getStorageItem('firstCollection_3').then(value => {
+            this.setState({
+              isVisible: typeof value !== 'string',
+              title: strings.allObjectsBelong
+            });
           });
         }, 5500)
       }, 5500)
     } else {
-      getStorageItem('firstCollection_4'); 
-      this.setState({
-        isVisible: true,
-        title: strings.youHaveTwoObjects
+      getStorageItem('firstCollection_4').then(value => {
+        this.setState({
+          isVisible: typeof value !== 'string',
+          title: strings.youHaveTwoObjects
+        });
       });
       setTimeout(() => {
-        getStorageItem('firstCollection_5');
-        this.setState({
-          isVisible: true,
-          title: strings.toCollectMore
+        getStorageItem('firstCollection_5').then(value => {
+          this.setState({
+            isVisible: typeof value !== 'string',
+            title: strings.toCollectMore
+          });
         });
       }, 5500)
     }

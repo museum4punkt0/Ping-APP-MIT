@@ -14,7 +14,7 @@ class Tips extends React.Component {
 
   componentDidMount = () => {
     const {screen, position} = this.props;
-    if (screen === 'discoverRooms' || screen === 'tinder' || screen === 'collection' && position >= 3) {
+    if (screen === 'tinder' || screen === 'collection' && position >= 3 || screen === 'discoverRooms' && position.vertical < 500) {
       this.setState({
         bottomPosition: Dimensions.get('screen').height/2
       });
@@ -22,6 +22,10 @@ class Tips extends React.Component {
       this.setState({
         bottomPosition: 25
       });
+    } else if (screen === 'discoverRooms' && position.vertical > 500) {
+      this.setState({
+        bottomPosition: Dimensions.get('screen').height - position.vertical
+      })
     }
   }
   renderCircle = (screen, position) => {
@@ -43,9 +47,9 @@ class Tips extends React.Component {
           <Defs>
             <Mask id="mask" x="0" y="0" height={height} width={width}>
               <Rect height="100%" width="100%" fill="white" />
-              <Circle id="Circle" r={100} cx={width/2} cy={height - width/3} stroke="green" strokeWidth="4" />
+              <Circle id="Circle" r={100} cx={position.horizontal/2} cy={position.vertical/2} stroke="green" strokeWidth="4" />
             </Mask>
-            <Circle id="Circle" r={100} cx={width/2} cy={height - width/3} stroke="green" strokeWidth="4" />
+            <Circle id="Circle" r={100} cx={position.horizontal/2} cy={position.vertical/2} stroke="green" strokeWidth="4" />
           </Defs>
         );
 
@@ -103,10 +107,11 @@ class Tips extends React.Component {
   }
 }
 
-Tips.PropTypes = {
+Tips.propTypes = {
   onRequestClose: PropTypes.func,
   visible: PropTypes.bool,
   screen: PropTypes.string,
+  title: PropTypes.string,
   position: PropTypes.object,
 }
 
@@ -114,6 +119,7 @@ Tips.defaultProps = {
   onRequestClose: () => {},
   visible: false,
   screen: '',
+  title: '',
   position: {
     vertical: 1,
     horizontal: 1

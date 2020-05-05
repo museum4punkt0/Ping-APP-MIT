@@ -17,7 +17,6 @@ import strings from '../../config/localization';
 import Tips from '../../components/Tips';
 
 class DiscoverScreen extends Component {
-  _isMounted = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -27,12 +26,12 @@ class DiscoverScreen extends Component {
       image:{image:''},
       startChatDialog:false,
       object:{},
-      isModalOpen: false
+      isModalOpen: false,
+      position: {
+        vertical: 0,
+        horizontal: 0
+      }
     }
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
   }
 
   componentWillMount(){
@@ -63,13 +62,22 @@ class DiscoverScreen extends Component {
       }
       images.push({...image, floor, type, markers:collectionArr});
     });
-    this.setState({images:images.sort((a,b)=>a.floor-b.floor)})
-    this._isMounted = true;
-    if (object && this._isMounted) {
-      let isOpen = false;
-      getStorageItem('firstDiscovery').then(value => isOpen = value);
-      this.setState({
-        isModalOpen: isOpen
+    this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
+   
+    if (object) {
+      let position = {};
+      images.map(i => i.markers.map(m =>  {
+        position = {
+          horizontal: m.positionX,
+          vertical: m.positionY
+        }
+        return true;
+      }));
+      getStorageItem('firstDiscovery').then(value => {
+        this.setState({
+          isModalOpen: typeof value !== 'string',
+          position
+        });
       });
     }
   }
@@ -104,11 +112,11 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen} = this.state;
+    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position} = this.state;
     const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
-        {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} /> : null}
+        {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} position={position} /> : null}
         <Swiper           
           style={{ flex: 1 }}
           currentSelectIndex={currentSelectIndex}

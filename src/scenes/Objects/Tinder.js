@@ -83,7 +83,7 @@ class Tinder extends Component{
     if(getLocalization(object.localizations, user.language, 'conversation') && this.isSwiperAvailable) {
       this.isSwiperAvailable = false
       setTimeout(() => this.isSwiperAvailable = true, 1000);
-      showToast('firstMatch', strings.awesomeThisObject); 
+      //showToast('firstMatch', strings.awesomeThisObject); 
       return Actions.MatchScene({ object })
     } else { showToast('firstLike', strings.greatYouLiked); }
   }
@@ -91,11 +91,12 @@ class Tinder extends Component{
   onSwipedLeft(index){
     const { voteUpdate } = this.props;
     const { cardArray } = this.state;
-    let isOpen = false;
-    getStorageItem('firstDislike').then(value => isOpen = value);
-    this.setState({
-      isModalOpen: isOpen
+    getStorageItem('firstDislike').then(value => {
+      this.setState({
+        isModalOpen: typeof value !== 'string'
+      });
     });
+    
     if(cardArray[index]) voteUpdate({object_id:cardArray[index].sync_id, vote:false, style:cardArray[index].language_style})
   }
 

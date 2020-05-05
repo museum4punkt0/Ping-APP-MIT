@@ -45,9 +45,8 @@ export const showToast = async (item = '', string) => {
 
 export const getStorageItem = async (item = '') => {
   const storageItem = await AsyncStorage.getItem(item);
-  if(storageItem) return false;
-  AsyncStorage.setItem(item,'true');
-  return true
+  if(!storageItem) AsyncStorage.setItem(item,'true');
+  return storageItem;
 }
 
 export const showToObject = async () => {
