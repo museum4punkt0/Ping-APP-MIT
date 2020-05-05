@@ -1,0 +1,26 @@
+variables:
+  ANDROID_HOME: "/opt/android-sdk"
+  LOCAL_PATH: "/home/gitlab-runner/projects/meinobject"
+  OUTPUTS_PATH: app/build/outputs/apk
+  PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
+
+before_script:
+  - cp -rf $LOCAL_PATH/.signing android/.signing
+
+
+after_script:
+  - rm -rf android/.signing
+
+stages:
+  - deploy
+
+androidBuildRelease:
+  stage: deploy
+  tags:
+    - shell
+  artifacts:
+    paths:
+      - app/build/outputs/apk/
+  script:
+    - cd android && ./gradlew app:assembleRelease
+  when: manual
