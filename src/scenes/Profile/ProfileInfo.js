@@ -28,7 +28,7 @@ import Toaster, {ToasterTypes} from "../../components/Popup";
 const options = {
   title: 'Profile Picture',
   customButtons: [{ name: 'avatar', title: 'Choose Avatar' }],
-  quality:0.3,
+  quality: 0.3,
   storageOptions: {
     skipBackup: true,
   },
@@ -45,7 +45,7 @@ class ProfileInfoScene extends Component {
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
-      speed:'1500'
+      speed: '1500'
     }
     this.spinValue = new Animated.Value(0)
   }
@@ -208,11 +208,9 @@ class ProfileInfoScene extends Component {
               <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
                 <TextInput
                   value={speed}
-                  onChangeText={speed => this.setState({speed})}
-                  style={styles.profile.nameTextInput}
-                  placeholderTextColor={colors.white}
-                  placeholder="Milliseconds"
-                  keyboardType='numeric'
+                  style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
+                  Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
+                  useNativeAndroidPickerStyle={false}
                 />
               </Option> 
             </View>
