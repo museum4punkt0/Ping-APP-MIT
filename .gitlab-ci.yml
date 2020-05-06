@@ -1,6 +1,6 @@
 variables:
   ANDROID_HOME: "/opt/android-sdk"
-  LOCAL_PATH: "/home/gitlab-runner/projects/mein-object"
+  LOCAL_PATH: "/home/gitlab-runner/projects/mein-object/mobile"
   OUTPUTS_PATH: app/build/outputs/apk
   PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
 
