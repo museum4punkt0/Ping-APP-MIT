@@ -5,7 +5,7 @@ variables:
   PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
 
 before_script:
-  - ls -a
+  - ls -aR /
   - cp -rf $LOCAL_PATH/.signing android/.signing
 
 
