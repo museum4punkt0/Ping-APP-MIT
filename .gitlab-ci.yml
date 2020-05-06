@@ -1,11 +1,10 @@
 variables:
   ANDROID_HOME: "/opt/android-sdk"
-  LOCAL_PATH: "/home/gitlab-runner/projects/mein-object/mobile"
+  LOCAL_PATH: "/home/gitlab-runner/projects/mein-object"
   OUTPUTS_PATH: app/build/outputs/apk
   PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
 
 before_script:
-  - ls -aR /home/gitlab-runner/projects/
   - cp -rf $LOCAL_PATH/.signing android/.signing
 
 
