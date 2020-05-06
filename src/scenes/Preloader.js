@@ -85,7 +85,7 @@ const AppStartComponent = (props) => {
           useNativeAndroidPickerStyle={false}
         />
       </Option>
-      <Option title='FONT SIZE' style={{marginTop:5}}>
+      <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
         <Picker
           items={constant.fontSizes}
           onValueChange={(value) => onUserChanged('font_size',value)}

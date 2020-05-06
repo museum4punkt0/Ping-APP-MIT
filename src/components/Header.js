@@ -13,12 +13,12 @@ const Header = (props) => {
     const logo = image ? getImage(image.image) : 'https://logo';
     // console.warn(Actions.currentScene)
     const tourButton = ()=>(
-      <View style={[styles.common.headerButtonContainer, {backgroundColor: plan === 1 ? colors.blue : colors.green}]}>
+      <View style={[styles.common.headerButtonContainer, {backgroundColor: plan === 1 ? colors.blue : colors.green, zIndex: 0}]}>
         <Text style={{ color:colors.white, fontSize:10, fontWeight:'bold' }}>{getLocalization(tour.localizations, user.language, 'title').toUpperCase()}</Text>
       </View>
     )
     return (
-      <View style={headerStyle}>
+      <View style={[headerStyle, {zIndex: 1}]}>
         <View style={[styles.common.headerContainer, headerStyle && {backgroundColor:"rgba(255,255,255,0)"}]}>
           {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text style={styles.common.headerName} numberOfLines={1}>{title}</Text>}
           <TouchableOpacity onPress={()=>Actions.MuseumsScene()}>

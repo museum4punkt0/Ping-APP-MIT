@@ -12,8 +12,9 @@ import StartChatDialog from "../../components/Chat/StartChatDialog";
 import { getCollections } from '../../actions/collections';
 import { createChat } from "../../actions/chats";
 import styles, {Shadow, colors} from '../../config/styles'
-import {convertToArray, showToast} from '../../config/helpers'
+import {convertToArray, getStorageItem} from '../../config/helpers'
 import strings from '../../config/localization';
+import Tips from '../../components/Tips';
 
 class DiscoverScreen extends Component {
   constructor(props) {
@@ -24,7 +25,12 @@ class DiscoverScreen extends Component {
       isZoomImageDialogShow:false,
       image:{image:''},
       startChatDialog:false,
-      object:{}
+      object:{},
+      isModalOpen: false,
+      position: {
+        vertical: 0,
+        horizontal: 0
+      }
     }
   }
 
@@ -54,10 +60,26 @@ class DiscoverScreen extends Component {
             collectionArr.push({ description:item.localization, type:3, ...object});
           })
       }
-      images.push({...image, floor, type, markers:collectionArr})
+      images.push({...image, floor, type, markers:collectionArr});
     });
-    if(object) showToast('firstDiscovery', strings.youAreInvited)
-    this.setState({images:images.sort((a,b)=>a.floor-b.floor)})
+    this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
+   
+    if (object) {
+      let position = {};
+      images.map(i => i.markers.map(m =>  {
+        position = {
+          horizontal: m.positionX,
+          vertical: m.positionY
+        }
+        return true;
+      }));
+      getStorageItem('firstDiscovery').then(value => {
+        this.setState({
+          isModalOpen: typeof value !== 'string',
+          position
+        });
+      });
+    }
   }
 
   showFoundButton() {
@@ -90,10 +112,11 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object} = this.state;
+    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position} = this.state;
     const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
+        {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} position={position} /> : null}
         <Swiper           
           style={{ flex: 1 }}
           currentSelectIndex={currentSelectIndex}
