@@ -12,7 +12,15 @@ after_script:
   - rm -rf android/.signing
 
 stages:
+  - build
   - deploy
+
+build:
+  stage: build
+  tags:
+    - shell
+  script:
+    - cd android && ./gradlew app:build
 
 androidBuildRelease:
   stage: deploy
