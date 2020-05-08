@@ -152,7 +152,17 @@ android {
             keyPassword 'android'
         }
         release {
-            
+            def keystorePropertiesFile = rootProject.file('.signing/keystore.properties')
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                storeFile rootProject.file('.signing/keystore.jks')
+                storePassword keystoreProperties['storePassword']
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+            } else {
+                println 'Could not find keystore.properties'
+            }
         }
     }
     buildTypes {
