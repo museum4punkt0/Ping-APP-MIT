@@ -22,5 +22,5 @@ androidBuildRelease:
     paths:
       - app/build/outputs/apk/
   script:
-    - cd android && ./gradlew app:assembleRelease
+    - npm install && cd android && ./gradlew app:assembleRelease
   when: manual
