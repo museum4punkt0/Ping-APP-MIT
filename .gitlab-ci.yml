@@ -9,7 +9,6 @@ before_script:
   - npm cache clean --force
   - npm install
 
-
 after_script:
   - rm -rf android/.signing
 
