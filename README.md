@@ -60,5 +60,5 @@ Run following command in terminal: `react-native run-ios`
 
 #### Running on device
 * Open `ios/MeinObjekt.xcworkspace` file in XCode
-* Select device where you want run MOCA app
+* Select device where you want run app
 * Press on "Run" button
