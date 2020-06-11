@@ -19,6 +19,7 @@ export const colors = {
   white:'rgb(255,255,255)',
   red:'rgb(167,41,42)',
   green:'rgb(42,158,99)',
+  greenWithOpacity: 'rgba(42,158,99, 0.3)',
   blue:'rgb(42,96,158)',
   yellow:'#F4BA39'
 };
@@ -154,7 +155,8 @@ export const common = StyleSheet.create({
   preloaderMessageDescription:{
     fontWeight:'bold',
     fontSize:16,
-    color:colors.white
+    color:colors.white,
+    alignSelf: 'center'
   }
 })
 
@@ -315,7 +317,7 @@ export const main = StyleSheet.create({
       height:170,
       backgroundColor:colors.green,
       borderRadius:10,
-      justifyContent:'flex-end',
+      justifyContent:'center',
       padding:15
     },
     toursButtonIcon:{
@@ -326,7 +328,9 @@ export const main = StyleSheet.create({
     },
     toursButtonLabel:{
       fontSize:26,
-      color:colors.white
+      color:colors.white,
+      alignSelf: 'center',
+      width: '50%'
     },
     appGuideButtonContainer:{
       flexDirection:'row',
@@ -475,6 +479,12 @@ const profile = StyleSheet.create({
       color:colors.white,
       fontWeight:'bold',
       paddingHorizontal:15,
+      paddingTop:15
+    },
+    levelTitle:{
+      fontSize: 16,
+      color:colors.white,
+      fontWeight:'bold',
       paddingTop:15
     },
     profileDescription:{

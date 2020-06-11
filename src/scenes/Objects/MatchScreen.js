@@ -8,16 +8,16 @@ import Match from '../../assets/images/match.png'
 import vipMatch from '../../assets/images/frame/vipMatch.png';
 import Button from '../../components/Button'
 import Text from '../../components/Text'
-import MathDialog from '../../components/Dialogs/Dialog'
 import { createChat } from "../../actions/chats";
-import {getLocalization, getImage} from '../../config/helpers';
+import {getLocalization, getImage, getStorageItem} from '../../config/helpers';
 import strings from '../../config/localization';
+import Tips from '../../components/Tips';
 
 class MatchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalOpen:false
+      isModalOpen: false
     }
     this.animatedImage= new Animated.Value(0);
   }
@@ -31,7 +31,12 @@ class MatchScreen extends Component {
         duration: 1000,
         easing: Easing.linear
       }
-    ).start()
+    ).start();
+    getStorageItem('firstMatch').then(value => {
+      this.setState({
+        isModalOpen: typeof value !== 'string'
+      });
+    });
   }
 
   async handleStartConversationPress(){
@@ -51,7 +56,8 @@ class MatchScreen extends Component {
     })
   return (  
     <View style={{ flex:1, alignItems:'center', justifyContent:'center', backgroundColor:colors.black }}>
-      <MathDialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.perfectMatch} bodyText={strings.weThing} btnTetx={strings.gotIt} />
+      {/* <MathDialog visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.perfectMatch} bodyText={strings.weThing} btnTetx={strings.gotIt} /> */}
+      <Tips visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} screen='matchScreen' title={strings.weThing} />
       <Image source={Match} style={{width:270, height:50}} resizeMode="contain"  />     
 
       <View style={{ flexDirection:'row', marginVertical:25}}>

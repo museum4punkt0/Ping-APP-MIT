@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, View } from 'react-native';
+import { Image, ImageBackground, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import { Actions } from 'react-native-router-flux';
@@ -188,10 +188,14 @@ export const DetectedMuseum = ({title, logo, handleSelectMuseumButton, handleCho
       <Text style={styles.main.locationTitleRow}>{`${strings.weDetectedThatYou} ${title}`}</Text>
     </View>
     <View style={{padding:15}}>
-      <Button onPress={() => handleChooseMuseum(museum_id, 2)} title={strings.startTour} />
-      <Button containerStyle={{backgroundColor:colors.blue, marginVertical:10}} onPress={() => handleChooseMuseum(museum_id, 1)} title={strings.planTour} />
+      <Button containerStyle={{height: 100}} onPress={() => handleChooseMuseum(museum_id, 2)} title={strings.startTour} />
+      <TouchableOpacity onPress={() => handleChooseMuseum(museum_id, 1)} style={{marginVertical:10, height: 50, justifyContent: 'center'}}>
+        <Text style={styles.chat.messageInputButtonText}>{strings.planTour}</Text>
+      </TouchableOpacity>
       <Text style={styles.main.locationInfoRow}>{strings.areWeWrong.toUpperCase()}</Text>
-      <Button containerStyle={{backgroundColor:colors.dark, marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.chooseAnotherMuseum} />
+      <TouchableOpacity onPress={handleSelectMuseumButton} style={{marginVertical:10, height: 50, justifyContent: 'center'}}>
+        <Text style={styles.chat.messageInputButtonText}>{strings.chooseAnotherMuseum}</Text>
+      </TouchableOpacity>
     </View>
   </View>
 )

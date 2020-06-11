@@ -43,6 +43,18 @@ export const showToast = async (item = '', string) => {
   return true
 }
 
+export const getStorageItem = async (item = '') => {
+  const storageItem = await AsyncStorage.getItem(item);
+  if(!storageItem) AsyncStorage.setItem(item,'true');
+  return storageItem;
+}
+
+export const showToObject = async () => {
+  let currentValue = await AsyncStorage.getItem('toObject');
+  currentValue = +JSON.parse(currentValue) + 1;
+  await AsyncStorage.setItem('toObject', JSON.stringify(currentValue));
+}
+
 export const getImage = (sync_id) => Platform.OS === 'android' ? 
 'file://' + RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg" 
 : RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";

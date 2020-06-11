@@ -7,6 +7,7 @@ import uuidv1 from 'uuid/v1';
 import ImagePicker from 'react-native-image-picker';
 import Picker from 'react-native-picker-select';
 import { Actions } from 'react-native-router-flux';
+import FIcon from 'react-native-vector-icons/FontAwesome';
 import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
@@ -22,12 +23,12 @@ import { WriteBase64Image, getRemoteData, setUser } from '../../actions/museums'
 import gold from '../../assets/images/frame/gold.png'
 import silver from '../../assets/images/frame/silver.png'
 import bronze from '../../assets/images/frame/bronze.png'
-
+import Toaster, {ToasterTypes} from "../../components/Popup";
 
 const options = {
   title: 'Profile Picture',
   customButtons: [{ name: 'avatar', title: 'Choose Avatar' }],
-  quality:0.3,
+  quality: 0.3,
   storageOptions: {
     skipBackup: true,
   },
@@ -44,7 +45,7 @@ class ProfileInfoScene extends Component {
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
-      speed:'1500'
+      speed: '1500'
     }
     this.spinValue = new Animated.Value(0)
   }
@@ -162,9 +163,17 @@ class ProfileInfoScene extends Component {
         <ScrollView style={{flex:1}}>
           <Text style={styles.profile.profileTitle}>{strings.accountInfo}</Text>
           <View style={styles.profile.settingContainer}>
-            <AvatarView spin={spin} level={user.level} avatar={avatar} handleChangeAvatarButtonPress={()=>this.handleChangeAvatarButtonPress()} />
+            <View style={{flexDirection: 'column', alignItems: 'center'}}>
+              <AvatarView spin={spin} level={user.level} avatar={avatar} handleChangeAvatarButtonPress={()=>this.handleChangeAvatarButtonPress()} />
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={styles.profile.levelTitle}>{`Level ${user.level}`}</Text>
+                <TouchableOpacity onPress={()=>Toaster.showMessage(strings.levelInformation, ToasterTypes.MESSAGE)}>
+                  <FIcon color={colors.white} name="question-circle" size={20} style={{paddingTop:15, marginLeft: 10}} />
+                </TouchableOpacity>
+              </View>
+            </View>
             <View style={styles.profile.optionsContainer}>  
-              <Option title='NAME' style={{marginBottom:5}}>
+              <Option title={strings.nameLabel} style={{marginBottom:5}}>
                 <TextInput
                   value={input}
                   onChangeText={(input)=>this.setState({input})}
@@ -174,7 +183,7 @@ class ProfileInfoScene extends Component {
                 />
               </Option>            
 
-              <Option title='LANGUAGE' style={{marginTop:5}}>
+              <Option title={strings.languageLabel} style={{marginTop:5}}>
                 <Picker
                   items={constant.lang}
                   onValueChange={(value) => this.onUserChanged('language', value)}
@@ -185,7 +194,7 @@ class ProfileInfoScene extends Component {
                 />
               </Option>
 
-              <Option title='FONT SIZE' style={{marginTop:5}}>
+              <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
                 <Picker
                   items={constant.fontSizes}
                   onValueChange={(value) => this.onUserChanged('font_size',value)}
@@ -196,14 +205,12 @@ class ProfileInfoScene extends Component {
                 />
               </Option>
 
-              <Option title='CHAT INTERVAL' style={{marginTop:5}}>
+              <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
                 <TextInput
                   value={speed}
-                  onChangeText={speed => this.setState({speed})}
-                  style={styles.profile.nameTextInput}
-                  placeholderTextColor={colors.white}
-                  placeholder="Milliseconds"
-                  keyboardType='numeric'
+                  style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
+                  Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
+                  useNativeAndroidPickerStyle={false}
                 />
               </Option> 
             </View>
