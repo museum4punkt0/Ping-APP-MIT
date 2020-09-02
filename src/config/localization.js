@@ -234,7 +234,7 @@ const strings = new LocalizedStrings({
     areWeWrong:'Stimmt das nicht?',
     chooseAnotherMuseum:'Wähle ein anderes Museum',
     weDetectedThatYouOutside:'Wir haben festgestellt, dass du dich nicht in einem Museum befindest. Plane jetzt deinen nächsten Besuch!',
-    startDiscover:'Starte deine Entdeckungsreise',
+    startDiscover:'Starte deine Entdeckungs reise',
     startPlannedTour:'Starte deine geplante Tour',
     museumTours:'Museums-Touren',
     noPlannedTour:'Keine geplanten Touren',
