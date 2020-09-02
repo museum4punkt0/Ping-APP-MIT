@@ -6,7 +6,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import Scene from "../../components/Scene";
 import Text from "../../components/Text";
-import NoPlannedDialog from "../../components/Dialogs/Dialog";
+// import NoPlannedDialog from "../../components/Dialogs/Dialog";
 // import Toaster, {ToasterTypes} from "../../components/Popup";
 import strings from '../../config/localization';
 import {getLocalization} from '../../config/helpers';
@@ -18,7 +18,7 @@ class Tours extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      noPlannedDialog:false,
+      // noPlannedDialog:false,
       isPlannedChats:false
     }
   }
@@ -27,7 +27,7 @@ class Tours extends Component {
     const {getChats} = this.props;
     const chats = getChats();
     const isPlanned = chats.find(chat => chat.planned);
-    if(!isPlanned) return this.setState({noPlannedDialog:true})
+    // if(!isPlanned) return this.setState({noPlannedDialog:true})
     this.setState({
       isPlannedChats: isPlanned.planned
     })
@@ -55,7 +55,7 @@ class Tours extends Component {
 
   render() {
     const {museums, user} = this.props;
-    const {noPlannedDialog, isPlannedChats} = this.state;
+    const {isPlannedChats} = this.state;
     return (
       <Scene label='Tours' backBtnFunc={()=>Actions.pop()} navigator={false} style={{flex:1, padding:15}}>
         <View style={{flexDirection:'row'}}>
@@ -76,10 +76,10 @@ class Tours extends Component {
         </View>
         <Text style={styles.main.museumTourLabel}>{strings.museumTours}</Text>
         {museums.tours.map(tour => <ToursButton key={tour.sync_id} tour={tour} user={user} onPressTourButton={() => this.onPressTourButton(tour)} />)}
-        <NoPlannedDialog
+        {/* <NoPlannedDialog
           visible={noPlannedDialog} onRequestClose={()=>this.setState({noPlannedDialog:false})} 
           title={strings.noPlannedTour} bodyText={strings.likeObjectsInPlanned} btnTetx={strings.gotIt}
-        />
+        /> */}
       </Scene>
     );
   }
