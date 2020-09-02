@@ -492,6 +492,11 @@ const profile = StyleSheet.create({
       color:colors.white,
       padding:15
     },
+    versionTitle: {
+      fontSize: 10,
+      color:colors.brownGrey,
+      paddingHorizontal:15,
+    },
     btnTitle:{
       fontSize: 10,
       color:colors.brownGrey,
