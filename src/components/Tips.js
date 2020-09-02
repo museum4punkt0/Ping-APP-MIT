@@ -1,3 +1,5 @@
+/* eslint-disable react/no-did-mount-set-state */
+/* eslint-disable no-invalid-this */
 import React from 'react';
 import {Modal, View, Dimensions} from 'react-native';
 import { Svg, Defs, Rect, Mask, Circle, Use } from 'react-native-svg';
@@ -9,27 +11,31 @@ import strings from '../config/localization';
 
 class Tips extends React.Component {
   state = {
-    bottomPosition: 25
+    bottomPosition: 25,
   }
 
   componentDidMount = () => {
     const {screen, position} = this.props;
-    if (screen === 'tinder' || screen === 'collection' && position >= 3 || screen === 'discoverRooms' && position.vertical < 500) {
+    const height = Dimensions.get('screen').height;
+    if (screen === 'tinder' || screen === 'collection' && position >= 3) {
       this.setState({
-        bottomPosition: Dimensions.get('screen').height/2
+        bottomPosition: Dimensions.get('screen').height/2,
       });
     } else if (screen === 'collection' && position < 3) {
       this.setState({
         bottomPosition: 25
       });
-    } else if (screen === 'discoverRooms' && position.vertical > 500) {
+    } else if (screen === 'discoverRooms' && position.vertical > 800) {
       this.setState({
-        bottomPosition: Dimensions.get('screen').height - position.vertical
+        bottomPosition: height - 300,
       })
     }
   }
   renderCircle = (screen, position) => {
     const width = Dimensions.get('window').width, height = Dimensions.get('window').height;
+    const positionX = position.horizontal/2 < 200 ? 100 : position.horizontal/2 > width - 100 ? width - 100 : position.horizontal/2;
+    const positionY = position.vertical/2 > height - 220 ? height - 220 : position.vertical/2+100;
+
     switch (screen) {
       case 'matchScreen':
         return (
@@ -47,9 +53,9 @@ class Tips extends React.Component {
           <Defs>
             <Mask id="mask" x="0" y="0" height={height} width={width}>
               <Rect height="100%" width="100%" fill="white" />
-              <Circle id="Circle" r={100} cx={position.horizontal/2} cy={position.vertical/2} stroke="green" strokeWidth="4" />
+              <Circle id="Circle" r={100} cx={positionX} cy={positionY} stroke="green" strokeWidth="4" />
             </Mask>
-            <Circle id="Circle" r={100} cx={position.horizontal/2} cy={position.vertical/2} stroke="green" strokeWidth="4" />
+            <Circle id="Circle" r={100} cx={positionX} cy={positionY} stroke="green" strokeWidth="4" />
           </Defs>
         );
 
