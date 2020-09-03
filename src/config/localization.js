@@ -66,6 +66,7 @@ const strings = new LocalizedStrings({
     //Discover
     iFound:'I found you!',
     startChat:'Do you want to start a chat?',
+    zoomIn: 'Zoom in with two finger gesture',
 
     //Collection
     completed:'Completed',
@@ -202,6 +203,7 @@ const strings = new LocalizedStrings({
     //Discover
     iFound:'Ich hab dich gefunden!',
     startChat:'Möchtest du mit dem Chat beginnen?',
+    zoomIn: 'Karte mit Zwei-Finger-Geste vergrößern',
 
     //Collection
     completed:'Abgeschlossen',
