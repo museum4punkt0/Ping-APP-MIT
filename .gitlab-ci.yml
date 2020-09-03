@@ -6,6 +6,8 @@ variables:
 
 before_script:
   - cp -rf $LOCAL_PATH/.signing android/.signing
+  - npm cache clean --force
+  - npm install
 
 after_script:
   - rm -rf android/.signing
@@ -21,5 +23,5 @@ androidBuildRelease:
     paths:
       - android/app/build/outputs/apk
   script:
-    - npm install && cd android && ./gradlew app:assembleRelease
+    - cd android && ./gradlew clean && ./gradlew app:assembleRelease
   when: manual
