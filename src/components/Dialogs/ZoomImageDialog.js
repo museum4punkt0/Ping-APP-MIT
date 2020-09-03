@@ -6,12 +6,28 @@ import PropTypes from 'prop-types';
 import Text from "../Text"
 import strings from '../../config/localization';
 import { colors, IOSpadding } from '../../config/styles';
+import { ToastView } from '../Popup';
+import { getStorageItem } from '../../config/helpers';
 
-const ZoomImageDialog = (props) => {
-    const {image, imageView, visible, onRequestClose} = props;
+class ZoomImageDialog extends React.Component {
+  state = {
+    isShowToast: false,
+  }
+
+  componentDidMount = () => {
+    getStorageItem('zoomIn').then(value => {
+      this.setState({
+        isShowToast: !value,
+      });
+    })
+  }
+
+  render() {
+    const {image, imageView, visible, onRequestClose} = this.props;
+    const {isShowToast} = this.state;
     return (
       <Modal visible={visible} onRequestClose={onRequestClose} transparent={false}>
-        <View style={{backgroundColor:colors.black}}>
+        <View style={{backgroundColor:colors.black}} onTouchStart={() => this.setState({isShowToast: false})}>
           <TouchableOpacity onPress={onRequestClose} style={{backgroundColor:'rgba(0,0,0,0.5)', width:'100%', paddingTop: IOSpadding, flexDirection:'row', alignItems:'center', paddingVertical:10, position:'absolute', top:0, zIndex:2}}>
             <Icon color={colors.white} name="arrow-back" size={24} style={{marginHorizontal:10}} />
             <Text style={{color:colors.white}}>{strings.back}</Text>
@@ -27,8 +43,10 @@ const ZoomImageDialog = (props) => {
             {image ? <Image style={{flex:1}} resizeMode="contain" source={{uri:image}} /> : imageView}
           </ImageZoom>
         </View>
+        {isShowToast ? <ToastView message={strings.zoomIn} style={{position: 'absolute', bottom: 50, alignSelf: 'center', backgroundColor: colors.green}} /> : null}
       </Modal>
     )
+  }
 }
 
     
