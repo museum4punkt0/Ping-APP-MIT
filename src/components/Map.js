@@ -34,7 +34,7 @@ class MapImage extends Component {
     getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max))
   
     render(){
-      const {map, handleOpenInfoPage} = this.props;
+      const {map, handleOpenInfoPage, styles} = this.props;
       const { width, height, ratio} = this.state;
       // const getPosition = (position) => { switch (position) { case 0: return 'center'; case 1: return 'flex-end'; case 2: return 'flex-start'; default: return 'center' } };
       // console.warn(map.markers )
@@ -57,7 +57,7 @@ class MapImage extends Component {
         </TouchableOpacity>
       )
       return(
-        <View onLayout={this.onViewLayout} style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+        <View onLayout={this.onViewLayout} style={styles || {flex:1, alignItems:'center', justifyContent:'center'}}>
           <ImageBackground source={{uri: getImage(map.image)}} style={{ width, height }}>
             {searchedObject && marker(searchedObject)}
             {map.markers && map.markers.map(marker => (
@@ -76,6 +76,12 @@ class MapImage extends Component {
   
 MapImage.propTypes = {
     map: PropTypes.object.isRequired,
-    handleOpenInfoPage:PropTypes.func.isRequired
+    handleOpenInfoPage:PropTypes.func.isRequired,
+    styles: PropTypes.object,
 };
+
+MapImage.defaultProps = {
+  styles: null,
+};
+
 export default MapImage;

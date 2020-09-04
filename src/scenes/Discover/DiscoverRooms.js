@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ImageZoom from 'react-native-image-pan-zoom';
 import Scene from '../../components/Scene'
 import Text from '../../components/Text'
 import Swiper from '../../components/Tinder/Swiper'
-import ZoomImageDialog from '../../components/Dialogs/ZoomImageDialog'
 import MapImage from '../../components/Map'
 import StartChatDialog from "../../components/Chat/StartChatDialog";
 import { getCollections } from '../../actions/collections';
@@ -15,6 +15,8 @@ import styles, {Shadow, colors} from '../../config/styles'
 import {convertToArray, getStorageItem} from '../../config/helpers'
 import strings from '../../config/localization';
 import Tips from '../../components/Tips';
+import { ToastView } from '../../components/Popup';
+
 
 class DiscoverScreen extends Component {
   constructor(props) {
@@ -22,15 +24,16 @@ class DiscoverScreen extends Component {
     this.state = {
       images:[],
       floor:1,
-      isZoomImageDialogShow:false,
-      image:{image:''},
+      // isZoomImageDialogShow:false,
+      // image:{image:''},
       startChatDialog:false,
       object:{},
       isModalOpen: false,
       position: {
         vertical: 0,
         horizontal: 0
-      }
+      },
+      isShowToast: false,
     }
   }
 
@@ -38,6 +41,12 @@ class DiscoverScreen extends Component {
     const {museums, searchedObject, getCollections, objects, object} = this.props;
     const images = [];
     const collections = getCollections();
+
+    getStorageItem('zoomIn').then(value => {
+      this.setState({
+        isShowToast: !value,
+      });
+    })
 
     museums.images.forEach(item => {
       const image = {...item}
@@ -99,7 +108,7 @@ class DiscoverScreen extends Component {
     if(marker.type === 1) this.handleStartConversationPress(marker);
     if(marker.type === 2) Actions.ObjectInfoScene({collection:marker.collection, object:marker});
     if(marker.type === 3) this.setState({object:marker, startChatDialog:true});
-    this.setState({isZoomImageDialogShow:false})
+    // this.setState({isZoomImageDialogShow:false})
   }
 
   async handleStartConversationPress(object){
@@ -112,26 +121,36 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position} = this.state;
+    const {images, floor, startChatDialog, object, isModalOpen, position, isShowToast} = this.state;
     const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
         {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} position={position} /> : null}
-        <Swiper           
+        <Swiper
           style={{ flex: 1 }}
           currentSelectIndex={currentSelectIndex}
           swipeData={images}
           renderSwipeItem={(map) => (
-            <TouchableOpacity style={{flex:1}} onPress={() => this.setState({image:map, isZoomImageDialogShow:true})} activeOpacity={0.8}>
-              <MapImage map={map} handleOpenInfoPage={(marker) => this.handleOpenInfoPage(marker)} />
+            <TouchableOpacity activeOpacity={1} onPressIn={() => this.setState({isShowToast: false})}>
+              <ImageZoom
+                cropWidth={Dimensions.get('window').width}
+                cropHeight={Dimensions.get('window').height}
+                imageWidth={Dimensions.get('window').width}
+                imageHeight={Dimensions.get('window').height}
+              >
+                <MapImage
+                  map={map}
+                  handleOpenInfoPage={(marker) => this.handleOpenInfoPage(marker)}
+                  styles={{
+                    flex: 1,
+                    marginTop: 25,
+                  }}
+                />
+              </ImageZoom>
             </TouchableOpacity>
           )}
         />
-        <ZoomImageDialog
-          visible={isZoomImageDialogShow}
-          onRequestClose={() => this.setState({isZoomImageDialogShow:!isZoomImageDialogShow})}
-          imageView={(<MapImage map={image} handleOpenInfoPage={(marker) => this.handleOpenInfoPage(marker)} />)}
-        />
+        {isShowToast ? <ToastView message={strings.zoomIn} style={{position: 'absolute', bottom: 50, alignSelf: 'center', backgroundColor: colors.green}} /> : null}
         <StartChatDialog 
           visible={startChatDialog} 
           onRequestApply={() => this.handleStartConversationPress(object)}
