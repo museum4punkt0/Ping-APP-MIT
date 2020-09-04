@@ -46,7 +46,7 @@ class Chats extends Component {
     const chats = getChats();
     const chat = chats.find(item => item.sync_id === chatID);
     const speed = await AsyncStorage.getItem('speed');
-    this.setState({chat, speed: parseInt(speed)});
+    this.setState({chat, speed: speed ? parseInt(speed) : 1500});
     
     if(chat.history.length !== 0 && !object.onboarding ) await this.setState({msgArray: img ? [...JSON.parse(chat.history), {type:'Image', isIncoming:2, uri:img}] : JSON.parse(chat.history)});
 
