@@ -8,6 +8,7 @@ import ImagePicker from 'react-native-image-picker';
 import Picker from 'react-native-picker-select';
 import { Actions } from 'react-native-router-flux';
 import FIcon from 'react-native-vector-icons/FontAwesome';
+import DeviceInfo from 'react-native-device-info';
 import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
@@ -69,13 +70,13 @@ class ProfileInfoScene extends Component {
     Animated.timing(
       this.spinValue,
       {  toValue: 1, duration: 4000 }
-    ).start()
+    ).start();
   }
 
   componentWillUnmount(){
     const { updateUser, getUser } = this.props;
     const { avatar, user, language, font_size, speed } = this.state;
-    AsyncStorage.setItem('speed', speed)
+    AsyncStorage.setItem('speed', speed);
     const dbUser = getUser();
     if(dbUser.sync_id !== user.sync_id) return;
     const { input } = this.state;
@@ -161,7 +162,10 @@ class ProfileInfoScene extends Component {
           settings={settings}
         />
         <ScrollView style={{flex:1}}>
-          <Text style={styles.profile.profileTitle}>{strings.accountInfo}</Text>
+          <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}>
+            <Text style={styles.profile.profileTitle}>{strings.accountInfo}</Text>
+            <Text style={styles.profile.versionTitle}>{`V ${DeviceInfo.getVersion()}`}</Text>
+          </View>
           <View style={styles.profile.settingContainer}>
             <View style={{flexDirection: 'column', alignItems: 'center'}}>
               <AvatarView spin={spin} level={user.level} avatar={avatar} handleChangeAvatarButtonPress={()=>this.handleChangeAvatarButtonPress()} />
@@ -206,7 +210,9 @@ class ProfileInfoScene extends Component {
               </Option>
 
               <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
-                <TextInput
+                <Picker
+                  items={constant.chatInterval}
+                  onValueChange={(speed) => this.setState({speed})}
                   value={speed}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
                   Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
