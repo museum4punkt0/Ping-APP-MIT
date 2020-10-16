@@ -3,6 +3,7 @@ import { updateItemOrPush } from '../config/helpers'
 
 const INITIAL_STATE = {
   museums: {},
+  currentMuseum: null,
   categories: [],
   objects: [],
   object:{}
@@ -10,6 +11,8 @@ const INITIAL_STATE = {
 
 export default function reducer(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case museumsTypes.MUSEUM_CHOSEN:
+      return {...state, currentMuseum: action.payload}
       
     case museumsTypes.MUSEUMS_LOADED:
       return { ...state, museums: action.payload };

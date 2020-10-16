@@ -27,7 +27,7 @@ class Tours extends Component {
     const {getChats} = this.props;
     const chats = getChats();
     const isPlanned = chats.find(chat => chat.planned);
-    // if(!isPlanned) return this.setState({noPlannedDialog:true})
+    if(!isPlanned) return this.setState({noPlannedDialog:true})
     this.setState({
       isPlannedChats: isPlanned.planned
     })

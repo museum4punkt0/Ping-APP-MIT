@@ -8,17 +8,27 @@ export const  getCollections = () => Array.from(realm.objects('Collections'));
 export const  getVotes = () => Array.from(realm.objects('Votings'));
 export const  getLanguageStyles = () => Array.from(realm.objects('Language_style'));
 
-export const updateUser = (user) => new Promise((resolve, reject) => {
+export const updateUser = (user, change_fields) => new Promise((resolve, reject) => {
     try{
-        realm.write(() => resolve(realm.create('User', user, true)));
+        realm.write(() => {
+            for(const [key, value] in Object.entries(change_fields)) {
+                user[key] = value;
+            }
+        });
+        resolve(user);
     } catch (error) {
         reject(error);
     }
 });
 
-export const  updateChat = (chat) => new Promise((resolve, reject) => {
+export const  updateChat = (chat, change_fields) => new Promise((resolve, reject) => {
     try{
-        realm.write(() => resolve(realm.create('Chats', chat, true)));
+        realm.write(() => {
+            for(const [key, value] in Object.entries(change_fields)) {
+                chat[key] = value;
+            }
+        });
+        resolve(chat);
     } catch (error) {
         reject(error);
     }

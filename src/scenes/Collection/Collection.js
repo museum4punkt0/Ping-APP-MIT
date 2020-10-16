@@ -42,7 +42,9 @@ class CollectionScene extends Component {
   }
   
   async componentWillMount() {
-    const { getCollections, createCollection, image, object, getUser, settings } = this.props;
+    const { getCollections, createCollection, image, object, getUser, settings, currentMuseum } = this.props;
+    console.log("CRRENT MUSEUM:")
+    console.log(currentMuseum)
     const collections = getCollections();
     const categories = getCategories()
     const user = getUser();
@@ -62,7 +64,11 @@ class CollectionScene extends Component {
         if(newCollection) this.updateUserLevel(user, level)
       }
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
-      categoriesCollectionArray.push(categories[i]);
+      // console.log(currentMuseum.categories.map(item => item.sync_id))
+      if(currentMuseum.categories.map(item => item.sync_id).includes(categories[i].sync_id)) {
+        console.log("CATEGORY INCLUDED");
+        categoriesCollectionArray.push(categories[i]);
+      }
     }
 
     const redirection_timout = settings.redirection_timout*1000;
@@ -141,7 +147,7 @@ class CollectionScene extends Component {
     const collections = getCollections();
     const user = getUser();
     this.dialog.isActive = false;
-    updateUser({ ...user, collections });
+    updateUser(user, {collections});
   }
 
   hundleCheckBoxPress(categoryID, checked, title){
@@ -206,7 +212,8 @@ CollectionScene.propTypes = {
   getUser: PropTypes.func.isRequired,
   settings: PropTypes.object.isRequired,
   object: PropTypes.object,
-  image: PropTypes.string
+  image: PropTypes.string,
+  currentMuseum: PropTypes.object,
 };
 
 CollectionScene.defaultProps = {
@@ -214,7 +221,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user }) => ({ settings: user.settings }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user, museums }) => ({ settings: user.settings, currentMuseum: museums.currentMuseum }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;

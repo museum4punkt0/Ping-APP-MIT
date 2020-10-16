@@ -39,7 +39,7 @@ export const getUser = () => (dispatch) => {
     return user;
 }
 
-export const updateUser = (user) => (dispatch) => updateUserFromDB({...user, updated_at: new Date()})
+export const updateUser = (user, change_fields) => (dispatch) => updateUserFromDB({...user, updated_at: new Date()}, change_fields)
     .then((user)=>{
         dispatch({ type: userTypes.USER_LOADED, payload: user });
         return Promise.resolve(user);

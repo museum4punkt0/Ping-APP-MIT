@@ -19,7 +19,7 @@ export const getChats = () => (dispatch) => {
     return chat;
 }
 
-export const updateChat = (params) => (dispatch) => updateChatFromDB({...params, updated_at: new Date()})
+export const updateChat = (chat, change_fileds) => (dispatch) => updateChatFromDB(chat, change_fileds)
     .then((chat)=> {      
         dispatch({ type: userTypes.CHAT_UPDATE, payload: chat });
         return Promise.resolve(chat);

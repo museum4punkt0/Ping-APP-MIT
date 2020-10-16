@@ -45,8 +45,14 @@ class Chats extends Component {
     const {img, object, chatID, from, user, setObject, getChats} = this.props;
     const chats = getChats();
     const chat = chats.find(item => item.sync_id === chatID);
+
+    console.log("CHAT:")
+    console.log(chat)
+
+    this.setState({chat});
+    AsyncStorage.setItem('speed', "10");
     const speed = await AsyncStorage.getItem('speed');
-    if (speed) this.setState({chat, speed: parseInt(speed)});
+    if (speed) this.setState({speed: parseInt(speed)});
     
     if(chat.history.length !== 0 && !object.onboarding ) await this.setState({msgArray: img ? [...JSON.parse(chat.history), {type:'Image', isIncoming:2, uri:img}] : JSON.parse(chat.history)});
 
@@ -69,17 +75,13 @@ class Chats extends Component {
   async nextMessage(messageID, id = this.props.object.sync_id, isNext = false) {
     await this.setState({isIndicatorShow:true})
     const { chat, speed } = this.state;
+
     const {msgArray, messageInput} = this.state; 
     const nextStep = Dialogue.interact(id, 'player', messageID, isNext); 
     if (nextStep == null) return;
     if (this.isSpecialAction(nextStep.text)) return this.setState({isIndicatorShow:false}); 
     if (nextStep.text) nextStep.text = nextStep.text.replace('{name}', messageInput);
-        
-    await this.updateChat({...chat,
-      history: JSON.stringify(msgArray),
-      last_step: Dialogue.__getState(chat.object_id, 'player')
-    });
-    
+    await this.updateChat(chat, {history: JSON.stringify(msgArray), last_step: Dialogue.__getState(chat.object_id, 'player')});
     const isOption = nextStep.responses.length > 0;
 
     setTimeout(() => {
@@ -93,9 +95,9 @@ class Chats extends Component {
     }, speed);
   }
 
-  async updateChat(chat){
+  async updateChat(chat, history, last_step){
     const { updateChat } = this.props;
-    await updateChat(chat).then( async item => await this.setState({chat:item}))
+    await updateChat(chat, history, last_step).then( async item => await this.setState({chat:item}))
   }
 
   async handleAvatar(response){
@@ -147,7 +149,7 @@ handleCameraFunc(){
     const { setObject } = this.props;
     const { msgArray, chat } = this.state;
     setObject({})
-    await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
+    await this.updateChat(chat, {history: JSON.stringify(msgArray), finished: true});
     return Actions.TinderScene();
   }
 
@@ -155,9 +157,9 @@ handleCameraFunc(){
     const { updateUser, getChats, user, setObject } = this.props;
     const { msgArray, chat } = this.state;
     setObject({})
-    await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
+    await this.updateChat(chat, {history: JSON.stringify(msgArray), finished: true});
     const chats = getChats();
-    if(object.positionX && object.positionY && object.floor) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), floor:object.floor, chats });
+    if(object.positionX && object.positionY && object.floor) await updateUser(user, {positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), floor:object.floor, chats});
     return Actions.CollectionScene({ object, image: this.imgPath });
   }
   
@@ -171,7 +173,7 @@ handleCameraFunc(){
 
   async addMessage(msg) {
     const {msgArray, chat} = this.state;
-    await this.updateChat({...chat, history:  JSON.stringify([...msgArray, msg])})
+    await this.updateChat(chat, {history:  JSON.stringify([...msgArray, msg])});
     this.setState({ msgArray: [...msgArray, msg], options: []}, () => this.nextMessage()); 
   }
   
@@ -197,12 +199,16 @@ handleCameraFunc(){
     const language_style = [];
     const styles = Array.from(settings.language_styles)
     if(styles) styles.forEach(style => language_style.push({style, score:0, sync_id:uuidv1()}));
-    await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
-    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style });
+    await this.updateChat(chat, {history: JSON.stringify(msgArray), finished: true});
+    await updateUser(user, {
+      name:messageInput, 
+      avatar:this.imgPath, 
+      language_style
+    });
     AsyncStorage.setItem('firstEntry', 'true');
     sync({ museum:museums, user, settings})
     if(plan === 2) return Actions.Tours({first:true});
-    Actions.TinderScene({first:true});   
+    Actions.TinderScene({first:true});    
   }
 
 
