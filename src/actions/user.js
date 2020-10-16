@@ -62,9 +62,8 @@ export const voteUpdate = (params) => (dispatch) => voteToDB(params)
     .then((vote)=>{
         const language_style = getLanguageStyles();
         const index = language_style.findIndex(i => i.style === params.style);
-        if(index !== -1) language_style[index] = {...language_style[index],  score: language_style[index].score + (params.vote ? 1 : -1) };
-        
-        updateLanguageStyles(language_style[index])
+        if(index !== -1) 
+        updateLanguageStyles(language_style[index], {score: language_style[index].score + (params.vote ? 1 : -1) })
         .then(()=>{
             dispatch({ type: voteTypes.VOTE_UPDATE, payload: vote });
             return Promise.resolve(vote);

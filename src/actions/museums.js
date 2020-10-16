@@ -131,19 +131,19 @@ export const setUser = users => async dispatch => {
 }
 
 export const setTensorFile = async (tensor) => {
-  tensor.tensor_flow_model = await TensorCache(tensor.tensor_flow_model, `model_${tensor.sync_id}.pb`);
-  tensor.tensor_flow_lables = await TensorCache(tensor.tensor_flow_lables, `lables_${tensor.sync_id}.txt`);
-  setTensor(tensor);
+  setTensor(tensor, {tensor_flow_model: await TensorCache(tensor.tensor_flow_model, `model_${tensor.sync_id}.pb`), tensor_flow_lables: await TensorCache(tensor.tensor_flow_lables, `lables_${tensor.sync_id}.txt`)});
 }
 
 export const setAllData = (id) => (dispatch) => getRemoteData(id)
-.then( async (response) => { 
+.then( async (response) => {
+  console.log("SAVE ALL DATA!") 
+  console.log(response)
   const data = await saveDataToStorage(response.museums, response.settings);
   await setUser(response.users)(dispatch)
-  await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
+  await setSettings(response.settings, {predefined_avatars: data.predefined_avatars })(dispatch);
   setTensorFile({...response.museums.tensor[0], museum_id:response.museums.sync_id});
   const tensor = response.museums.tensor[0]
-  return setMuseums({ ...response.museums, objects:data.objects, images:data.images, tensor })
+  return setMuseums(response.museums, {objects:data.objects, images:data.images, tensor })
   .then((data) => {
     dispatch({ type: museumsTypes.CATEGORIES_LOADED, payload: convertToArray(data.categories) });
     dispatch({ type: museumsTypes.OBJECTS_LOADED, payload: convertToArray(data.objects) });

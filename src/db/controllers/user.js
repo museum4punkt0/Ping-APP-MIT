@@ -100,9 +100,14 @@ export const  vote = (params) => new Promise((resolve, reject) => {
     }
 });
 
-export const  updateLanguageStyles = (params) => new Promise((resolve, reject) => {
-    try{ 
-        realm.write(() => resolve(realm.create('Language_style', params, true)));
+export const  updateLanguageStyles = (params, update_data) => new Promise((resolve, reject) => {
+    try{
+        realm.write(() => {
+            for(const [key, value] in Object.entries(update_data)) {
+                params[key] = value;
+            }
+        })
+        resolve(params)
     } catch (error) {
         reject(error);
     }
