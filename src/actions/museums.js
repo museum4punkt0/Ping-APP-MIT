@@ -136,8 +136,6 @@ export const setTensorFile = async (tensor) => {
 
 export const setAllData = (id) => (dispatch) => getRemoteData(id)
 .then( async (response) => {
-  console.log("SAVE ALL DATA!") 
-  console.log(response)
   const data = await saveDataToStorage(response.museums, response.settings);
   await setUser(response.users)(dispatch)
   await setSettings(response.settings, {predefined_avatars: data.predefined_avatars })(dispatch);

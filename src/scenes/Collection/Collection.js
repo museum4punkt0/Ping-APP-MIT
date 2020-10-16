@@ -64,11 +64,8 @@ class CollectionScene extends Component {
         if(newCollection) this.updateUserLevel(user, level)
       }
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
-      // console.log(currentMuseum.categories.map(item => item.sync_id))
-      if(currentMuseum.categories.map(item => item.sync_id).includes(categories[i].sync_id)) {
-        console.log("CATEGORY INCLUDED");
+      if(currentMuseum.categories.map(item => item.sync_id).includes(categories[i].sync_id))
         categoriesCollectionArray.push(categories[i]);
-      }
     }
 
     const redirection_timout = settings.redirection_timout*1000;

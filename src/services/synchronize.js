@@ -34,17 +34,20 @@ export const syncSettings = (setting, json) => {
 export const syncUser = async (fetch, user, json, images, deleted = {}) => {
     const chatsUpdate = [], chatsAdd = [], voteUpdate = [], voteAdd = [], collectionsUpdate = [], collectionsAdd = [];
     const { objects } = deleted;
-    
     if(new Date(user.updated_at).getTime() !== new Date(fetch.updated_at).getTime()) {
-        const updateUser = {...user}
+        const updateUser = Object.assign({}, user)
+        console.log("UPDATE_USER:")
+        console.log(user)
+        console.log(updateUser)
         delete updateUser.votings;
         delete updateUser.collections;
         delete updateUser.chats;
         images.push({path:updateUser.avatar, img:getImage(updateUser.avatar)})
-        updateUser.language_style = Array.from(updateUser.language_style);
+        updateUser.language_style = Array.from(updateUser.language_style || []);
         
         json.update = {...json.update, user:updateUser};
     }
+
 
     if(user.chats && fetch.chats) user.chats.forEach(item => {
         const chat = {...item, object_sync_id:item.object_id}

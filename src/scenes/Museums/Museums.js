@@ -38,25 +38,12 @@ class MuseumsScene extends Component {
     const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, plan } = this.props;
     this.setState({loading:true});
     const museums = convertToArray(getMuseums()), settings = getSettings();
-    console.log("MUSEUMS:")
-    console.log(museums)
     let museum = museums.find(item => item.sync_id === museum_id);
-
-    console.log("old museum:")
-    console.log(museum)
-
     if(museum) museum = getMuseum(museum_id);
-
-    console.log("new museum:")
-    console.log(museum)
 
     if(!museum) museum = await setAllData(museum_id)
     .catch((err) => this.setState({loading: false}, () => Toaster.showMessage(`${strings.wentWrong}: '${err}'`, ToasterTypes.ERROR)))
     this.props.setCurrentMuseum(museum);
-
-    console.log("MUSEUM:")
-    console.log(museum)
-    console.log(museum.sync_id)
 
     const user = getUser(), chats = getChats();
     
