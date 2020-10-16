@@ -14,7 +14,7 @@ import {
 import { settingsTypes, userTypes, voteTypes } from './types';
 import strings from '../config/localization';
 
-export const setSettings = (settings) => (dispatch) => setSettingsToBD(settings)
+export const setSettings = (settings, update_data) => (dispatch) => setSettingsToBD(settings, update_data)
     .then((settings) => {
         
         dispatch({ type: settingsTypes.SETTINGS_LOADED, payload: settings });

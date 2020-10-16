@@ -127,7 +127,7 @@ export const setUser = users => async dispatch => {
     }));
     const language = strings.getLanguage();
     
-    await updateUser({...user, language, positionX:parseFloat(user.positionX), positionY:parseFloat(user.positionY)})(dispatch);
+    await updateUser(user, {language, positionX:parseFloat(user.positionX), positionY:parseFloat(user.positionY)})(dispatch);
 }
 
 export const setTensorFile = async (tensor) => {
