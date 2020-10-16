@@ -1,9 +1,14 @@
 import realm from '../models/index';
 
-export const setSettings = (settings) => new Promise((resolve, reject) => {
+export const setSettings = (settings, update_data) => new Promise((resolve, reject) => {
     try{
-        realm.write(() => resolve(realm.create('Settings', settings, true)));
-    } catch (error) {  
+        realm.write(() => {
+            for(const [key, value] in Object.entries(update_data)) {
+                settings[key] = value;
+            }
+        })
+        resolve(settings)
+    } catch (error) {
         reject(error);
     }
 });
