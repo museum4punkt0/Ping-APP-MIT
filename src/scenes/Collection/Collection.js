@@ -64,8 +64,7 @@ class CollectionScene extends Component {
         if(newCollection) this.updateUserLevel(user, level)
       }
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
-      if(currentMuseum.categories.map(item => item.sync_id).includes(categories[i].sync_id))
-        categoriesCollectionArray.push(categories[i]);
+      categoriesCollectionArray.push(categories[i]);
     }
 
     const redirection_timout = settings.redirection_timout*1000;
@@ -218,7 +217,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user, museums }) => ({ settings: user.settings, currentMuseum: museums.currentMuseum }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user }) => ({ settings: user.settings }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;

@@ -10,7 +10,7 @@ import Text from '../../components/Text'
 import NoMore from '../../components/Tinder/NoMore';
 import Toaster, {ToasterTypes} from "../../components/Popup";
 import { getMuseums } from '../../db/controllers/museums';
-import { getMuseumsList, setAllData, getMuseum, setObject, setCurrentMuseum } from '../../actions/museums';
+import { getMuseumsList, setAllData, getMuseum, setObject } from '../../actions/museums';
 import { sync } from "../../actions/synchronize";
 import { getSettings, getUser } from "../../actions/user";
 import { createChat, getChats } from "../../actions/chats";
@@ -43,7 +43,6 @@ class MuseumsScene extends Component {
 
     if(!museum) museum = await setAllData(museum_id)
     .catch((err) => this.setState({loading: false}, () => Toaster.showMessage(`${strings.wentWrong}: '${err}'`, ToasterTypes.ERROR)))
-    this.props.setCurrentMuseum(museum);
 
     const user = getUser(), chats = getChats();
     
@@ -144,4 +143,4 @@ MuseumsScene.propTypes = {
 
 MuseumsScene.defaultProps = { }
 
-export default connect(({plan}) => ({ plan:plan.plan }) , { setAllData, getUser, getSettings, sync, getMuseum, createChat, getChats, setObject, setCurrentMuseum  })(MuseumsScene);
+export default connect(({plan}) => ({ plan:plan.plan }) , { setAllData, getUser, getSettings, sync, getMuseum, createChat, getChats, setObject  })(MuseumsScene);

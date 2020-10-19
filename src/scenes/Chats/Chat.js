@@ -47,7 +47,6 @@ class Chats extends Component {
     const chat = chats.find(item => item.sync_id === chatID);
 
     this.setState({chat});
-    AsyncStorage.setItem('speed', "10");
     const speed = await AsyncStorage.getItem('speed');
     if (speed) this.setState({speed: parseInt(speed)});
     

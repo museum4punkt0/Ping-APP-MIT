@@ -1,11 +1,11 @@
 export default {
     //local
-    api: 'http://192.168.1.138:8000/api/v1/',
-    host: 'http://192.168.1.138:8000/',
+    // api: 'http://192.168.1.138:8000/api/v1/',
+    // host: 'http://192.168.1.138:8000/',
 
     //prod
-    // api: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/api/v1/',
-    // host: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/',
+    api: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/api/v1/',
+    host: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/',
 
     //qa
     // api: 'http://qa-meinobjekt-1978777567.eu-central-1.elb.amazonaws.com/api/v1/',

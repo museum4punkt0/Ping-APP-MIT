@@ -19,10 +19,6 @@ export const getMuseum = (museum_id) => (dispatch) => {
   return museum;
 }
 
-export const setCurrentMuseum = museum => dispatch => {
-  dispatch({type: museumsTypes.MUSEUM_CHOSEN, payload: museum});
-}
-
 export const getMuseumsList = (lat = '', lon = '') =>
   axios.get(`${remote.api}museums/`, { params: { lat, lon }})  
     .then(response => {
