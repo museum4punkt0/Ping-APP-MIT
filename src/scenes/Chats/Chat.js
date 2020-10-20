@@ -21,7 +21,7 @@ import { sync } from '../../actions/synchronize';
 
 const isMessageIncoming = (message)=> message.isIncoming === 1 || message.isIncoming === undefined
 
-const DIALOGUE_IDS_FOR_SPECIAL_ACTIONS = { EXIT: '10001', CAM: '10002', MAP: '10003', IMAGE: '10004', COLLECTION: '10005', IMAGETAKEN: '10007' };
+const DIALOGUE_IDS_FOR_SPECIAL_ACTIONS = { EXIT: '101', CAM: '102', MAP: '103', IMAGE: '104', COLLECTION: '105', IMAGETAKEN: '107' };
 class Chats extends Component {
   constructor(props) {
     super(props);
@@ -45,8 +45,10 @@ class Chats extends Component {
     const {img, object, chatID, from, user, setObject, getChats} = this.props;
     const chats = getChats();
     const chat = chats.find(item => item.sync_id === chatID);
+    this.setState({chat});
+    
     const speed = await AsyncStorage.getItem('speed');
-    if (speed) this.setState({chat, speed: parseInt(speed)});
+    if (speed) this.setState({speed: parseInt(speed)});
     
     if(chat.history.length !== 0 && !object.onboarding ) await this.setState({msgArray: img ? [...JSON.parse(chat.history), {type:'Image', isIncoming:2, uri:img}] : JSON.parse(chat.history)});
 
@@ -55,7 +57,6 @@ class Chats extends Component {
     if(!object.onboarding) setObject(object);
 
     Dialogue.parse(object.sync_id, getLocalization(object.localizations, user.language, 'conversation')); 
-    
     if (object.from && DIALOGUE_IDS_FOR_SPECIAL_ACTIONS[from] != null) return this.nextMessage(DIALOGUE_IDS_FOR_SPECIAL_ACTIONS[from], object.sync_id, true);
     return this.nextMessage(!object.onboarding ? chat.last_step || null : 1, object.sync_id);
   }
