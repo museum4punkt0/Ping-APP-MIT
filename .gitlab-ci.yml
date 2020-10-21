@@ -23,5 +23,6 @@ androidBuildRelease:
     paths:
       - android/app/build/outputs/apk
   script:
-    - cd android && ./gradlew clean && ./gradlew app:assembleRelease --stacktrace
+    - cd android && ./gradlew clean
+    - GRADLE_OPTS="-Xmx2048m" ./gradlew app:assembleRelease --stacktrace
   when: manual
