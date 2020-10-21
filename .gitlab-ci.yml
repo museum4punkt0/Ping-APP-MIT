@@ -23,5 +23,5 @@ androidBuildRelease:
     paths:
       - android/app/build/outputs/apk
   script:
-    - cd android && ./gradlew clean && ./gradlew app:assembleRelease
+    - cd android && ./gradlew clean && ./gradlew app:assembleRelease --stacktrace
   when: manual
