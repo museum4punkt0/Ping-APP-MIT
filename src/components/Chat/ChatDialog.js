@@ -32,7 +32,7 @@ ImageMessageContent.propTypes = ({
           if(message.text.match(regex)){
             const message_parts = message.text.split(regex).filter(part => !!part).map((part, index) => {
               if(part.match(regex)){
-                return <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(part)}>{part}</Text>
+                return <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(part.startsWith('http') ? part : 'http://' + part)}>{part}</Text>
               } else {
                 return <Text key={index} style={styles.chat.messageText}>{part}</Text>
               }
