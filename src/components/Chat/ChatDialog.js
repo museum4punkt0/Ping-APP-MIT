@@ -30,7 +30,7 @@ ImageMessageContent.propTypes = ({
         case 'Image': return <ImageMessageContent onPress={()=>onPress(getImage(message.uri))} uri={getImage(message.uri)} />
         default:
           if(message.text.match(regex)){
-            const message_parts = message.text.split(regex).filter(part => !!part).map(part, index => {
+            const message_parts = message.text.split(regex).filter(part => !!part).map((part, index) => {
               if(part.match(regex)){
                 return <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(part)}>{part}</Text>
               } else {
