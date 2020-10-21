@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Text from '../Text'
 import styles, {colors} from '../../config/styles';  
@@ -23,9 +23,24 @@ ImageMessageContent.propTypes = ({
   export const MessageView = ({ message, isIncoming, onPress, avatar, last }) => {
     const color = isIncoming ? colors.green : colors.dark;
     const renderMessageContent = () => {
+      const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+      const regex = new RegExp(expression);
+
       switch (message.type) {
         case 'Image': return <ImageMessageContent onPress={()=>onPress(getImage(message.uri))} uri={getImage(message.uri)} />
-        default: return <Text style={styles.chat.messageText}>{message.text}</Text>;
+        default:
+          if(message.text.match(regex)){
+            const message_parts = message.text.split(regex).filter(part => !!part).map(part, index => {
+              if(part.match(regex)){
+                return <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(part)}>{part}</Text>
+              } else {
+                return <Text key={index} style={styles.chat.messageText}>{part}</Text>
+              }
+            })
+            return <Text>{message_parts}</Text>
+          } else {
+            return <Text style={styles.chat.messageText}>{message.text}</Text>;
+          }
       }
     };
     return(
