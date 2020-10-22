@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Text from '../Text'
 import styles, {colors} from '../../config/styles';  
-import {getImage} from '../../config/helpers';  
+import {getImage, format_url_for_linking} from '../../config/helpers';  
   
 export const ImageMessageContent = ({ onPress, uri }) => (
   <TouchableOpacity onPress={onPress}>
@@ -28,19 +28,12 @@ ImageMessageContent.propTypes = ({
 
       switch (message.type) {
         case 'Image': return <ImageMessageContent onPress={()=>onPress(getImage(message.uri))} uri={getImage(message.uri)} />
-        default:
-          if(message.text.match(regex)){
-            const message_parts = message.text.split(regex).filter(part => !!part).map((part, index) => {
-              if(part.match(regex)){
-                return <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(part.startsWith('http') ? part : 'http://' + part)}>{part}</Text>
-              } else {
-                return <Text key={index} style={styles.chat.messageText}>{part}</Text>
-              }
-            })
+        default:            
+          const message_parts = message.text.split(regex).filter(part => !!part).map((part, index) => 
+            part.match(regex) 
+            ? <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(format_url_for_linking(part))}>{part}</Text>
+            : <Text key={index} style={styles.chat.messageText}>{part}</Text>)
             return <Text>{message_parts}</Text>
-          } else {
-            return <Text style={styles.chat.messageText}>{message.text}</Text>;
-          }
       }
     };
     return(
