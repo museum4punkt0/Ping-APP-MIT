@@ -63,7 +63,7 @@ class MapImage extends Component {
             {map.markers && map.markers.map(marker => (
               <TouchableOpacity
                 key={marker.sync_id} onPress={() => handleOpenInfoPage(marker)} activeOpacity={0.1}
-                style={{ position:'absolute', width:30, height:30, left:marker.positionX*ratio, top:marker.positionY*ratio}}
+                style={{ position:'absolute', width:30, height:30, left:marker.positionX*ratio - 15, top:marker.positionY*ratio - 15}}
               >
                 {markerImage(marker)}
               </TouchableOpacity>
