@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import { Actions } from 'react-native-router-flux';
 import Permissions from 'react-native-permissions';
 import { connect } from 'react-redux';
