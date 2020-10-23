@@ -16,7 +16,6 @@ import { createChat } from "../../actions/chats";
 import strings from '../../config/localization';
 import {Recognize} from '../../actions/museums';
 import styles from '../../config/styles';
-import RNFetchBlob from "rn-fetch-blob";
 
 
 
@@ -50,10 +49,7 @@ class CameraScene extends Component {
   }
 
   async componentDidMount() {
-    const res = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
-    console.log("ALREADY GRANTED:", res);
-    const permission = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-    console.log("PERM:", permission)
+    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
   }
 
 
