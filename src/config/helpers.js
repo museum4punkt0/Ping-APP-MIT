@@ -90,3 +90,5 @@ export const getPermission = (type = 'location') => {
     });
   }
 }
+
+export const format_url_for_linking = url => url.startsWith('http') ? url : 'http://' + url
