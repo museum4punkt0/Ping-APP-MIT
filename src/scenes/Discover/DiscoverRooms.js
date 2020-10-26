@@ -71,7 +71,7 @@ class DiscoverScreen extends Component {
           })
         setCurrentSemanticRelations(semanticRelations)
       }
-      images.push({...image, floor, type, markers:collectionArr.concat(Object.keys(searchedObject).length || object ? [] : currentSemanticRelations)});
+      images.push({...image, type, markers:collectionArr.concat(Object.keys(searchedObject).length || object ? [] : currentSemanticRelations)});
     });
 
     if(object) {
