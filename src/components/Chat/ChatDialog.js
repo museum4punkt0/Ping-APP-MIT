@@ -33,7 +33,7 @@ ImageMessageContent.propTypes = ({
             part.match(regex) 
             ? <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(format_url_for_linking(part))}>{part}</Text>
             : <Text key={index} style={styles.chat.messageText}>{part}</Text>)
-            return <Text>{message_parts}</Text>
+            return <Text style={{...styles.chat.messageText, color: colors.green}}>{message_parts}</Text>
       }
     };
     return(
