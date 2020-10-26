@@ -39,11 +39,9 @@ class DiscoverScreen extends Component {
     const images = [];
     const collections = getCollections();
 
-    museums.images.forEach(item => {
-      const image = {...item}
-      const floorArray = image.image_type.split('_')[0]
-      if(floorArray.length > 2) return true;      
-      const floor = parseInt(image.image_type.split('_')[0]), type = image.image_type.split('_')[1];
+    museums.sections.forEach(item => {
+      const image = {...item}    
+      const floor = item.floor;
             
       const collectionArr = [];
       collections.forEach(collection => {
@@ -60,7 +58,7 @@ class DiscoverScreen extends Component {
             collectionArr.push({ description:item.localization, type:3, ...object});
           })
       }
-      images.push({...image, floor, type, markers:collectionArr});
+      images.push({...image, markers:collectionArr});
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
    

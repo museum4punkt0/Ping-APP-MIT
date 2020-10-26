@@ -22,7 +22,7 @@ class MapImage extends Component {
       const {width, height } = event.nativeEvent.layout;
       // eslint-disable-next-line no-invalid-this
       const { map } = this.props;
-      Image.getSize(getImage(map.image), (w, h) => {        
+      Image.getSize(getImage(map.map), (w, h) => {        
         const kofX = width / w, kofY = height / h;
         const ratio = Math.min(kofX, kofY);
         const imgWidth = w*ratio, imgHeight = h*ratio;
@@ -58,7 +58,7 @@ class MapImage extends Component {
       )
       return(
         <View onLayout={this.onViewLayout} style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-          <ImageBackground source={{uri: getImage(map.image)}} style={{ width, height }}>
+          <ImageBackground source={{uri: getImage(map.map)}} style={{ width, height }}>
             {searchedObject && marker(searchedObject)}
             {map.markers && map.markers.map(marker => (
               <TouchableOpacity
