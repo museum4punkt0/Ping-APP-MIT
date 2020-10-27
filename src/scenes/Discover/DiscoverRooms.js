@@ -53,10 +53,7 @@ class DiscoverScreen extends Component {
     let images = [];
     const collections = getCollections();
 
-    museums.sections.forEach(item => {
-      const image = {...item}    
-      const floor = item.floor;
-            
+    museums.sections.forEach(item => {            
       const collectionArr = [];
       collections.forEach(collection => {
         const obj = objects.find(object => (object.section.sync_id === item.sync_id && object.sync_id === collection.object_id))
