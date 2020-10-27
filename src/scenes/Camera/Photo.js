@@ -26,7 +26,7 @@ class PhotoScene extends Component {
   }
 
   handleSavePhoto = async (img, chatID, object) => {
-    const image = await WriteBase64Image(img.base64, uuidv1())
+    const image = await WriteBase64Image(img, uuidv1())
     Actions.ChatsScene({img:image, chatID, object, from: 'CAM'})
   }
 
