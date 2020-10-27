@@ -13,6 +13,8 @@ import {
 } from '../db/controllers/user';
 import { settingsTypes, userTypes, voteTypes } from './types';
 import strings from '../config/localization';
+import realm from '../db/models';
+import uuidv1 from 'uuid/v1';
 
 export const setSettings = (settings) => (dispatch) => setSettingsToBD(settings)
     .then((settings) => {
@@ -61,9 +63,18 @@ export const resetUser = () => (dispatch) => new Promise((resolve, reject) => {
 export const voteUpdate = (params) => (dispatch) => voteToDB(params)
     .then((vote)=>{
         const language_style = getLanguageStyles();
-        const index = language_style.findIndex(i => i.style === params.style);
+        let index = language_style.findIndex(i => i.style === params.style);
         if(index !== -1) language_style[index] = {...language_style[index],  score: language_style[index].score + (params.vote ? 1 : -1) };
-        
+        else {
+            index = 0;
+            realm.write(() => {
+                language_style[index] = realm.create('Language_style', {
+                    sync_id: uuidv1(),
+                    style: params.style,
+                    score: params.vote ? 1 : -1
+                });
+            });
+        }
         updateLanguageStyles(language_style[index])
         .then(()=>{
             dispatch({ type: voteTypes.VOTE_UPDATE, payload: vote });
