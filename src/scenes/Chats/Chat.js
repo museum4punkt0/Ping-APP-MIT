@@ -158,7 +158,7 @@ handleCameraFunc(){
     setObject({})
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
     const chats = getChats();
-    if(object.positionX && object.positionY && object.floor) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), floor:object.floor, chats });
+    if(object.positionX && object.positionY && object.section) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), section:object.section, chats });
     return Actions.CollectionScene({ object, image: this.imgPath });
   }
   
