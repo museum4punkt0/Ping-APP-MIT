@@ -52,7 +52,7 @@ class MapImage extends Component {
       };
       const searchedObject = map.markers.find(obj=>obj.type === 1)
       const marker = (object) =>(
-        <TouchableOpacity onPress={() => handleOpenInfoPage(object)} style={{ position:'absolute',  right:80, top:10}}>
+        <TouchableOpacity onPress={() => handleOpenInfoPage(object)} style={{ position:'absolute',  right:10, top:10}}>
           <Image source={{uri: getImage(object.cropped_avatar || object.avatar)}} style={{width:70, height:70, borderColor:colors.green, borderWidth:4}} resizeMode='cover' />
         </TouchableOpacity>
       )
