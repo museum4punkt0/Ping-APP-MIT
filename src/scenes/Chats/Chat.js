@@ -46,7 +46,7 @@ class Chats extends Component {
     const chats = getChats();
     const chat = chats.find(item => item.sync_id === chatID);
     this.setState({chat});
-    
+
     const speed = await AsyncStorage.getItem('speed');
     if (speed) this.setState({speed: parseInt(speed)});
     
@@ -104,7 +104,7 @@ class Chats extends Component {
     const { user } = this.props;
     const { chat } = this.state;
     if(response.error || response.didCancel) return this.nextMessage(chat.last_step);     
-    const avatar = await WriteBase64Image(response.data, user.sync_id);    
+    const avatar = await WriteBase64Image(response, user.sync_id);    
     this.imgPath = avatar;
     this.addMessage({type:'Image', isIncoming:2, uri: avatar})
   }
