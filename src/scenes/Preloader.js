@@ -29,7 +29,7 @@ class LoaderScene extends Component {
     const { getUser, updateUser } = this.props;
     // console.warn(RNFetchBlob.fs.dirs)
     const user = await getUser();
-    updateUser({...user, font_size: 'normal'});
+    await updateUser({...user, font_size: 'normal'});
     this.setState({user});
     const first = await AsyncStorage.getItem('firstEntry');
     if(!first) return this.setState({isAppStart:true});
