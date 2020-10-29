@@ -26,7 +26,7 @@ class LoaderScene extends Component {
   }
 
   async componentWillMount() {
-    const { getUser, updateUser, font_size } = this.props;
+    const { getUser } = this.props;
     // console.warn(RNFetchBlob.fs.dirs)
     const user = await getUser();
     this.setState({user});
