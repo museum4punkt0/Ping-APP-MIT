@@ -26,11 +26,11 @@ class LoaderScene extends Component {
   }
 
   async componentWillMount() {
-    const { getUser, updateUser } = this.props;
+    const { getUser } = this.props;
     // console.warn(RNFetchBlob.fs.dirs)
     const user = await getUser();
-    updateUser({...user, font_size: 'normal'});
     this.setState({user});
+
     const first = await AsyncStorage.getItem('firstEntry');
     if(!first) return this.setState({isAppStart:true});
 
@@ -105,8 +105,10 @@ AppStartComponent.propTypes = {
   onUserChanged: PropTypes.func.isRequired,
   handleAppStart: PropTypes.func.isRequired,
   language: PropTypes.string,
+  font_size: PropTypes.string,
 };
 
 AppStartComponent.defaultProps = {
-  language: strings.getLanguage()
+  language: strings.getLanguage(),
+  font_size: "normal",
 }
