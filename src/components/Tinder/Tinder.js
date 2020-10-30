@@ -11,7 +11,10 @@ import { getDistance } from '../../services/voting';
 class CardComponent extends Component{
     constructor(props) {
       super(props);
-      this.state = { opacity: new Animated.Value(0) }
+      this.state = { 
+        opacity: new Animated.Value(0),
+        random: new Date(),
+      }
     }
 
   onLoad(){
@@ -37,7 +40,7 @@ class CardComponent extends Component{
         <View style={styles.tinder.card}>
           <Animated.Image
             onLoadEnd={() => {if(card.index === 0) this.onLoad()}} 
-            source={{uri: getImage(cropped_avatar || avatar)}}
+            source={{uri: getImage(cropped_avatar || avatar) + '?' + this.state.random}}
             style={[styles.tinder.cardImage, 
             { 
                 transform: [

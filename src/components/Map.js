@@ -14,7 +14,8 @@ class MapImage extends Component {
       this.state = {
         ratio:0,
         width:0,
-        height:0
+        height:0,
+        random: new Date(),
       }
     }
 
@@ -58,7 +59,7 @@ class MapImage extends Component {
       )
       return(
         <View onLayout={this.onViewLayout} style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-          <ImageBackground source={{uri: getImage(map.image)}} style={{ width, height }}>
+          <ImageBackground source={{uri: getImage(map.image) + '?' + this.state.random}} style={{ width, height }}>
             {searchedObject && marker(searchedObject)}
             {map.markers && map.markers.map(marker => (
               <TouchableOpacity
