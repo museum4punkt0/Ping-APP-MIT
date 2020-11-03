@@ -224,7 +224,7 @@ class ProfileInfoScene extends Component {
               </Option> 
             </View>
           </View>  
-          <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={{marginHorizontal:15, backgroundColor:colors.darkGrey}} /> 
+          <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={{marginHorizontal:15, backgroundColor:colors.green}} /> 
           <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.green}]} onPress={() => this.handleClick(museums.museum_site_url)}>{getLocalization(museums.localizations, user.language, 'title')}</Text>
           <Text style={styles.profile.profileDescription}>{getLocalization(museums.localizations, user.language, 'description')}</Text>
           <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.brownGrey}]} onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')}>{strings.termsAnd}</Text>
