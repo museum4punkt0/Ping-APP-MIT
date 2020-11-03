@@ -15,6 +15,7 @@ import { getUser, voteUpdate, updateUser, getVotes } from '../../actions/user'
 import strings from '../../config/localization';
 import { getScore } from '../../services/voting';
 import Tips from '../../components/Tips';
+import Text from '../../components/Text';
 
 class Tinder extends Component{
   constructor(props) {
@@ -151,7 +152,7 @@ class Tinder extends Component{
               </TouchableOpacity>
             </View>
             </>
-          : <Icon style={styles.common.noObjectsMessage}>No objects left!</Icon>
+          : <Text style={styles.common.noObjectsMessage}>{strings.noObjectsLeft}</Text>
         }
         {onboarding && <OnboardingDialog visible={onboarding} onRequestClose={()=>this.setState({onboarding:false})} />}
         {isModalOpen ? <Tips visible={isModalOpen} title={strings.youDidNotLike} onRequestClose={()=>this.setState({isModalOpen:false})} screen='tinder' /> : null}
