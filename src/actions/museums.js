@@ -61,7 +61,6 @@ export const ImageCache = async (image, sync_id) => {
 };
 
 export const WriteBase64Image = async (img, sync_id) => {
-  console.log("IMG:", img.uri)
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";  
     return await RNFetchBlob.fs.cp(img.uri, path)
             .then(() => sync_id);
