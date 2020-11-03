@@ -416,7 +416,7 @@ export const chat = StyleSheet.create({
     padding:10,
     margin:5,
     alignItems:'center',
-    backgroundColor: 'rgb(92,94,96)'
+    backgroundColor: colors.green
   },
   optionsTitle:{
     fontSize: 16,

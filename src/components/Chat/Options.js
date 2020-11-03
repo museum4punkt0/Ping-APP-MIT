@@ -12,7 +12,7 @@ export const Options = (props) => {
     return(
       <View style={styles.chat.optionsContainer}>
         {options.map((value, key) => 
-        (<Button key={value.id} onPress={() => optionSelected(key)} containerStyle={{backgroundColor:colors.darkGrey, marginHorizontal:8}} title={value.text} />)
+        (<Button key={value.id} onPress={() => optionSelected(key)} containerStyle={{backgroundColor:colors.green, marginHorizontal:8}} title={value.text} />)
       )}
       </View>
     )

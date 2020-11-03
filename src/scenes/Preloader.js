@@ -96,7 +96,7 @@ const AppStartComponent = (props) => {
           useNativeAndroidPickerStyle={false}
         />
       </Option>
-      <Button containerStyle={{backgroundColor:colors.darkGrey, marginVertical:10}} onPress={handleAppStart} title={strings.appStart} />
+      <Button containerStyle={{backgroundColor:colors.green, marginVertical:10}} onPress={handleAppStart} title={strings.appStart} />
     </View>
   )
 }
