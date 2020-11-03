@@ -3,8 +3,6 @@ import { Text as RNText } from 'react-native';
 import { connect } from 'react-redux';
 
 export const getFontSize = (size, type = 'normal') => {
-  console.log("TEST:")
-  console.log(size, type)
   if(type === 'normal') {
     return size;
   } else if (type === 'groß') {
