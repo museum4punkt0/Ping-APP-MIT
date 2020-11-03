@@ -2,12 +2,14 @@ import React from 'react';
 import { Text as RNText } from 'react-native';
 import { connect } from 'react-redux';
 
-export const getFontSize = (size, type = 'medium') => {
-  if(type === 'small') {
+export const getFontSize = (size, type = 'normal') => {
+  console.log("TEST:")
+  console.log(size, type)
+  if(type === 'normal') {
     return size;
-  } else if (type === 'medium') {
+  } else if (type === 'groß') {
     return size + 2;
-  } else if (type === 'large') {
+  } else if (type === 'extra groß') {
     return size + 3.5;
   } else{
     return size;
