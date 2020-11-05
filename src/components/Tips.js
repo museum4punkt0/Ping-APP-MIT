@@ -104,7 +104,11 @@ class Tips extends React.Component {
             <Use href="#Circle" fill="none" />
           </Svg>
           <View style={[styles.main.dialogContentContainer, {position:'absolute', alignSelf:'center', bottom: bottomPosition}]}> 
-            <Text style={styles.main.dialogContentText}>{title}</Text>
+            {
+              typeof title === 'string'
+              ? <Text style={styles.main.dialogContentText}>{title}</Text>
+              : title
+            }
             <Button onPress={onRequestClose} title={strings.gotIt} />            
           </View>
         </Modal>
