@@ -47,21 +47,28 @@ export const ImageCache = async (image, sync_id) => {
   if(!image) image = 'https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png';
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";
   return await RNFetchBlob.fs.exists(path).then(async exists => {
-    if(exists) return sync_id;   
+    if(exists) {
+      const isSameImage = await RNFetchBlob.fs.readFile(path, 'base64')
+      .then(data => RNFetchBlob.fetch( 'GET', image )
+      .then(response => response.data === data));
+      if(isSameImage) return sync_id;
+    }
+
     return await RNFetchBlob.fetch( 'GET', image )
     .then(response => RNFetchBlob.fs.writeFile(path, response.data, 'base64')
     .then(() => sync_id));
   });
 };
 
-export const WriteBase64Image = async (base64, sync_id) => {
+export const WriteBase64Image = async (img, sync_id) => {
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";  
-    return await RNFetchBlob.fs.writeFile(path, base64, 'base64' )
+    return await RNFetchBlob.fs.cp(img.uri, path)
             .then(() => sync_id);
 };
 
 export const CopyImage = async (image, sync_id) => RNFetchBlob.fs.readFile(image, 'base64')
     .then(base64 => WriteBase64Image(base64, sync_id))
+
 
 export const TensorCache = async (file, sync_id) => {
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/tensor/" + sync_id;  

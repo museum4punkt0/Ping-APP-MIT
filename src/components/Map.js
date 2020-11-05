@@ -14,7 +14,8 @@ class MapImage extends Component {
       this.state = {
         ratio:0,
         width:0,
-        height:0
+        height:0,
+        random: new Date(),
       }
     }
 
@@ -52,13 +53,13 @@ class MapImage extends Component {
       };
       const searchedObject = map.markers.find(obj=>obj.type === 1)
       const marker = (object) =>(
-        <TouchableOpacity onPress={() => handleOpenInfoPage(object)} style={{ position:'absolute',  left:10, top:10}}>
+        <TouchableOpacity onPress={() => handleOpenInfoPage(object)} style={{ position:'absolute',  right:10, top:10}}>
           <Image source={{uri: getImage(object.cropped_avatar || object.avatar)}} style={{width:70, height:70, borderColor:colors.green, borderWidth:4}} resizeMode='cover' />
         </TouchableOpacity>
       )
       return(
         <View onLayout={this.onViewLayout} style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-          <ImageBackground source={{uri: getImage(map.map)}} style={{ width, height }}>
+          <ImageBackground source={{uri: getImage(map.image) + '?' + this.state.random}} style={{ width, height }}>
             {searchedObject && marker(searchedObject)}
             {map.markers && map.markers.map(marker => (
               <TouchableOpacity

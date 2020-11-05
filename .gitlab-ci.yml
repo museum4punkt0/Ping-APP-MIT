@@ -23,6 +23,7 @@ androidBuildRelease:
     paths:
       - android/app/build/outputs/apk
   script:
+    - react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
     - cd android && ./gradlew clean
     - GRADLE_OPTS="-Xmx2048m" ./gradlew app:assembleRelease --stacktrace
   when: manual
