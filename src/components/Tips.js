@@ -62,17 +62,6 @@ class Tips extends React.Component {
             <Circle id="Circle" r={100} cx={positionX} cy={positionY} stroke="green" strokeWidth="4" />
           </Defs>
         );
-      
-      case 'discoverRoomsSwipe':
-        return (
-          <Defs>
-            <Mask id="mask" x="0" y="0" height={height} width={width}>
-              <Rect height="100%" width="100%" fill="white" />
-              <Circle id="Circle" r={100} cx={positionX} cy={positionY} stroke="green" strokeWidth="4" />
-            </Mask>
-            <Circle id="Circle" r={100} cx={positionX} cy={positionY} stroke="green" strokeWidth="4" />
-          </Defs>
-        );
 
       case 'tinder':
         return (
@@ -120,9 +109,9 @@ class Tips extends React.Component {
           </Svg>
           <View style={[styles.main.dialogContentContainer, {position:'absolute', alignSelf:'center', bottom: bottomPosition}]}> 
             {
-             typeof title === 'string'
-             ? <Text style={styles.main.dialogContentText}>{title}</Text>
-             : {title}
+              typeof title === 'string'
+              ? <Text style={styles.main.dialogContentText}>{title}</Text>
+              : title
             }
             <Button onPress={onRequestClose} title={strings.gotIt} />            
           </View>

@@ -29,11 +29,17 @@ class DiscoverScreen extends Component {
       object:{},
       isModalOpen: false,
       swipeModalTitles: [
-        'You can click on arrows at the top to switch to different museum location map. Or you can just simply swipe them!',
-        <Image source={{
-          uri: 'https://reactnative.dev/img/tiny_logo.png',
-        }}/>
+        'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+        <>
+          <Image style = {{alignSelf: 'center', width: 200, height: 200, resizeMode : 'stretch' }} source={{uri: 'https://hub.teamvoy.com/mein-object/board/uploads/1a736b775a48a77e433369099f08b173/tenor.gif'}} /> 
+          <Text style={styles.main.dialogContentText}>You can also click on the map and zoom into it for more details!</Text>
+        </>
       ],
+      swipeModalPositions: [
+        { vertical: 0, horizontal: 600},
+        { vertical: 200, horizontal: 400}
+      ],
+      swipeModalPosition: { vertical: 0, horizontal: 600 },
       swipeModalTitle: 'You can click on arrows at the top to switch to different museum location map. Or you can just simply swipe them!',
       isSwipeModalOpen: false,
       position: {
@@ -73,14 +79,11 @@ class DiscoverScreen extends Component {
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
 
-    AsyncStorage.removeItem('firstDiscoverySwipe')
-    .then(() => {
-      getStorageItem('firstDiscoverySwipe').then(value => {
-        this.setState({
-          isSwipeModalOpen: typeof value !== 'string',
-        });
+    getStorageItem('firstDiscoverySwipe').then(value => {
+      this.setState({
+        isSwipeModalOpen: typeof value !== 'string',
       });
-    })
+    });
     
 
     if (object) {
@@ -122,11 +125,11 @@ class DiscoverScreen extends Component {
   }
 
   handleNextSwipeMessage(index) {
-    const { swipeModalTitles } = this.state;
+    const { swipeModalTitles, swipeModalPositions } = this.state;
     if(index == swipeModalTitles.length - 1) {
       return this.setState({isSwipeModalOpen: false})
     }
-    return  this.setState({isSwipeModalOpen: false}, () => setTimeout(() => this.setState({isSwipeModalOpen: true, swipeModalTitle: swipeModalTitles[index + 1]}), 50))
+    return this.setState({isSwipeModalOpen: false}, () => setTimeout(() => this.setState({isSwipeModalOpen: true, swipeModalTitle: swipeModalTitles[index + 1], swipeModalPosition: swipeModalPositions[index + 1]}), 50))
   }
 
   async handleStartConversationPress(object){
@@ -139,13 +142,12 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position, isSwipeModalOpen, swipeModalTitle, swipeModalTitles} = this.state;
-    console.log('test:', isSwipeModalOpen)
+    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position, isSwipeModalOpen, swipeModalTitle, swipeModalTitles, swipeModalPosition} = this.state;
     const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
         {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} position={position} /> : null}
-        {isSwipeModalOpen ? <Tips screen='discoverRooms' visible={isSwipeModalOpen} onRequestClose={()=>this.handleNextSwipeMessage(swipeModalTitles.indexOf(swipeModalTitle))} title={swipeModalTitle} position={position} /> : null}
+        {isSwipeModalOpen ? <Tips screen='discoverRooms' visible={isSwipeModalOpen} onRequestClose={()=>this.handleNextSwipeMessage(swipeModalTitles.indexOf(swipeModalTitle))} title={swipeModalTitle} position={swipeModalPosition} /> : null}
 
         <Swiper           
           style={{ flex: 1 }}
