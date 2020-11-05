@@ -29,10 +29,6 @@ class Tips extends React.Component {
       this.setState({
         bottomPosition: height - 300,
       })
-    } else if (screen === 'discoverRoomsSwipe' && position.vertical > 800) {
-      this.setState({
-        bottomPosition: height - 300,
-      })
     }
   }
   renderCircle = (screen, position) => {

@@ -15,7 +15,6 @@ import styles, {Shadow, colors} from '../../config/styles'
 import {convertToArray, getStorageItem} from '../../config/helpers'
 import strings from '../../config/localization';
 import Tips from '../../components/Tips';
-import { AsyncStorage } from 'react-native';
 
 class DiscoverScreen extends Component {
   constructor(props) {
