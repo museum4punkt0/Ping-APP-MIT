@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { TouchableOpacity, Image, View, ImageBackground } from 'react-native';
+import React, {Component,} from 'react';
+import { TouchableOpacity, Image, View, ImageBackground, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 // import n_mark from '../assets/images/chatObj.png';
 // import c_mark from '../assets/images/collectionObj.png';
@@ -59,7 +59,7 @@ class MapImage extends Component {
       )
       return(
         <View onLayout={this.onViewLayout} style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-          <ImageBackground source={{uri: getImage(map.image) + '?' + this.state.random}} style={{ width, height }}>
+          <ImageBackground source={{uri: getImage(map.image) + (Platform.OS === 'ios' ? '' : '?' + this.state.random)}} style={{ width, height }}>
             {searchedObject && marker(searchedObject)}
             {map.markers && map.markers.map(marker => (
               <TouchableOpacity

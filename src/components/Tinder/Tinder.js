@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Animated, ImageBackground } from 'react-native';
+import { View, Animated, ImageBackground, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Text from "../Text";
 import styles  from '../../config/styles';
@@ -41,7 +41,7 @@ class CardComponent extends Component{
         <View style={styles.tinder.card}>
           <Animated.Image
             onLoadEnd={() => {if(card.index === 0) this.onLoad()}} 
-            source={{uri: getImage(cropped_avatar || avatar) + '?' + this.state.random}}
+            source={{uri: getImage(cropped_avatar || avatar) + (Platform.OS === 'ios' ? '' : '?' + this.state.random)}}
             style={[styles.tinder.cardImage, 
             { 
                 transform: [
