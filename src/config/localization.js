@@ -37,6 +37,7 @@ const strings = new LocalizedStrings({
     like:'Like',
     dislike:'Dislike',
     away:'Away',
+    noObjectsLeft: 'No objects left!',
 
     //Match screen
     startConversation:'Start Conversation',
@@ -174,6 +175,7 @@ const strings = new LocalizedStrings({
     like:'Spannend',
     dislike:'Langweilig',
     away:'Weg',
+    noObjectsLeft: 'Keine Objekte mehr!',
 
     //Match screen
     startConversation:'Starte die Unterhaltung',

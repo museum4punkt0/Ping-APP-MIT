@@ -29,6 +29,13 @@ export const common = StyleSheet.create({
     flex: 1,
     backgroundColor:colors.black
   },
+  noObjectsMessage: {
+    fontWeight:'bold',
+    fontSize:20,
+    color:colors.white,
+    alignSelf: 'center',
+    marginTop: 50,
+  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -416,7 +423,7 @@ export const chat = StyleSheet.create({
     padding:10,
     margin:5,
     alignItems:'center',
-    backgroundColor: 'rgb(92,94,96)'
+    backgroundColor: colors.green
   },
   optionsTitle:{
     fontSize: 16,

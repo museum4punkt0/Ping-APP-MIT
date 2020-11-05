@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Platform } from 'react-native';
+import { View, Image, TouchableOpacity, Platform, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import Text from '../Text'
 import styles, {colors} from '../../config/styles';  
-import {getImage} from '../../config/helpers';  
+import {getImage, format_url_for_linking} from '../../config/helpers';  
   
 export const ImageMessageContent = ({ onPress, uri }) => (
   <TouchableOpacity onPress={onPress}>
@@ -23,9 +23,17 @@ ImageMessageContent.propTypes = ({
   export const MessageView = ({ message, isIncoming, onPress, avatar, last }) => {
     const color = isIncoming ? colors.green : colors.dark;
     const renderMessageContent = () => {
+      const expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+      const regex = new RegExp(expression);
+
       switch (message.type) {
         case 'Image': return <ImageMessageContent onPress={()=>onPress(getImage(message.uri))} uri={getImage(message.uri)} />
-        default: return <Text style={styles.chat.messageText}>{message.text}</Text>;
+        default:            
+          const message_parts = message.text.split(regex).filter(part => !!part).map((part, index) => 
+            part.match(regex) 
+            ? <Text key={index} style={{...styles.chat.messageText, color: colors.green}} onPress={() => Linking.openURL(format_url_for_linking(part))}>{part}</Text>
+            : <Text key={index} style={styles.chat.messageText}>{part}</Text>)
+            return <Text style={{...styles.chat.messageText, color: colors.green}}>{message_parts}</Text>
       }
     };
     return(
