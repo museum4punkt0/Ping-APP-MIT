@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,6 +15,7 @@ import styles, {Shadow, colors} from '../../config/styles'
 import {convertToArray, getStorageItem} from '../../config/helpers'
 import strings from '../../config/localization';
 import Tips from '../../components/Tips';
+import { AsyncStorage } from 'react-native';
 
 class DiscoverScreen extends Component {
   constructor(props) {
@@ -27,6 +28,14 @@ class DiscoverScreen extends Component {
       startChatDialog:false,
       object:{},
       isModalOpen: false,
+      swipeModalTitles: [
+        'You can click on arrows at the top to switch to different museum location map. Or you can just simply swipe them!',
+        <Image source={{
+          uri: 'https://reactnative.dev/img/tiny_logo.png',
+        }}/>
+      ],
+      swipeModalTitle: 'You can click on arrows at the top to switch to different museum location map. Or you can just simply swipe them!',
+      isSwipeModalOpen: false,
       position: {
         vertical: 0,
         horizontal: 0
@@ -63,7 +72,17 @@ class DiscoverScreen extends Component {
       images.push({...image, floor, type, markers:collectionArr});
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
-   
+
+    AsyncStorage.removeItem('firstDiscoverySwipe')
+    .then(() => {
+      getStorageItem('firstDiscoverySwipe').then(value => {
+        this.setState({
+          isSwipeModalOpen: typeof value !== 'string',
+        });
+      });
+    })
+    
+
     if (object) {
       let position = {};
       images.map(i => i.markers.map(m =>  {
@@ -102,6 +121,14 @@ class DiscoverScreen extends Component {
     this.setState({isZoomImageDialogShow:false})
   }
 
+  handleNextSwipeMessage(index) {
+    const { swipeModalTitles } = this.state;
+    if(index == swipeModalTitles.length - 1) {
+      return this.setState({isSwipeModalOpen: false})
+    }
+    return  this.setState({isSwipeModalOpen: false}, () => setTimeout(() => this.setState({isSwipeModalOpen: true, swipeModalTitle: swipeModalTitles[index + 1]}), 50))
+  }
+
   async handleStartConversationPress(object){
     const { createChat, chats } = this.props;
     let chat = {};
@@ -112,11 +139,14 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position} = this.state;
+    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position, isSwipeModalOpen, swipeModalTitle, swipeModalTitles} = this.state;
+    console.log('test:', isSwipeModalOpen)
     const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
         {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} position={position} /> : null}
+        {isSwipeModalOpen ? <Tips screen='discoverRooms' visible={isSwipeModalOpen} onRequestClose={()=>this.handleNextSwipeMessage(swipeModalTitles.indexOf(swipeModalTitle))} title={swipeModalTitle} position={position} /> : null}
+
         <Swiper           
           style={{ flex: 1 }}
           currentSelectIndex={currentSelectIndex}

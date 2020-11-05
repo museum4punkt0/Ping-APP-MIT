@@ -95,7 +95,6 @@ class CollectionScene extends Component {
         title: strings.startCollection
       });
     });
-
     if(await getStorageItem('firstCollection').then(value => value)) {
       setTimeout(() => {
         getStorageItem('firstCollection_2').then(value => {
@@ -163,7 +162,6 @@ class CollectionScene extends Component {
 
   render() {
     const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti, isVisible, title, position} = this.state;
-
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
         {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false})} screen='collection' position={position} /> : null}
