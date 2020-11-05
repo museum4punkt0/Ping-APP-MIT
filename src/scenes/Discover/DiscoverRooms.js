@@ -15,6 +15,7 @@ import styles, {Shadow, colors} from '../../config/styles'
 import {convertToArray, getStorageItem} from '../../config/helpers'
 import strings from '../../config/localization';
 import Tips from '../../components/Tips';
+import AsyncStorage from '@react-native-community/async-storage';
 
 class DiscoverScreen extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class DiscoverScreen extends Component {
         { vertical: 200, horizontal: 400}
       ],
       swipeModalPosition: { vertical: 0, horizontal: 600 },
-      swipeModalTitle: 'You can click on arrows at the top to switch to different museum location map. Or you can just simply swipe them!',
+      swipeModalTitle: 'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
       isSwipeModalOpen: false,
       position: {
         vertical: 0,
@@ -77,12 +78,13 @@ class DiscoverScreen extends Component {
       images.push({...image, floor, type, markers:collectionArr});
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
-
+    AsyncStorage.removeItem('firstDiscoverySwipe')
+    .then(() =>
     getStorageItem('firstDiscoverySwipe').then(value => {
       this.setState({
         isSwipeModalOpen: typeof value !== 'string',
       });
-    });
+    }))
     
 
     if (object) {
@@ -124,6 +126,7 @@ class DiscoverScreen extends Component {
   }
 
   handleNextSwipeMessage(index) {
+    console.log('index:', index)
     const { swipeModalTitles, swipeModalPositions } = this.state;
     if(index == swipeModalTitles.length - 1) {
       return this.setState({isSwipeModalOpen: false})
