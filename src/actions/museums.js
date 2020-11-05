@@ -60,14 +60,15 @@ export const ImageCache = async (image, sync_id) => {
   });
 };
 
-export const WriteBase64Image = async (base64, sync_id) => {
+export const WriteBase64Image = async (img, sync_id) => {
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";  
-    return await RNFetchBlob.fs.writeFile(path, base64, 'base64' )
+    return await RNFetchBlob.fs.cp(img.uri, path)
             .then(() => sync_id);
 };
 
 export const CopyImage = async (image, sync_id) => RNFetchBlob.fs.readFile(image, 'base64')
     .then(base64 => WriteBase64Image(base64, sync_id))
+
 
 export const TensorCache = async (file, sync_id) => {
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/tensor/" + sync_id;  

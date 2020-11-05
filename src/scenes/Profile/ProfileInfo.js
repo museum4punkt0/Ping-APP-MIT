@@ -41,7 +41,7 @@ class ProfileInfoScene extends Component {
       loading:false,
       input:'',
       language:'en',
-      font_size:'medium',
+      font_size:'normal',
       avatar:'http:///www.lol.kek.cheburek',
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
@@ -52,8 +52,11 @@ class ProfileInfoScene extends Component {
   }
 
   async componentWillMount(){
-    const {getUser} = this.props;
+    const {getUser, updateUser} = this.props;
     const user = getUser();
+
+    if(!user.font_size) await updateUser({...user, font_size: 'normal'})
+
     if(user.levelup) this.showAnimation()
     this.setState({avatar: user.avatar || 'http:///www.lol.kek.cheburek', input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
   }
@@ -96,7 +99,7 @@ class ProfileInfoScene extends Component {
   handleChangeAvatarButtonPress(){
     ImagePicker.showImagePicker(options, async response => {
       if(response.customButton) return this.setState({isChooseAvatarModalOpen: true});
-      const avatar = await WriteBase64Image(response.data, uuidv1());
+      const avatar = await WriteBase64Image(response, uuidv1());
       if(!response.error && !response.didCancel) this.setState({avatar})
     });
   }
@@ -221,7 +224,7 @@ class ProfileInfoScene extends Component {
               </Option> 
             </View>
           </View>  
-          <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={{marginHorizontal:15, backgroundColor:colors.darkGrey}} /> 
+          <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={{marginHorizontal:15, backgroundColor:colors.green}} /> 
           <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.green}]} onPress={() => this.handleClick(museums.museum_site_url)}>{getLocalization(museums.localizations, user.language, 'title')}</Text>
           <Text style={styles.profile.profileDescription}>{getLocalization(museums.localizations, user.language, 'description')}</Text>
           <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.brownGrey}]} onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')}>{strings.termsAnd}</Text>

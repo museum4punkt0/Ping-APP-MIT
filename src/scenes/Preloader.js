@@ -30,6 +30,7 @@ class LoaderScene extends Component {
     // console.warn(RNFetchBlob.fs.dirs)
     const user = await getUser();
     this.setState({user});
+
     const first = await AsyncStorage.getItem('firstEntry');
     if(!first) return this.setState({isAppStart:true});
 
@@ -95,7 +96,7 @@ const AppStartComponent = (props) => {
           useNativeAndroidPickerStyle={false}
         />
       </Option>
-      <Button containerStyle={{backgroundColor:colors.darkGrey, marginVertical:10}} onPress={handleAppStart} title={strings.appStart} />
+      <Button containerStyle={{backgroundColor:colors.green, marginVertical:10}} onPress={handleAppStart} title={strings.appStart} />
     </View>
   )
 }
@@ -104,8 +105,10 @@ AppStartComponent.propTypes = {
   onUserChanged: PropTypes.func.isRequired,
   handleAppStart: PropTypes.func.isRequired,
   language: PropTypes.string,
+  font_size: PropTypes.string,
 };
 
 AppStartComponent.defaultProps = {
-  language: strings.getLanguage()
+  language: strings.getLanguage(),
+  font_size: "normal",
 }
