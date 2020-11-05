@@ -15,6 +15,7 @@ import { getUser, voteUpdate, updateUser, getVotes } from '../../actions/user'
 import strings from '../../config/localization';
 import { getScore } from '../../services/voting';
 import Tips from '../../components/Tips';
+import Text from '../../components/Text';
 
 class Tinder extends Component{
   constructor(props) {
@@ -105,49 +106,54 @@ class Tinder extends Component{
     const {cardArray, user, onboarding, isModalOpen} = this.state;
     return(
       <Scene label={strings.objects} isFooterShow index={1}>
-        <Swiper
-          ref={swiper => { this.swiper = swiper; }}
-          cards={cardArray}
-          renderCard={(card, index) => (<CardComponent card={{...card, index}} user={user} position={settings.exit_position} pixelMeter={museums.ratio_pixel_meter} />)}
-          onSwiped={(i) => (cardArray[i+1] && cardArray[i+1].vip) && showToast('firstVip', strings.youJustMet)}
-          // onSwiped={(i) => this.onSwiped(cardArray[i])}
-          overlayLabels={{
-              left: {
-                title: strings.dislike,
-                style: { label: styles.tinder.leftLabel, wrapper: styles.tinder.wrapper }
-              },
-              right: {
-                title: strings.like,
-                style: { label: styles.tinder.rightLabel,  wrapper: styles.tinder.wrapper }
-              },
-            }}
-          onSwipedRight={(index) => this.onSwipedRight(index)}
-          cardIndex={0}
-          onSwipedLeft={(index) => this.onSwipedLeft(index)}
-          backgroundColor='transparent'
-          verticalSwipe={false}
-          marginBottom={220}
-          cardVerticalMargin={50}
-          useViewOverflow={false}
-          outputRotationRange={["-5deg", "0deg", "5deg"]}
-          stackSize={2}
-          infinite
+        {
+          cardArray.length
+          ? <>
+              <Swiper
+              ref={swiper => { this.swiper = swiper; }}
+              cards={cardArray}
+              renderCard={(card, index) => (<CardComponent card={{...card, index}} user={user} position={settings.exit_position} pixelMeter={museums.ratio_pixel_meter} />)}
+              onSwiped={(i) => (cardArray[i+1] && cardArray[i+1].vip) && showToast('firstVip', strings.youJustMet)}
+              // onSwiped={(i) => this.onSwiped(cardArray[i])}
+              overlayLabels={{
+                  left: {
+                    title: strings.dislike,
+                    style: { label: styles.tinder.leftLabel, wrapper: styles.tinder.wrapper }
+                  },
+                  right: {
+                    title: strings.like,
+                    style: { label: styles.tinder.rightLabel,  wrapper: styles.tinder.wrapper }
+                  },
+                }}
+              onSwipedRight={(index) => this.onSwipedRight(index)}
+              cardIndex={0}
+              onSwipedLeft={(index) => this.onSwipedLeft(index)}
+              backgroundColor='transparent'
+              verticalSwipe={false}
+              marginBottom={220}
+              cardVerticalMargin={50}
+              useViewOverflow={false}
+              outputRotationRange={["-5deg", "0deg", "5deg"]}
+              stackSize={2}
+              infinite
 
-          animateOverlayLabelsOpacity
-          animateCardOpacity
-        />      
-        
-        <View style={styles.tinder.actionContainer}>
-          <TouchableOpacity style={[styles.tinder.actionBtn,{backgroundColor:colors.red}]} onPress={()=> this.isSwiperAvailable && this.swiper.swipeLeft()}>
-            <Icon style={styles.tinder.likeIcon}>i</Icon>
-          </TouchableOpacity>
-          <TouchableOpacity style={{marginHorizontal:15}} onPress={()=> Actions.CameraScene()}>
-            <MIcon color={colors.white} name="center-focus-weak" size={50} /> 
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.tinder.actionBtn,{backgroundColor: plan === 1 ? colors.blue : colors.green}]} onPress={()=> this.isSwiperAvailable && this.swiper.swipeRight()}>
-            <Icon style={styles.tinder.likeIcon}>l</Icon>
-          </TouchableOpacity>
-        </View>
+              animateOverlayLabelsOpacity
+              animateCardOpacity
+            />         
+            <View style={styles.tinder.actionContainer}>
+              <TouchableOpacity style={[styles.tinder.actionBtn,{backgroundColor:colors.red}]} onPress={()=> this.isSwiperAvailable && this.swiper.swipeLeft()}>
+                <Icon style={styles.tinder.likeIcon}>i</Icon>
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal:15}} onPress={()=> Actions.CameraScene()}>
+                <MIcon color={colors.white} name="center-focus-weak" size={50} /> 
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.tinder.actionBtn,{backgroundColor: plan === 1 ? colors.blue : colors.green}]} onPress={()=> this.isSwiperAvailable && this.swiper.swipeRight()}>
+                <Icon style={styles.tinder.likeIcon}>l</Icon>
+              </TouchableOpacity>
+            </View>
+            </>
+          : <Text style={styles.common.noObjectsMessage}>{strings.noObjectsLeft}</Text>
+        }
         {onboarding && <OnboardingDialog visible={onboarding} onRequestClose={()=>this.setState({onboarding:false})} />}
         {isModalOpen ? <Tips visible={isModalOpen} title={strings.youDidNotLike} onRequestClose={()=>this.setState({isModalOpen:false})} screen='tinder' /> : null}
       </Scene>

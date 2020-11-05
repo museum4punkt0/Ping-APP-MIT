@@ -57,7 +57,6 @@ class Chats extends Component {
     if(!object.onboarding) setObject(object);
 
     Dialogue.parse(object.sync_id, getLocalization(object.localizations, user.language, 'conversation')); 
-    
     if (object.from && DIALOGUE_IDS_FOR_SPECIAL_ACTIONS[from] != null) return this.nextMessage(DIALOGUE_IDS_FOR_SPECIAL_ACTIONS[from], object.sync_id, true);
     return this.nextMessage(!object.onboarding ? chat.last_step || null : 1, object.sync_id);
   }
@@ -74,10 +73,16 @@ class Chats extends Component {
 
     const {msgArray, messageInput} = this.state; 
     const nextStep = Dialogue.interact(id, 'player', messageID, isNext); 
+    
+    await this.updateChat({...chat,
+      history: JSON.stringify(msgArray),
+      last_step: Dialogue.__getState(chat.object_id, 'player')
+    });
+    
     if (nextStep == null) return;
     if (this.isSpecialAction(nextStep.text)) return this.setState({isIndicatorShow:false}); 
     if (nextStep.text) nextStep.text = nextStep.text.replace('{name}', messageInput);
-    await this.updateChat(chat, {history: JSON.stringify(msgArray), last_step: Dialogue.__getState(chat.object_id, 'player')});
+    
     const isOption = nextStep.responses.length > 0;
 
     setTimeout(() => {
@@ -100,7 +105,7 @@ class Chats extends Component {
     const { user } = this.props;
     const { chat } = this.state;
     if(response.error || response.didCancel) return this.nextMessage(chat.last_step);     
-    const avatar = await WriteBase64Image(response.data, user.sync_id);    
+    const avatar = await WriteBase64Image(response, user.sync_id);    
     this.imgPath = avatar;
     this.addMessage({type:'Image', isIncoming:2, uri: avatar})
   }

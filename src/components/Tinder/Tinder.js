@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Animated, ImageBackground } from 'react-native';
+import { View, Animated, ImageBackground, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Text from "../Text";
 import styles  from '../../config/styles';
@@ -11,7 +11,10 @@ import { getDistance } from '../../services/voting';
 class CardComponent extends Component{
     constructor(props) {
       super(props);
-      this.state = { opacity: new Animated.Value(0) }
+      this.state = { 
+        opacity: new Animated.Value(0),
+        random: new Date(),
+      }
     }
 
   onLoad(){
@@ -37,7 +40,7 @@ class CardComponent extends Component{
         <View style={styles.tinder.card}>
           <Animated.Image
             onLoadEnd={() => {if(card.index === 0) this.onLoad()}} 
-            source={{uri: getImage(cropped_avatar || avatar)}}
+            source={{uri: getImage(cropped_avatar || avatar) + (Platform.OS === 'ios' ? '' : '?' + this.state.random)}}
             style={[styles.tinder.cardImage, 
             { 
                 transform: [

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, View, TouchableOpacity } from 'react-native';
+import { Image, ImageBackground, View, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import Geolocation from '@react-native-community/geolocation';
 import { Actions } from 'react-native-router-flux';
-import Permissions from 'react-native-permissions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toaster, {ToasterTypes} from "../../components/Popup";
@@ -38,7 +37,7 @@ componentWillMount(){
   // eslint-disable-next-line 
   setTimeout(()=>{if(!this.state.type) this.setState({type:0})}, 6000); //For Xiaomi hack
   
-    Permissions.request(getPermission('location'));
+    PermissionsAndroid.request(getPermission('location'));
     Geolocation.getCurrentPosition(
       location => getMuseumsList(location.coords.latitude, location.coords.longitude)
         .then(museums => {
