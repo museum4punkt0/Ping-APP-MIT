@@ -171,5 +171,6 @@ Sections.schema = {
     sync_id: "string",
     created_at: 'date',
     updated_at: 'date',
+    isMainEntrance: 'bool?'
   }
 }

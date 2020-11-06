@@ -67,7 +67,7 @@ export const WriteBase64Image = async (img, sync_id) => {
 };
 
 export const CopyImage = async (image, sync_id) => RNFetchBlob.fs.readFile(image, 'base64')
-    .then(base64 => WriteBase64Image(base64, sync_id))
+    .then(base64 => WriteBase64Image(image, sync_id))
 
 
 export const TensorCache = async (file, sync_id) => {
@@ -108,9 +108,9 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
       const image = await ImageCache(item.image, item.sync_id);
       images.push({...item, image});
     }),
-    museums.sections.map(async item => {
+    museums.sections.map(async (item, index) => {
       const map = await ImageCache(item.map, item.sync_id);
-      sections.push({...item, map})
+      sections.push({...item, map, isMainEntrance: index === 0})
     }),
     settings.predefined_avatars.map(async (item, i) => {
       const path = await ImageCache(item, `avatar${i}`);
