@@ -21,7 +21,7 @@ import { sync } from '../../actions/synchronize';
 
 const isMessageIncoming = (message)=> message.isIncoming === 1 || message.isIncoming === undefined
 
-const DIALOGUE_IDS_FOR_SPECIAL_ACTIONS = { EXIT: '10001', CAM: '10002', MAP: '10003', IMAGE: '10004', COLLECTION: '10005', IMAGETAKEN: '10007' };
+const DIALOGUE_IDS_FOR_SPECIAL_ACTIONS = { EXIT: '101', CAM: '102', MAP: '103', IMAGE: '104', COLLECTION: '105', IMAGETAKEN: '107' };
 class Chats extends Component {
   constructor(props) {
     super(props);
@@ -159,7 +159,7 @@ handleCameraFunc(){
     setObject({})
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
     const chats = getChats();
-    if(object.positionX && object.positionY && object.floor) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), floor:object.floor, chats });
+    if(object.positionX && object.positionY && object.section) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), section:object.section, chats });
     return Actions.CollectionScene({ object, image: this.imgPath });
   }
   
@@ -200,7 +200,7 @@ handleCameraFunc(){
     const styles = Array.from(settings.language_styles)
     if(styles) styles.forEach(style => language_style.push({style, score:0, sync_id:uuidv1()}));
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
-    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style });
+    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style, section: museums.sections[0] });
     AsyncStorage.setItem('firstEntry', 'true');
     sync({ museum:museums, user, settings})
     if(plan === 2) return Actions.Tours({first:true});

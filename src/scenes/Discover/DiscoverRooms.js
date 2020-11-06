@@ -53,19 +53,14 @@ class DiscoverScreen extends Component {
     const images = [];
     const collections = getCollections();
 
-    museums.images.forEach(item => {
-      const image = {...item}
-      const floorArray = image.image_type.split('_')[0]
-      if(floorArray.length > 2) return true;      
-      const floor = parseInt(image.image_type.split('_')[0]), type = image.image_type.split('_')[1];
-            
+    museums.sections.forEach(item => {            
       const collectionArr = [];
       collections.forEach(collection => {
-        const obj = objects.find(object => (object.floor === floor && object.sync_id === collection.object_id))
+        const obj = objects.find(object => (object.section.sync_id === item.sync_id && object.sync_id === collection.object_id))
         if(obj) collectionArr.push({...obj, collection, type:2})
       });
 
-      if(searchedObject && searchedObject.floor === floor){
+      if(searchedObject && searchedObject.section && searchedObject.section.sync_id === item.sync_id){
         collectionArr.push({...searchedObject, type:1});
         if(searchedObject.semantic_relations) convertToArray(searchedObject.semantic_relations)
           .forEach(item => {
@@ -74,7 +69,7 @@ class DiscoverScreen extends Component {
             collectionArr.push({ description:item.localization, type:3, ...object});
           })
       }
-      images.push({...image, floor, type, markers:collectionArr});
+      images.push({...item, markers:collectionArr});
     });
     this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
     getStorageItem('firstDiscoverySwipe').then(value => {
