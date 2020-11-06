@@ -115,9 +115,9 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
       const image = await ImageCache(item.image, item.sync_id);
       images.push({...item, image});
     }),
-    museums.sections.map(async item => {
+    museums.sections.map(async (item, index) => {
       const map = await ImageCache(item.map, item.sync_id);
-      sections.push({...item, map})
+      sections.push({...item, map, isMainEntrance: index === 0})
     }),
     settings.predefined_avatars.map(async (item, i) => {
       const path = await ImageCache(item, `avatar${i}`);
