@@ -211,7 +211,7 @@ handleCameraFunc(){
     const styles = Array.from(settings.language_styles)
     if(styles) styles.forEach(style => language_style.push({style, score:0, sync_id:uuidv1()}));
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
-    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style, section: museums.sections[0] });
+    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style, section: museums.sections.filter(section => section.isMainEntrance)[0] });
     AsyncStorage.setItem('firstEntry', 'true');
     sync({ museum:museums, user, settings})
     if(plan === 2) return Actions.Tours({first:true});
