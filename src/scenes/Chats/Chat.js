@@ -220,7 +220,7 @@ handleCameraFunc(){
     }
       return(
         <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios'&&'padding'}>
-          <Scene label={getLocalization(object.localizations, user.language, 'title')} description={getLocalization(object.localizations, user.language, 'object_kind')} backBtnFunc={backBtnFunc}> 
+          <Scene label={getLocalization(object.localizations, user.language, 'title')} description={getLocalization(object.localizations, user.language, 'object_kind')} backBtnFunc={backBtnFunc} headerStyle={{paddingVertical: 10}}> 
             <ScrollView 
               style={{flex:1}}
               contentContainerStyle={{paddingVertical: 20}}
