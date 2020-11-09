@@ -54,7 +54,7 @@ export default connect(({museums, plan, user}) => ({ museums:museums.museums, to
 const BackBtn = (props) => {
     const {description, title, backBtnFunc} = props;
     return (
-      <View style={{flexDirection:'row', alignItems:'center', flex: 0.95, marginVertical: 20}}>      
+      <View style={{flexDirection:'row', alignItems:'center', flex: 0.95}}>      
         <TouchableOpacity onPress={backBtnFunc}>
           <Icon style={styles.common.navigatorItemIcon}>d</Icon>
         </TouchableOpacity>
