@@ -116,7 +116,7 @@ class DiscoverScreen extends Component {
   }
 
   handleOpenInfoPage(marker){
-    if(marker.type === 1) this.handleStartConversationPress(marker);
+    if(marker.type === 1) return this.setState({image: {image: marker.cropped_avatar || marker.avatar, markers: []}, isZoomImageDialogShow:true})
     if(marker.type === 2) Actions.ObjectInfoScene({collection:marker.collection, object:marker});
     if(marker.type === 3) this.setState({object:marker, startChatDialog:true});
     this.setState({isZoomImageDialogShow:false})
