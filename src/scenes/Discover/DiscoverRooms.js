@@ -50,7 +50,7 @@ class DiscoverScreen extends Component {
 
   componentWillMount(){
     const {museums, searchedObject, getCollections, objects, object} = this.props;
-    const images = [];
+    let images = [];
     const collections = getCollections();
 
     museums.images.forEach(item => {
@@ -76,7 +76,13 @@ class DiscoverScreen extends Component {
       }
       images.push({...image, floor, type, markers:collectionArr});
     });
-    this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
+
+    if(object) {
+      this.setState({images: images.sort((a, b) => Math.abs((a.floor - object.floor)) - Math.abs((b.floor - object.floor)))});
+    } else {
+      this.setState({images: images.sort((a, b) => a.floor - b.floor)});
+    }
+
     getStorageItem('firstDiscoverySwipe').then(value => {
       this.setState({
         isSwipeModalOpen: typeof value !== 'string',
