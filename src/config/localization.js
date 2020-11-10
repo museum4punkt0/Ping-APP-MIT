@@ -68,6 +68,8 @@ const strings = new LocalizedStrings({
     iFound:'I found you!',
     startChat:'Do you want to start a chat?',
     zoomIn: 'Zoom in with two finger gesture',
+    youCanSwipe: 'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+    youCanZoom: 'You can also click on the map and zoom into it for more details!',
 
     //Collection
     completed:'Completed',
@@ -206,6 +208,8 @@ const strings = new LocalizedStrings({
     iFound:'Ich hab dich gefunden!',
     startChat:'Möchtest du mit dem Chat beginnen?',
     zoomIn: 'Karte mit Zwei-Finger-Geste vergrößern',
+    youCanSwipe: 'Sie können oben auf die Pfeile klicken, um zu einer anderen Standortkarte des Museums zu wechseln. Oder Sie können sie einfach wischen!',
+    youCanZoom: 'Sie können auch auf die Karte klicken und sie vergrößern, um weitere Informationen zu erhalten!',
 
     //Collection
     completed:'Abgeschlossen',

@@ -28,10 +28,10 @@ class DiscoverScreen extends Component {
       object:{},
       isModalOpen: false,
       swipeModalTitles: [
-        'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+        strings.youCanSwipe,
         <>
           <Image style = {{alignSelf: 'center', width: 200, height: 200, resizeMode : 'stretch' }} source={{uri: 'https://hub.teamvoy.com/mein-object/board/uploads/1a736b775a48a77e433369099f08b173/tenor.gif'}} /> 
-          <Text style={styles.main.dialogContentText}>You can also click on the map and zoom into it for more details!</Text>
+          <Text style={styles.main.dialogContentText}>{strings.youCanZoom}</Text>
         </>
       ],
       swipeModalPositions: [
@@ -39,7 +39,7 @@ class DiscoverScreen extends Component {
         { vertical: 200, horizontal: 400}
       ],
       swipeModalPosition: { vertical: 0, horizontal: 600 },
-      swipeModalTitle: 'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+      swipeModalTitle: strings.youCanSwipe,
       isSwipeModalOpen: false,
       position: {
         vertical: 0,
