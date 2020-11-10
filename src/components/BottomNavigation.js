@@ -46,24 +46,24 @@ export const DiscoverNavigator = (props) => {
       {!isPlannedTour && (
         <TouchableOpacity onPress={Actions.TinderScene} style={styles.common.navigatorItem}>
           <Icon style={[styles.common.navigatorItemIcon,{color:getColor(1, index)}]}>m</Icon>
-          <Icon style={{fontSize:11, color:getColor(1, index)}}>{strings.objects.toUpperCase()}</Icon>
+          <Icon style={{fontSize:10, color:getColor(1, index)}}>{strings.objects.toUpperCase()}</Icon>
         </TouchableOpacity>
       )}
       <TouchableOpacity onPress={Actions.ChatsListScene} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(2, index)}]}>b</Icon>
-        <Icon style={{fontSize:11, color:getColor(2, index)}}>{strings.chat.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(2, index)}}>{strings.chat.toUpperCase()}</Icon>
       </TouchableOpacity>
       <TouchableOpacity onPress={Actions.DiscoverScreen} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(3, index)}]}>h</Icon>
-        <Icon style={{fontSize:11, color:getColor(3, index)}}>{strings.discover.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(3, index)}}>{strings.discover.toUpperCase()}</Icon>
       </TouchableOpacity>
       <TouchableOpacity onPress={Actions.CollectionScene} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(4, index)}]}>g</Icon>
-        <Icon style={{fontSize:11, color:getColor(4, index)}}>{strings.collection.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(4, index)}}>{strings.collection.toUpperCase()}</Icon>
       </TouchableOpacity>
       <TouchableOpacity onPress={Actions.ProfileInfoScene} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(5, index)}]}>k</Icon>
-        <Icon style={{fontSize:11, color:getColor(5, index)}}>{strings.info.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(5, index)}}>{strings.info.toUpperCase()}</Icon>
       </TouchableOpacity>
     </View>
   );
@@ -80,19 +80,19 @@ export const PlanNavigator = (props) => {
     <View style={styles.common.navigationContainer}>
       <TouchableOpacity onPress={Actions.TinderScene} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(1, index)}]}>m</Icon>
-        <Icon style={{fontSize:11, color:getColor(1, index)}}>{strings.objects.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(1, index)}}>{strings.objects.toUpperCase()}</Icon>
       </TouchableOpacity>
       <TouchableOpacity onPress={Actions.PlanScene} style={styles.common.navigatorItem}>
         <MIcon color={getColor(3, index)} size={24} name='star' />
-        <Icon style={{fontSize:11, color:getColor(3, index)}}>{strings.myPlan.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(3, index)}}>{strings.myPlan.toUpperCase()}</Icon>
       </TouchableOpacity>
       <TouchableOpacity onPress={Actions.ChatsListScene} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(2, index)}]}>b</Icon>
-        <Icon style={{fontSize:11, color:getColor(2, index)}}>{strings.chat.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(2, index)}}>{strings.chat.toUpperCase()}</Icon>
       </TouchableOpacity>
       <TouchableOpacity onPress={Actions.ProfileInfoScene} style={styles.common.navigatorItem}>
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(5, index)}]}>k</Icon>
-        <Icon style={{fontSize:11, color:getColor(5, index)}}>{strings.info.toUpperCase()}</Icon>
+        <Icon style={{fontSize:10, color:getColor(5, index)}}>{strings.info.toUpperCase()}</Icon>
       </TouchableOpacity>
     </View>
   );
