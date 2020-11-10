@@ -63,6 +63,7 @@ const strings = new LocalizedStrings({
     NotRecognized: 'Image not recognized',
     cannotTalk:'This object cannot talk yet - but we have noted your interest and will try to integrate it soon!',
     back:'Back',
+    youCanPinch: 'You can enlarge and zoom pictures in chats by tapping and pinching',
 
     //Discover
     iFound:'I found you!',
@@ -203,6 +204,7 @@ const strings = new LocalizedStrings({
     NotRecognized: 'Bild nicht erkannt',
     cannotTalk:'Dieses Objekt kann noch nicht sprechen - aber wir haben dein Interesse bemerkt und werden versuchen, es bald zu integrieren!',
     back:'Zurück',
+    youCanPinch: 'Du kannst Bilder in Chats vergößern und zoomen, indem du auf sie drückst und sie mit zwei Fingern vergrößerst',
 
     //Discover
     iFound:'Ich hab dich gefunden!',

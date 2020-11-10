@@ -18,6 +18,9 @@ import { updateUser } from '../../actions/user';
 import { updateChat, getChats } from '../../actions/chats';
 import { WriteBase64Image, setObject } from '../../actions/museums';
 import { sync } from '../../actions/synchronize';
+import Tips from '../../components/Tips';
+import strings from '../../config/localization';
+import { getStorageItem } from "../../config/helpers";
 
 const isMessageIncoming = (message)=> message.isIncoming === 1 || message.isIncoming === undefined
 
@@ -34,6 +37,7 @@ class Chats extends Component {
       isIndicatorShow:false,
       isZoomImageDialogShow:false,
       zoomImage:'',
+      isModalShow: false,
       chat:{},
       speed:1500
     };
@@ -77,6 +81,13 @@ class Chats extends Component {
       history: JSON.stringify(msgArray),
       last_step: Dialogue.__getState(chat.object_id, 'player')
     });
+
+    if(msgArray.length && msgArray[msgArray.length - 1]["type"] === "Image") {
+      const value = await getStorageItem('firstChatImage')
+      this.setState({
+        isModalShow: typeof value !== 'string',
+      });
+    }
     
     if (nextStep == null) return;
     if (this.isSpecialAction(nextStep.text)) return this.setState({isIndicatorShow:false}); 
@@ -209,7 +220,7 @@ handleCameraFunc(){
 
 
   render(){
-    const {msgArray, options, isInputShow, isChooseAvatarShow, messageInput, isIndicatorShow, isZoomImageDialogShow, zoomImage } = this.state;
+    const {msgArray, options, isInputShow, isChooseAvatarShow, messageInput, isIndicatorShow, isZoomImageDialogShow, zoomImage, isModalShow } = this.state;
     const {object, user, settings} = this.props;
     let backBtnFunc = null;
     if(object.from) switch (object.from) {      
@@ -242,6 +253,7 @@ handleCameraFunc(){
             {(options && options.length > 0) && <Options options={options} optionSelected={(key)=>this.optionSelected(key)} />}
             {isInputShow && <Input messageInput={messageInput} onStateChanged={(messageInput)=>this.setState({messageInput})} handleSendMessageButtonPress={()=>this.handleSendMessageButtonPress()} />}
             {isChooseAvatarShow && <ChooseAvatar settings={settings} handleChooseAvatarPress={(avatar)=>this.handleChooseAvatarPress(avatar)} />}   
+            {isModalShow && <Tips title={strings.youCanPinch} visible={isModalShow} onRequestClose={() => this.setState({isModalShow: false})} screen='chat'/>}
             <ZoomImageDialog visible={isZoomImageDialogShow} onRequestClose={() => this.setState({isZoomImageDialogShow:!isZoomImageDialogShow})} image={zoomImage} />
           </Scene>
         </KeyboardAvoidingView>
