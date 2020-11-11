@@ -61,8 +61,8 @@ export const ImageCache = async (image, sync_id) => {
 };
 
 export const WriteAndSaveOrientation = async (img, sync_id) => {
-  if(Platform.OS === 'android') img = await RNFetchBlob.fs.readFile(img.uri, 'base64')
-  return WriteBase64Image(img, sync_id)
+  let imgBase64 = (Platform.OS === 'android') ? await RNFetchBlob.fs.readFile(img.uri, 'base64') : img.base64
+  return WriteBase64Image(imgBase64, sync_id)
 } 
 
 export const WriteBase64Image = async (img, sync_id) => {
