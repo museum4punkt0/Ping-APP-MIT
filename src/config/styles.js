@@ -54,7 +54,8 @@ export const common = StyleSheet.create({
     fontSize: 26, 
     color: colors.white,
     fontWeight:'bold', 
-    flex:0.7
+    flex:0.95,
+    paddingVertical: 10,
   },
   headerTitle:{
     fontSize: 16, 
