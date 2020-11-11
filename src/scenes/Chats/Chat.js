@@ -114,8 +114,8 @@ class Chats extends Component {
   async handleAvatar(response){
     const { user } = this.props;
     const { chat } = this.state;
-    if(response.error || response.didCancel) return this.nextMessage(chat.last_step);     
-    const avatar = await WriteBase64Image(response, user.sync_id);    
+    if(response.error || response.didCancel) return this.nextMessage(chat.last_step);
+    const avatar = await WriteBase64Image(response.data, user.sync_id);    
     this.imgPath = avatar;
     this.addMessage({type:'Image', isIncoming:2, uri: avatar})
   }
