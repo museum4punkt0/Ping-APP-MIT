@@ -20,7 +20,7 @@ const Header = (props) => {
     return (
       <View style={[headerStyle, {zIndex: 1}]}>
         <View style={[styles.common.headerContainer, headerStyle && {backgroundColor:"rgba(255,255,255,0)"}]}>
-          {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text style={styles.common.headerName} numberOfLines={1}>{title}</Text>}
+          {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text style={styles.common.headerName}>{title}</Text>}
           <TouchableOpacity onPress={()=>Actions.MuseumsScene()}>
             <Image source={{uri: logo}} style={{width:110, height:25}} resizeMode="contain" />
           </TouchableOpacity>    
