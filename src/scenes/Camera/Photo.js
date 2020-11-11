@@ -9,7 +9,7 @@ import Text from '../../components/Text'
 import Button from '../../components/Button'
 import styles, {colors} from '../../config/styles'
 import {getLocalization, getImage} from '../../config/helpers';
-import { WriteBase64Image, CopyImage } from '../../actions/museums';
+import { CopyImage, WriteAndSaveOrientation } from '../../actions/museums';
 import strings from '../../config/localization';
 
 class PhotoScene extends Component {
@@ -26,7 +26,7 @@ class PhotoScene extends Component {
   }
 
   handleSavePhoto = async (img, chatID, object) => {
-    const image = await WriteBase64Image(img, uuidv1())
+    const image = await WriteAndSaveOrientation(img, uuidv1())
     Actions.ChatsScene({img:image, chatID, object, from: 'CAM'})
   }
 
