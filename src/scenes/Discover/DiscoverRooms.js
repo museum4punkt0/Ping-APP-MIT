@@ -73,7 +73,6 @@ class DiscoverScreen extends Component {
     });
 
     if(object) {
-      console.log(sections[0])
       const rightSection = sections.filter(section => section.sync_id === object.section.sync_id)[0]
       this.setState({sections: [rightSection, ...sections.filter(section => section.sync_id !== object.section.sync_id)]});
     } else {
