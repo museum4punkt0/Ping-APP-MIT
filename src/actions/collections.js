@@ -4,6 +4,10 @@ import {
 } from '../db/controllers/user';
 import { userTypes } from './types';
 
+export const setCurrentSemanticRelations = (currentSemanticRelations) => ({
+    type: userTypes.SET_CURRENT_SEMANTIC_RELATIONS,
+    payload: currentSemanticRelations,
+})
 
 export const getCollections = () => (dispatch) => {
     const collections = getCollectionsFromDB();

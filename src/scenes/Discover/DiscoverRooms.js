@@ -9,7 +9,7 @@ import Swiper from '../../components/Tinder/Swiper'
 import ZoomImageDialog from '../../components/Dialogs/ZoomImageDialog'
 import MapImage from '../../components/Map'
 import StartChatDialog from "../../components/Chat/StartChatDialog";
-import { getCollections } from '../../actions/collections';
+import { getCollections, setCurrentSemanticRelations } from '../../actions/collections';
 import { createChat } from "../../actions/chats";
 import styles, {Shadow, colors} from '../../config/styles'
 import {convertToArray, getStorageItem} from '../../config/helpers'
@@ -62,12 +62,14 @@ class DiscoverScreen extends Component {
 
       if(searchedObject && searchedObject.section && searchedObject.section.sync_id === item.sync_id){
         collectionArr.push({...searchedObject, type:1});
+        const semanticRelations = []
         if(searchedObject.semantic_relations) convertToArray(searchedObject.semantic_relations)
           .forEach(item => {
             const object = objects.find(object => object.sync_id === item.object_item_id);
             if(object && (!collectionArr.find(object => object.sync_id === item.object_item_id)))
-            collectionArr.push({ description:item.localization, type:3, ...object});
+            semanticRelations.push({ description:item.localization, type:3, ...object});
           })
+        setCurrentSemanticRelations(semanticRelations)
       }
       sections.push({...item, markers:collectionArr});
     });
@@ -178,7 +180,22 @@ class DiscoverScreen extends Component {
 }
 
 
-export default connect(({ museums, chats }) => ({ museums:museums.museums, objects:museums.objects, searchedObject:museums.object, chats:chats.chats }) , {getCollections, createChat})(DiscoverScreen);
+export default connect(({
+  museums,
+  chats,
+  collections
+}) => ({
+  museums: museums.museums,
+  objects: museums.objects,
+  searchedObject: museums.object,
+  chats: chats.chats,
+  currentSemanticRelations: collections.currentSemanticRelations,
+}), {
+  getCollections,
+  createChat,
+  setCurrentSemanticRelations,
+})(DiscoverScreen);
+
 
 DiscoverScreen.propTypes = {
   museums: PropTypes.object.isRequired,
@@ -189,6 +206,8 @@ DiscoverScreen.propTypes = {
   searchedObject: PropTypes.object,
   object: PropTypes.object,
   chatID: PropTypes.string,
+  currentSemanticRelations: PropTypes.array.isRequired,
+  setCurrentSemanticRelations: PropTypes.func.isRequired,
 };
 
 DiscoverScreen.defaultProps = {
