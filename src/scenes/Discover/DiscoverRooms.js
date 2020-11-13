@@ -20,7 +20,7 @@ class DiscoverScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      images:[],
+      sections:[],
       floor:1,
       isZoomImageDialogShow:false,
       image:{image:''},
@@ -50,7 +50,7 @@ class DiscoverScreen extends Component {
 
   componentWillMount(){
     const {museums, searchedObject, getCollections, objects, object} = this.props;
-    let images = [];
+    let sections = [];
     const collections = getCollections();
 
     museums.sections.forEach(item => {            
@@ -69,13 +69,14 @@ class DiscoverScreen extends Component {
             collectionArr.push({ description:item.localization, type:3, ...object});
           })
       }
-      images.push({...item, markers:collectionArr});
+      sections.push({...item, markers:collectionArr});
     });
 
     if(object) {
-      this.setState({images: images.sort((a, b) => Math.abs((a.floor - object.floor)) - Math.abs((b.floor - object.floor)))});
+      const rightSection = sections.filter(section => section.sync_id === object.section.sync_id)[0]
+      this.setState({sections: [rightSection, ...sections.filter(section => section.sync_id !== object.section.sync_id)]});
     } else {
-      this.setState({images: images.sort((a, b) => a.floor - b.floor)});
+      this.setState({sections: sections.sort((a, b) => a.floor - b.floor)});
     }
 
     getStorageItem('firstDiscoverySwipe').then(value => {
@@ -87,7 +88,7 @@ class DiscoverScreen extends Component {
 
     if (object) {
       let position = {};
-      images.map(i => i.markers.map(m =>  {
+      sections.map(i => i.markers.map(m =>  {
         position = {
           horizontal: m.positionX,
           vertical: m.positionY
@@ -141,8 +142,8 @@ class DiscoverScreen extends Component {
   }
 
   render() {
-    const {images, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position, isSwipeModalOpen, swipeModalTitle, swipeModalTitles, swipeModalPosition} = this.state;
-    const currentSelectIndex = (floor <= images.length) ? floor - 1 : -1;
+    const {sections, floor, isZoomImageDialogShow, image, startChatDialog, object, isModalOpen, position, isSwipeModalOpen, swipeModalTitle, swipeModalTitles, swipeModalPosition} = this.state;
+    const currentSelectIndex = (floor <= sections.length) ? floor - 1 : -1;
     return (
       <Scene label={strings.discover} isFooterShow index={3}>    
         {isModalOpen ? <Tips screen='discoverRooms' visible={isModalOpen} onRequestClose={()=>this.setState({isModalOpen:false})} title={strings.youAreInvited} position={position} /> : null}
@@ -151,7 +152,7 @@ class DiscoverScreen extends Component {
         <Swiper           
           style={{ flex: 1 }}
           currentSelectIndex={currentSelectIndex}
-          swipeData={images}
+          swipeData={sections}
           renderSwipeItem={(map) => (
             <TouchableOpacity style={{flex:1}} onPress={() => this.setState({image:map, isZoomImageDialogShow:true})} activeOpacity={0.8}>
               <MapImage map={map} handleOpenInfoPage={(marker) => this.handleOpenInfoPage(marker)} />
