@@ -29,6 +29,10 @@ class Tips extends React.Component {
       this.setState({
         bottomPosition: height - 300,
       })
+    } else if (screen === 'chat') {
+      this.setState({
+        bottomPosition: height - 200,
+      })
     }
   }
   renderCircle = (screen, position) => {
@@ -85,6 +89,16 @@ class Tips extends React.Component {
               <Circle id="Circle" r={90} cx={cx} cy={position.vertical*180} stroke="green" strokeWidth="4" />
             </Mask>
             <Circle id="Circle" r={90} cx={cx} cy={position.vertical*180} stroke="green" strokeWidth="4" />
+          </Defs>
+        );
+      case 'chat':
+        return (
+          <Defs>
+            <Mask id="mask" x="0" y="0" height={height} width={width}>
+              <Rect height="100%" width="100%" fill="white" />
+              <Circle id="Circle" r={150} cx={width/2 - 25} cy={height/2 + 50} stroke="green" strokeWidth="4" />
+            </Mask>
+            <Circle id="Circle" r={150} cx={width/2 - 25} cy={height/2 + 50} stroke="green" strokeWidth="4" />
           </Defs>
         );
       default:

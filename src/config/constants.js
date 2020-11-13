@@ -1,7 +1,7 @@
 export default {
     //local
     // api: 'http://192.168.0.105:8000/api/v1/',
-    // host: 'http://192.168.0.105:8000s/',
+    // host: 'http://192.168.0.105:8000/',
 
     //prod
     // api: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/api/v1/',
@@ -10,6 +10,10 @@ export default {
     //qa
     // api: 'http://qa-meinobjekt-1978777567.eu-central-1.elb.amazonaws.com/api/v1/',
     // host: 'http://qa-meinobjekt-1978777567.eu-central-1.elb.amazonaws.com/',
+
+    //stage
+    api: 'http://54.93.215.4/api/v1/',
+    host: 'http://54.93.215.4/',
    
     base: 'api/v1/',
     lang:[{label: 'English', value: 'en', key: 'en'}, {label: 'Deutsch', value: 'de', key: 'de'}],

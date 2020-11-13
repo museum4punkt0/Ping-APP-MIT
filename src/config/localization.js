@@ -63,11 +63,14 @@ const strings = new LocalizedStrings({
     NotRecognized: 'Image not recognized',
     cannotTalk:'This object cannot talk yet - but we have noted your interest and will try to integrate it soon!',
     back:'Back',
+    youCanPinch: 'You can enlarge and zoom pictures in chats by tapping and pinching',
 
     //Discover
     iFound:'I found you!',
     startChat:'Do you want to start a chat?',
     zoomIn: 'Zoom in with two finger gesture',
+    youCanSwipe: 'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+    youCanZoom: 'You can also click on the map and zoom into it for more details!',
 
     //Collection
     completed:'Completed',
@@ -201,11 +204,14 @@ const strings = new LocalizedStrings({
     NotRecognized: 'Bild nicht erkannt',
     cannotTalk:'Dieses Objekt kann noch nicht sprechen - aber wir haben dein Interesse bemerkt und werden versuchen, es bald zu integrieren!',
     back:'Zurück',
+    youCanPinch: 'Du kannst Bilder in Chats vergößern und zoomen, indem du auf sie drückst und sie mit zwei Fingern vergrößerst',
 
     //Discover
     iFound:'Ich hab dich gefunden!',
     startChat:'Möchtest du mit dem Chat beginnen?',
     zoomIn: 'Karte mit Zwei-Finger-Geste vergrößern',
+    youCanSwipe: 'Sie können oben auf die Pfeile klicken, um zu einer anderen Standortkarte des Museums zu wechseln. Oder Sie können sie einfach wischen!',
+    youCanZoom: 'Sie können auch auf die Karte klicken und sie vergrößern, um weitere Informationen zu erhalten!',
 
     //Collection
     completed:'Abgeschlossen',

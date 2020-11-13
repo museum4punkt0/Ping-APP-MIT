@@ -28,10 +28,10 @@ class DiscoverScreen extends Component {
       object:{},
       isModalOpen: false,
       swipeModalTitles: [
-        'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+        strings.youCanSwipe,
         <>
           <Image style = {{alignSelf: 'center', width: 200, height: 200, resizeMode : 'stretch' }} source={{uri: 'https://hub.teamvoy.com/mein-object/board/uploads/1a736b775a48a77e433369099f08b173/tenor.gif'}} /> 
-          <Text style={styles.main.dialogContentText}>You can also click on the map and zoom into it for more details!</Text>
+          <Text style={styles.main.dialogContentText}>{strings.youCanZoom}</Text>
         </>
       ],
       swipeModalPositions: [
@@ -39,7 +39,7 @@ class DiscoverScreen extends Component {
         { vertical: 200, horizontal: 400}
       ],
       swipeModalPosition: { vertical: 0, horizontal: 600 },
-      swipeModalTitle: 'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
+      swipeModalTitle: strings.youCanSwipe,
       isSwipeModalOpen: false,
       position: {
         vertical: 0,
@@ -50,7 +50,7 @@ class DiscoverScreen extends Component {
 
   componentWillMount(){
     const {museums, searchedObject, getCollections, objects, object} = this.props;
-    const images = [];
+    let images = [];
     const collections = getCollections();
 
     museums.sections.forEach(item => {            
@@ -71,7 +71,13 @@ class DiscoverScreen extends Component {
       }
       images.push({...item, markers:collectionArr});
     });
-    this.setState({images:images.sort((a,b)=>a.floor-b.floor)});
+
+    if(object) {
+      this.setState({images: images.sort((a, b) => Math.abs((a.floor - object.floor)) - Math.abs((b.floor - object.floor)))});
+    } else {
+      this.setState({images: images.sort((a, b) => a.floor - b.floor)});
+    }
+
     getStorageItem('firstDiscoverySwipe').then(value => {
       this.setState({
         isSwipeModalOpen: typeof value !== 'string',
@@ -111,7 +117,7 @@ class DiscoverScreen extends Component {
   }
 
   handleOpenInfoPage(marker){
-    if(marker.type === 1) this.handleStartConversationPress(marker);
+    if(marker.type === 1) return this.setState({image: {image: marker.cropped_avatar || marker.avatar, markers: []}, isZoomImageDialogShow:true})
     if(marker.type === 2) Actions.ObjectInfoScene({collection:marker.collection, object:marker});
     if(marker.type === 3) this.setState({object:marker, startChatDialog:true});
     this.setState({isZoomImageDialogShow:false})

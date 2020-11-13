@@ -60,10 +60,15 @@ export const ImageCache = async (image, sync_id) => {
   });
 };
 
+export const WriteAndSaveOrientation = async (img, sync_id) => {
+  let imgBase64 = (Platform.OS === 'android') ? await RNFetchBlob.fs.readFile(img.uri, 'base64') : img.base64
+  return WriteBase64Image(imgBase64, sync_id)
+} 
+
 export const WriteBase64Image = async (img, sync_id) => {
   const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";  
-    return await RNFetchBlob.fs.cp(img.uri, path)
-            .then(() => sync_id);
+  await RNFetchBlob.fs.writeFile(path, img, 'base64')
+  return sync_id
 };
 
 export const CopyImage = async (image, sync_id) => RNFetchBlob.fs.readFile(image, 'base64')

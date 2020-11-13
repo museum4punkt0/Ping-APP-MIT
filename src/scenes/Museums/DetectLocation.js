@@ -216,7 +216,7 @@ export const DetectedOutside = ({handleSelectMuseumButton, handlePlanTourButton}
     <View style={{padding:15}}>
       <Button containerStyle={{backgroundColor:colors.blue, marginVertical:10}} onPress={handlePlanTourButton} title={strings.planTour} />
       <Text style={styles.main.locationInfoRow}>{strings.areYouOutside.toUpperCase()}</Text>
-      <Button containerStyle={{backgroundColor:colors.dark, marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.selectMuseum} />
+      <Button containerStyle={{backgroundColor:colors.green, marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.selectMuseum} />
     </View>
   </View>
 )
