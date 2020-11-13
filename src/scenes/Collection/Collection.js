@@ -47,8 +47,9 @@ class CollectionScene extends Component {
     const categories = getCategories()
     const user = getUser();
     const categoriesCollectionArray = [];
+    const maxCategoryLevel = Math.max(...categories.map(category => category.category_level));
     if(object && image) this.shotToast()
-    let level = 1;
+    let level = user.level;
     for(let i=0; i < categories.length; i++){
       const object_ids = convertToArray(categories[i].sync_object_ids);
       let category_id = null, newCollection = null;
@@ -59,15 +60,28 @@ class CollectionScene extends Component {
       if(newCollection && categories[i].collections.length === 3) this.setState({congratulationsDialog:true});
       if(categories[i].collections.length >= 3) {
         level++;
-        if(newCollection) this.updateUserLevel(user, level)
+        if(newCollection) {
+          this.updateUserLevel(user, level)
+          
+          if(level <= maxCategoryLevel)
+          this.setState({
+            isVisible: true,
+            title: strings.newCategoryUnlocked,
+            position: {
+              horizontal: 1,
+              vertical: 0.7
+            }
+          });
+        }
       }
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
-      categoriesCollectionArray.push(categories[i]);
+      
+      if(categories[i].category_level <= user.level) categoriesCollectionArray.push(categories[i]);
     }
 
     const redirection_timout = settings.redirection_timout*1000;
     setTimeout(() => this.dialog.isActive && this.setState({isModalOpen:true}), redirection_timout || 5000)
-    this.setState({ categories:categoriesCollectionArray, user, categoryID:user.category });
+    this.setState({ categories:categoriesCollectionArray.sort((a, b) => b.category_level - a.category_level), user, categoryID:user.category });
   }
 
   async shotToast(){
