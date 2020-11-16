@@ -54,6 +54,7 @@ Categories.schema = {
       
       object_ids: 'int[]',
       sync_object_ids: 'string[]',
+      category_level: 'int',
 
       localizations: 'Localizations[]',
       created_at: 'date',

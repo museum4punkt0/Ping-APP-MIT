@@ -83,6 +83,7 @@ const strings = new LocalizedStrings({
     set:'set',
     youWill:'You will find the suggested objects on top of the stack now',
     toObject:'To Object Selection',
+    newCategoryUnlocked: 'A new Category has been unlocked in your collection. Check it out!',
 
     // Choose Avatar Dialog
     chooseAvatar:'Choose Avatar',
@@ -224,6 +225,7 @@ const strings = new LocalizedStrings({
     set:'gesetzt',
     youWill:'Die vorgeschlagenen Objekte findest du ganz oben in der Objektauswahl',
     toObject:'Zu den Objekten',
+    newCategoryUnlocked: 'Eine neue Kategorie wurde in deiner Sammlung freigeschaltet!',
 
     // Choose Avatar Dialog
     chooseAvatar:'Wähle einen Avatar',
