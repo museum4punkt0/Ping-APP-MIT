@@ -46,7 +46,7 @@ class ProfileInfoScene extends Component {
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
-      speed: '1500'
+      speed: null
     }
     this.spinValue = new Animated.Value(0)
   }
@@ -54,18 +54,12 @@ class ProfileInfoScene extends Component {
   async componentWillMount(){
     const {getUser, updateUser} = this.props;
     const user = getUser();
+    this.setState({speed: await AsyncStorage.getItem('speed') || ''});
 
     if(!user.font_size) await updateUser({...user, font_size: 'normal'})
 
     if(user.levelup) this.showAnimation()
     this.setState({avatar: user.avatar || 'http:///www.lol.kek.cheburek', input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
-  }
-
-  // Remove it later!
-  async componentDidMount(){
-    const speed = await AsyncStorage.getItem('speed');
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({speed: speed || '1500'});
   }
 
   showAnimation(){
@@ -141,6 +135,11 @@ class ProfileInfoScene extends Component {
     setPlanMode(3)
     Actions.DetectLocation()
   }
+  
+  async handleChatIntervalChange(speed){
+    this.setState({speed});
+    await AsyncStorage.setItem('speed', speed);
+  }
 
   render() {
     const {input, language, font_size, avatar, isChooseAvatarModalOpen, chosenIndex, loading, speed, user} = this.state;
@@ -215,7 +214,7 @@ class ProfileInfoScene extends Component {
               <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
                 <Picker
                   items={constant.chatInterval}
-                  onValueChange={(speed) => this.setState({speed})}
+                  onValueChange={(speed) => this.handleChatIntervalChange(speed)}
                   value={speed}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
                   Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
