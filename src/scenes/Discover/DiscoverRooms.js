@@ -71,7 +71,7 @@ class DiscoverScreen extends Component {
           })
         setCurrentSemanticRelations(semanticRelations)
       }
-      sections.push({...item, markers:collectionArr});
+      sections.push({...item, markers:collectionArr.concat(Object.keys(searchedObject).length || object ? [] : currentSemanticRelations)});
     });
 
     if(object) {
