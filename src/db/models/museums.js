@@ -172,6 +172,6 @@ Sections.schema = {
     created_at: 'date',
     updated_at: 'date',
     isMainEntrance: 'bool?',
-    ratio_pixel_meter: 'double'
+    search_area_diameter: 'int',
   }
 }
