@@ -71,8 +71,10 @@ export const WriteBase64Image = async (img, sync_id) => {
   return sync_id
 };
 
-export const CopyImage = async (image, sync_id) => RNFetchBlob.fs.readFile(image, 'base64')
-    .then(base64 => WriteBase64Image(base64, sync_id))
+export const CopyImage = async (image, sync_id) => {
+  const img = await RNFetchBlob.fs.readFile(image, 'base64')
+  return WriteBase64Image(img, sync_id)
+} 
 
 
 export const TensorCache = async (file, sync_id) => {
