@@ -39,7 +39,7 @@ class Chats extends Component {
       zoomImage:'',
       isModalShow: false,
       chat:{},
-      speed:1500
+      speed: '',
     };
     this.minimumMessageDelay = 2500;
     this.messageDelay = 0;
@@ -102,8 +102,7 @@ class Chats extends Component {
         } else {
             this.setState({ msgArray: [...msgArray, nextStep], isIndicatorShow:false }, () => this.nextMessage());
         }        
-    //  }, this.messageDelay);
-    }, speed);
+     }, speed || this.messageDelay);
   }
 
   async updateChat(chat){
