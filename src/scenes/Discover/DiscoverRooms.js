@@ -49,7 +49,7 @@ class DiscoverScreen extends Component {
   }
 
   componentWillMount(){
-    const {museums, searchedObject, getCollections, objects, object} = this.props;
+    const {museums, searchedObject, getCollections, objects, object, currentSemanticRelations, setCurrentSemanticRelations} = this.props;
     let sections = [];
     const collections = getCollections();
 
