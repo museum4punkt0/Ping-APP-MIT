@@ -46,12 +46,13 @@ class MuseumsScene extends Component {
 
     const user = getUser(), chats = getChats();
     
+    if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
+    
     await sync({ museum, user, settings })
     .then(() => this.setState({loading: false},() => AsyncStorage.setItem('museum', museum_id)))
     .catch(() => Toaster.showMessage(strings.updatingError, ToasterTypes.ERROR))
     .finally(() => this.setState({loading: false}, () => AsyncStorage.setItem('museum', museum_id)));
     
-    if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
     
     let object = null; 
     chats.forEach(chat => {if(!chat.finished) object = museum.objects.find(object => (!object.onboarding && object.sync_id === chat.object_id))});
