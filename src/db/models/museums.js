@@ -172,6 +172,7 @@ Sections.schema = {
     sync_id: "string",
     created_at: 'date',
     updated_at: 'date',
-    isMainEntrance: 'bool?'
+    isMainEntrance: 'bool?',
+    search_area_diameter: 'int',
   }
 }
