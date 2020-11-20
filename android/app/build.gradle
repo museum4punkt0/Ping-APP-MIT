@@ -131,8 +131,8 @@ android {
         applicationId "com.meinobjekt"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 51
-        versionName "1.2.1"
+        versionCode 52
+        versionName "1.2.1 stage/v2"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
