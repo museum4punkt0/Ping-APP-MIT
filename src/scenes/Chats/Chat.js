@@ -145,9 +145,9 @@ handleCameraFunc(){
       case 'Cam': return  Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step);  this.handleCameraFunc();});
       case 'Map': return this.handleDiscoverFunc();
       case 'Input': return this.setState({isInputShow:true});
-      case 'TakePhoto': return Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchCamera({quality:0.3}, response => this.handleAvatar(response, object.sync_id))});
+      case 'TakePhoto': return Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchCamera({}, response => this.handleAvatar(response, object.sync_id))});
       case 'Avatar': return this.setState({isChooseAvatarShow:true});
-      case 'Galery': return Permissions.request(getPermission('photo')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchImageLibrary({quality:0.3}, response => this.handleAvatar(response, object.sync_id))});
+      case 'Galery': return Permissions.request(getPermission('photo')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchImageLibrary({}, response => this.handleAvatar(response, object.sync_id))});
       case 'Image': return setTimeout(() => this.addMessage({type:'Image', uri:image.image}), 150);
       case `Image${number}`: return setTimeout(() => this.addMessage({type:'Image', uri:image.image}), 150);
       case 'ImageTaken': return this.addMessage({type:'Image', uri: this.imgPath});
