@@ -61,7 +61,7 @@ class CameraScene extends Component {
     const museum_id = await AsyncStorage.getItem('museum');
     const tensor = tensors.find(item => item.museum_id === museum_id);
     if (camera) {
-      const img = await camera.takePictureAsync({ quality: 0.5, base64: true, width:1080 });
+      const img = await camera.takePictureAsync({ base64: true, width:1080 });
       const data = new FormData();
       data.append('image', {uri:img.uri, name:'image.jpg', type: 'image/jpeg'});  
       const result = await recognizeImage(img, tensor, museum_id, data) || {};       
