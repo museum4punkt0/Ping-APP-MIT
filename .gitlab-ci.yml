@@ -32,7 +32,7 @@ android-release:
     paths:
       - android/app/build/outputs/apk
   script:
-    - cd android && ./gradlew app:clean
+    - rm -rf src/assets
     - react-native bundle 
                       --platform android 
                       --dev false 
@@ -40,5 +40,5 @@ android-release:
                       --bundle-output android/app/src/main/assets/index.android.bundle 
                       --assets-dest android/app/src/main/res &&  app:assembleRelease &&
     - rm -rf app/src/main/res/drawable-* &&
-    - cd android && ./gradlew app:assembleRelease
+    - cd android && ./gradlew app:clean app:assembleRelease
   when: manual
