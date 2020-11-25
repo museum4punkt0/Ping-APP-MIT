@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, TouchableOpacity, RefreshControl} from 'react-native';
+import { ScrollView, View, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -88,14 +88,7 @@ class MuseumsScene extends Component {
 
     return (
       <Scene label='Museums' backBtnFunc={()=>Actions.pop()} loading={loading}>
-        <ScrollView
-          refreshControl={(
-            <RefreshControl
-              refreshing={loading}
-              onRefresh={this.componentWillMount.bind(this)}
-            />
-          )}
-        >
+        <ScrollView>
           {museums.map(museum => {
             // let from_hour = '', to_hour = '';
             // if(museum.opennings) from_hour = museum.opennings.from_hour;
