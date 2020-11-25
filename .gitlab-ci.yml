@@ -1,21 +1,25 @@
 variables:
   ANDROID_HOME: "/opt/android-sdk"
-  LOCAL_PATH: "/home/gitlab-runner/projects/mein-object"
+  LOCAL_PATH: "/home/gitlab-runner/projects/recomiend"
   OUTPUTS_PATH: android/app/build/outputs/apk
   PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
 
 before_script:
-  - cp -rf $LOCAL_PATH/.signing android/.signing
   - npm cache clean --force
   - npm install
 
-after_script:
-  - rm -rf android/.signing
-
 stages:
+  - build
   - deploy
 
-androidBuildRelease:
+build:
+  stage: build
+  tags:
+    - shell
+  script:
+    - cd android && ./gradlew app:clean app:build -x test
+
+android-release:
   stage: deploy
   tags:
     - shell
@@ -23,7 +27,14 @@ androidBuildRelease:
     paths:
       - android/app/build/outputs/apk
   script:
-    - react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-    - cd android && ./gradlew clean
-    - GRADLE_OPTS="-Xmx2048m" ./gradlew app:assembleRelease --stacktrace
+    - cd android && ./gradlew app:clean
+    - react-native bundle 
+                      --platform android 
+                      --dev false 
+                      --entry-file index.js 
+                      --bundle-output android/app/src/main/assets/index.android.bundle 
+                      --assets-dest android/app/src/main/res &&  app:assembleRelease &&
+    - rm -rf app/src/main/res/drawable-* &&
+    - cd android && ./gradlew app:assembleRelease
+
   when: manual
