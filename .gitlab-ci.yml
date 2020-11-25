@@ -21,7 +21,8 @@ build:
   tags:
     - shell
   script:
-    - cd android && ./gradlew app:clean app:build -x test
+    - cd android && ./gradlew app:clean app:build -x test'
+  when: manual
 
 android-release:
   stage: deploy
@@ -40,5 +41,4 @@ android-release:
                       --assets-dest android/app/src/main/res &&  app:assembleRelease &&
     - rm -rf app/src/main/res/drawable-* &&
     - cd android && ./gradlew app:assembleRelease
-
   when: manual
