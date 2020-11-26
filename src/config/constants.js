@@ -12,8 +12,8 @@ export default {
     // host: 'http://qa-meinobjekt-1978777567.eu-central-1.elb.amazonaws.com/',
 
     //stage
-    api: 'http://54.93.215.4/api/v1/',
-    host: 'http://54.93.215.4/',
+    api: 'http://18.159.200.62/api/v1/',
+    host: 'http://18.159.200.62/',
    
     base: 'api/v1/',
     lang:[{label: 'English', value: 'en', key: 'en'}, {label: 'Deutsch', value: 'de', key: 'de'}],
