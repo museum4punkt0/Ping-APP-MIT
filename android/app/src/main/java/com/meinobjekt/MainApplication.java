@@ -1,4 +1,4 @@
-package com.meinobjekt;
+package com.meinobjekt.stage;
 
 import android.app.Application;
 import android.content.Context;
