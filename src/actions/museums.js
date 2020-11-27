@@ -124,7 +124,6 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
       predefined_avatars.push(path);
     })
   )
-  console.log('Returning:', { objects, predefined_avatars, images  })
   return { objects, predefined_avatars, images  }
 };
 
