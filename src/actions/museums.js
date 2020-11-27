@@ -163,7 +163,7 @@ export const setAllData = (id) => (dispatch) => getRemoteData(id)
   await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
   setTensorFile({...response.museums.tensor[0], museum_id:response.museums.sync_id});
   const tensor = response.museums.tensor[0]
-  return setMuseums({ ...response.museums, objects:data.objects, images:data.images, tensor })
+  return setMuseums({ ...response.museums, objects:data.objects, images:data.images, tensor, sections: data.sections })
   .then((data) => {
     dispatch({ type: museumsTypes.CATEGORIES_LOADED, payload: convertToArray(data.categories) });
     dispatch({ type: museumsTypes.OBJECTS_LOADED, payload: convertToArray(data.objects) });
