@@ -110,15 +110,21 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
       }));
       
       objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
-    }),
+    })
+  )
+  await Promise.all(
     museums.images.map(async item => {
       const image = await ImageCache(item.image, item.sync_id);
       images.push({...item, image});
-    }),
+    })
+  )
+  await Promise.all(
     museums.sections.map(async (item, index) => {
       const map = await ImageCache(item.map, item.sync_id);
       sections.push({...item, map, isMainEntrance: index === 0})
-    }),
+    })
+  )
+  await Promise.all(
     settings.predefined_avatars.map(async (item, i) => {
       const path = await ImageCache(item, `avatar${i}`);
       predefined_avatars.push(path);
@@ -157,7 +163,7 @@ export const setAllData = (id) => (dispatch) => getRemoteData(id)
   await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
   setTensorFile({...response.museums.tensor[0], museum_id:response.museums.sync_id});
   const tensor = response.museums.tensor[0]
-  return setMuseums({ ...response.museums, objects:data.objects, images:data.images, tensor, sections: data.sections })
+  return setMuseums({ ...response.museums, objects:data.objects, images:data.images, tensor })
   .then((data) => {
     dispatch({ type: museumsTypes.CATEGORIES_LOADED, payload: convertToArray(data.categories) });
     dispatch({ type: museumsTypes.OBJECTS_LOADED, payload: convertToArray(data.objects) });
