@@ -37,8 +37,7 @@ ImageMessageContent.propTypes = ({
       }
     };
     return(
-      <View style={styles.chat.messageContainer}>  
-        {isIncoming && <View style={{flex: 1, minWidth: 40}} />}
+      <View style={{...styles.chat.messageContainer, justifyContent: isIncoming ? 'flex-end' : 'flex-start'}}>  
         <View style={{minWidth: 40}}>
           {((!isIncoming && message.responses && message.responses.length > 0)||(last && !isIncoming)) && 
           <Image style={{borderRadius:16, width:32, height:32, backgroundColor:colors.dark}} source={{uri: getImage(avatar) + (Platform.OS === 'ios' ? '' : '?' + new Date())}} />}
@@ -46,7 +45,6 @@ ImageMessageContent.propTypes = ({
         <View style={[styles.chat.messageTextContainer, { backgroundColor: color }]}>
           {renderMessageContent()}
         </View>
-        {!isIncoming && <View style={{flex: 1, minWidth: 40}} />}
       </View>
     );
 };
