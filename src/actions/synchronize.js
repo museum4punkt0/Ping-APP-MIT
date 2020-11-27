@@ -36,11 +36,15 @@ export const updateAllData = (response, museum, deleted = {}) => async (dispatch
         data.objects.map(item => setObjects(item).then(object => {
             museum.objects = updateItemOrPush(museum.objects, item);
             dispatch({ type: museumsTypes.OBJECTS_UPDATE, payload: object })
-        })),
+        }))
+    )
+    await Promise.all(
         response.museums.categories.map(item => setCategories(item).then(category => {
             museum.categories = updateItemOrPush(museum.categories, item);
             dispatch({ type: museumsTypes.CATEGORIES_UPDATE, payload: category })
-        })),
+        }))
+    )
+    await Promise.all(
         removeItem(deleted.categories, museum.categories, 'Categories'),
         removeItem(deleted.objects, museum.objects, 'Votings', 'object_id'),
         removeItem(deleted.objects, museum.objects, 'Objects')

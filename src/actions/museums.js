@@ -110,16 +110,20 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
       }));
       
       objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
-    }),
+    })
+  )
+  await Promise.all(
     museums.images.map(async item => {
       const image = await ImageCache(item.image, item.sync_id);
       images.push({...item, image});
-    }),
+    })
+  )
+  await Promise.all(
     settings.predefined_avatars.map(async (item, i) => {
       const path = await ImageCache(item, `avatar${i}`);
       predefined_avatars.push(path);
     })
-  );
+  )
   return { objects, predefined_avatars, images  }
 };
 
