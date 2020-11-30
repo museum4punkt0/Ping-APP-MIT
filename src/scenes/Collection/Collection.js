@@ -13,7 +13,7 @@ import Dialog from "../../components/Dialogs/Dialog";
 import Toaster, {ToasterTypes} from "../../components/Popup";
 import styles, { colors } from '../../config/styles';
 import { convertToArray, getLocalization, getImage, showToast, showToObject, getStorageItem } from '../../config/helpers';
-import { getObjects, getCategories, getMuseums } from '../../db/controllers/museums';
+import { getObjects } from '../../db/controllers/museums';
 import { getCollections, createCollection } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
@@ -42,11 +42,8 @@ class CollectionScene extends Component {
   }
   
   async componentWillMount() {
-    const { getCollections, createCollection, image, object, getUser, settings } = this.props;
-    const museum = Array.from(getMuseums())[0];
-    const museumCategoriesSyncIds = Array.from(museum.categories).map(category => category.sync_id)
+    const { getCollections, createCollection, image, object, getUser, settings, categories } = this.props;
     const collections = getCollections();
-    const categories = getCategories().filter(category => museumCategoriesSyncIds.includes(category.sync_id));
     const user = getUser();
     const categoriesCollectionArray = [];
     const maxCategoryLevel = Math.max(...categories.map(category => category.category_level));
@@ -244,7 +241,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user }) => ({ settings: user.settings }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user, museums }) => ({ settings: user.settings, categories: museums.categories  }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;
