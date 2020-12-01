@@ -11,16 +11,9 @@ import img_3 from '../../assets/images/onboarding/3.png'
 import img_4 from '../../assets/images/onboarding/4.png'
 
 const { width, height } = Dimensions.get("window");
-const scale = width / 320;
 
-export function normalize(size) {
-  const newSize = size * scale 
-  if (Platform.OS === 'ios') {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize))
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
-  }
-}
+const guidelineBaseWidth = 350;
+const scale = size => width / guidelineBaseWidth * size;
 
 class Swiper extends React.Component {
     constructor(props) {
@@ -60,10 +53,10 @@ class Swiper extends React.Component {
     renderItem({item}){
         return (
           <View style={{width, flex:1, alignItems:'center', justifyContent:'center', padding:30}}>
-            <Image source={item.image} style={{ width:250, height:250}} />
+            <Image source={item.image} style={{ width: height / 3, height: height / 3}} />
             <View>
-              <Text style={styles.main.appGuideItemTitle}>{item.title}</Text>
-              <Text style={styles.main.appGuideItemDescription}>{item.description}</Text>
+              <Text  style={{...styles.main.appGuideItemTitle, fontSize: scale(24)}}>{item.title}</Text>
+              <Text  style={{...styles.main.appGuideItemDescription, fontSize: scale(16)}}>{item.description}</Text>
             </View>
           </View>
         )
