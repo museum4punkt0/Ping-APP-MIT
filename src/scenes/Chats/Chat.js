@@ -24,7 +24,7 @@ import { getStorageItem } from "../../config/helpers";
 
 const isMessageIncoming = (message)=> message.isIncoming === 1 || message.isIncoming === undefined
 
-const DIALOGUE_IDS_FOR_SPECIAL_ACTIONS = { EXIT: '101', CAM: '102', MAP: '103', IMAGE: '104', COLLECTION: '105', IMAGETAKEN: '107' };
+const DIALOGUE_IDS_FOR_SPECIAL_ACTIONS = { EXIT: '10001', CAM: '10002', MAP: '10003', IMAGE: '10004', COLLECTION: '10005', IMAGETAKEN: '10007' };
 class Chats extends Component {
   constructor(props) {
     super(props);
