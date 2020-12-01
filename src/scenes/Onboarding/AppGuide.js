@@ -1,5 +1,5 @@
 import React from "react";
-import { View, FlatList, Dimensions, Image, TouchableOpacity } from "react-native";
+import { View, FlatList, Dimensions, Image, TouchableOpacity, PixelRatio } from "react-native";
 import { Actions } from "react-native-router-flux";
 import strings from "../../config/localization";
 import styles, { colors } from "../../config/styles";
@@ -10,7 +10,17 @@ import img_2 from '../../assets/images/onboarding/2.png'
 import img_3 from '../../assets/images/onboarding/3.png'
 import img_4 from '../../assets/images/onboarding/4.png'
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+const scale = width / 320;
+
+export function normalize(size) {
+  const newSize = size * scale 
+  if (Platform.OS === 'ios') {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize))
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+  }
+}
 
 class Swiper extends React.Component {
     constructor(props) {
