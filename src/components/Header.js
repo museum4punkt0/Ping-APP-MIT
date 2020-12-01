@@ -20,7 +20,7 @@ const Header = (props) => {
     return (
       <View style={[headerStyle, {zIndex: 1}]}>
         <View style={[styles.common.headerContainer, headerStyle && {backgroundColor:"rgba(255,255,255,0)"}]}>
-          {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text style={styles.common.headerName}>{title}</Text>}
+          {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text adjustsFontSizeToFit={true} style={styles.common.headerName}>{title}</Text>}
           <TouchableOpacity onPress={()=>Actions.MuseumsScene()}>
             <Image source={{uri: logo}} style={{width:110, height:25}} resizeMode="contain" />
           </TouchableOpacity>    
@@ -59,8 +59,8 @@ const BackBtn = (props) => {
           <Icon style={styles.common.navigatorItemIcon}>d</Icon>
         </TouchableOpacity>
         <View style={{ marginHorizontal: 15 }}>
-          <Text style={[styles.common.headerTitle, { fontSize: description.length === 0 ? 24 : 16 } ]} >{title}</Text>
-          {description.length !==0 && <Text style={styles.common.headerDescription} numberOfLines={1}>{description}</Text>}  
+          <Text adjustsFontSizeToFit={true} style={[styles.common.headerTitle, { fontSize: description.length === 0 ? 24 : 16 } ]} >{title}</Text>
+          {description.length !==0 && <Text adjustsFontSizeToFit={true} style={styles.common.headerDescription} numberOfLines={1}>{description}</Text>}  
         </View>     
       </View>
     );
