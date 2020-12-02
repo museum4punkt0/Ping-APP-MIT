@@ -689,7 +689,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meinobjekt.iphone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meinobjekt.stage.iphone;
 				PRODUCT_NAME = MeinObjekt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -718,7 +718,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.meinobjekt.iphone;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meinobjekt.stage.iphone;
 				PRODUCT_NAME = MeinObjekt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;

@@ -145,9 +145,9 @@ handleCameraFunc(){
       case 'Cam': return  Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step);  this.handleCameraFunc();});
       case 'Map': return this.handleDiscoverFunc();
       case 'Input': return this.setState({isInputShow:true});
-      case 'TakePhoto': return Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchCamera({quality:0.3}, response => this.handleAvatar(response, object.sync_id))});
+      case 'TakePhoto': return Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchCamera({}, response => this.handleAvatar(response, object.sync_id))});
       case 'Avatar': return this.setState({isChooseAvatarShow:true});
-      case 'Galery': return Permissions.request(getPermission('photo')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchImageLibrary({quality:0.3}, response => this.handleAvatar(response, object.sync_id))});
+      case 'Galery': return Permissions.request(getPermission('photo')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchImageLibrary({}, response => this.handleAvatar(response, object.sync_id))});
       case 'Image': return setTimeout(() => this.addMessage({type:'Image', uri:image.image}), 150);
       case `Image${number}`: return setTimeout(() => this.addMessage({type:'Image', uri:image.image}), 150);
       case 'ImageTaken': return this.addMessage({type:'Image', uri: this.imgPath});
@@ -169,7 +169,7 @@ handleCameraFunc(){
     setObject({})
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
     const chats = getChats();
-    if(object.positionX && object.positionY && object.floor) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), floor:object.floor, chats });
+    if(object.positionX && object.positionY && object.section) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), section:object.section, chats });
     return Actions.CollectionScene({ object, image: this.imgPath });
   }
   
@@ -210,7 +210,7 @@ handleCameraFunc(){
     const styles = Array.from(settings.language_styles)
     if(styles) styles.forEach(style => language_style.push({style, score:0, sync_id:uuidv1()}));
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
-    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style });
+    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style, section: museums.sections.filter(section => section.isMainEntrance)[0] });
     AsyncStorage.setItem('firstEntry', 'true');
     sync({ museum:museums, user, settings})
     if(plan === 2) return Actions.Tours({first:true});

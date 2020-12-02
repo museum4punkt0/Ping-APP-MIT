@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, TouchableOpacity, RefreshControl} from 'react-native';
+import { ScrollView, View, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ import Toaster, {ToasterTypes} from "../../components/Popup";
 import { getMuseums } from '../../db/controllers/museums';
 import { getMuseumsList, setAllData, getMuseum, setObject } from '../../actions/museums';
 import { sync } from "../../actions/synchronize";
-import { getSettings, getUser } from "../../actions/user";
+import { getSettings, getUser, updateUser } from "../../actions/user";
 import { createChat, getChats } from "../../actions/chats";
 import {convertToArray, getLocalization, getDeviceLocale} from '../../config/helpers'
 import strings from '../../config/localization'
@@ -35,7 +35,7 @@ class MuseumsScene extends Component {
   }
 
   async handleChooseMuseum(museum_id){
-    const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, plan } = this.props;
+    const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, plan, updateUser } = this.props;
     this.setState({loading:true});
     const museums = convertToArray(getMuseums()), settings = getSettings();
     let museum = museums.find(item => item.sync_id === museum_id);
@@ -46,10 +46,13 @@ class MuseumsScene extends Component {
 
     const user = getUser(), chats = getChats();
     
+    if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
+    
     await sync({ museum, user, settings })
     .then(() => this.setState({loading: false},() => AsyncStorage.setItem('museum', museum_id)))
     .catch(() => Toaster.showMessage(strings.updatingError, ToasterTypes.ERROR))
     .finally(() => this.setState({loading: false}, () => AsyncStorage.setItem('museum', museum_id)));
+    
     
     let object = null; 
     chats.forEach(chat => {if(!chat.finished) object = museum.objects.find(object => (!object.onboarding && object.sync_id === chat.object_id))});
@@ -85,14 +88,7 @@ class MuseumsScene extends Component {
 
     return (
       <Scene label='Museums' backBtnFunc={()=>Actions.pop()} loading={loading}>
-        <ScrollView
-          refreshControl={(
-            <RefreshControl
-              refreshing={loading}
-              onRefresh={this.componentWillMount.bind(this)}
-            />
-          )}
-        >
+        <ScrollView>
           {museums.map(museum => {
             // let from_hour = '', to_hour = '';
             // if(museum.opennings) from_hour = museum.opennings.from_hour;
@@ -137,10 +133,11 @@ MuseumsScene.propTypes = {
   getMuseum: PropTypes.func.isRequired,
   createChat: PropTypes.func.isRequired,
   getChats: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
   setObject: PropTypes.func.isRequired,
   plan: PropTypes.number.isRequired,
 };
 
 MuseumsScene.defaultProps = { }
 
-export default connect(({plan}) => ({ plan:plan.plan }) , { setAllData, getUser, getSettings, sync, getMuseum, createChat, getChats, setObject  })(MuseumsScene);
+export default connect(({plan}) => ({ plan:plan.plan }) , { setAllData, getUser, getSettings, sync, getMuseum, createChat, getChats, setObject, updateUser  })(MuseumsScene);

@@ -13,7 +13,8 @@ Museums.schema = {
     images: {type: 'list', objectType: 'Images'},
     objects: {type: 'list', objectType: 'Objects'},
     categories: {type: 'list', objectType: 'Categories'},
-    tours: {type: 'list', objectType: 'Tours'}
+    tours: {type: 'list', objectType: 'Tours'},
+    sections: {type: 'list', objectType: 'Sections'},
   }
 }
 
@@ -24,7 +25,7 @@ Objects.schema = {
     properties: {
       sync_id: 'string',
       priority: 'int', // (0 or 1 or 2 or 3)
-      floor: 'int', // (1 or 2 or 3)
+      section: 'Sections',
       positionX: 'double', //(11,8)
       positionY: 'double', //(11,8)
       vip: 'bool',
@@ -53,6 +54,7 @@ Categories.schema = {
       
       object_ids: 'int[]',
       sync_object_ids: 'string[]',
+      category_level: 'int',
 
       localizations: 'Localizations[]',
       created_at: 'date',
@@ -156,4 +158,21 @@ Objects_to_suggest.schema = {
       sync_id: 'string', 
       position: {type: 'int?', default: 1},
     }
+}
+
+export class Sections extends Realm.Object {}
+Sections.schema = {
+  name: "Sections",
+  primaryKey: "sync_id",
+  properties: {
+    title: "string",
+    floor: "int",
+    map: "string?",
+    exit_position: "Exit_position",
+    sync_id: "string",
+    created_at: 'date',
+    updated_at: 'date',
+    isMainEntrance: 'bool?',
+    search_area_diameter: 'int',
+  }
 }

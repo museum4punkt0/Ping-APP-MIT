@@ -29,7 +29,6 @@ import Toaster, {ToasterTypes} from "../../components/Popup";
 const options = {
   title: 'Profile Picture',
   customButtons: [{ name: 'avatar', title: 'Choose Avatar' }],
-  quality: 0.3,
   storageOptions: {
     skipBackup: true,
   },

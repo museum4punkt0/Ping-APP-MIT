@@ -30,10 +30,11 @@ class CardComponent extends Component{
   componentWillUpdate(){ this.onLoad(); }
   
     render(){   
-    const { card, user, position, pixelMeter } = this.props;
+    const { card, user, pixelMeter } = this.props;
     const { avatar, cropped_avatar, localizations } = card;
     const { opacity } = this.state
     const meter = pixelMeter || 1
+    const position = card.section.exit_position
     const distance = Math.floor(getDistance(user, card, position)/meter);
     return(
       <ImageBackground resizeMode='stretch' source={card.vip && vipObject} style={{flex:1, padding:5, paddingBottom:10}}>

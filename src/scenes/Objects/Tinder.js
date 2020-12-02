@@ -112,7 +112,7 @@ class Tinder extends Component{
               <Swiper
               ref={swiper => { this.swiper = swiper; }}
               cards={cardArray}
-              renderCard={(card, index) => (<CardComponent card={{...card, index}} user={user} position={settings.exit_position} pixelMeter={museums.ratio_pixel_meter} />)}
+              renderCard={(card, index) => (<CardComponent card={{...card, index}} user={user} position={card.section.exit_position} pixelMeter={museums.ratio_pixel_meter} />)}
               onSwiped={(i) => (cardArray[i+1] && cardArray[i+1].vip) && showToast('firstVip', strings.youJustMet)}
               // onSwiped={(i) => this.onSwiped(cardArray[i])}
               overlayLabels={{

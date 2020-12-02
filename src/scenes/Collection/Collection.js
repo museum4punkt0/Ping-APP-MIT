@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ConfettiCannon from 'react-native-confetti-cannon';
+import Confetti from 'react-native-confetti';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,7 +13,7 @@ import Dialog from "../../components/Dialogs/Dialog";
 import Toaster, {ToasterTypes} from "../../components/Popup";
 import styles, { colors } from '../../config/styles';
 import { convertToArray, getLocalization, getImage, showToast, showToObject, getStorageItem } from '../../config/helpers';
-import { getObjects, getCategories, getMuseums } from '../../db/controllers/museums';
+import { getObjects } from '../../db/controllers/museums';
 import { getCollections, createCollection } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
@@ -42,15 +42,13 @@ class CollectionScene extends Component {
   }
   
   async componentWillMount() {
-    const { getCollections, createCollection, image, object, getUser, settings } = this.props;
-    const museum = Array.from(getMuseums())[0];
-    const museumCategoriesSyncIds = Array.from(museum.categories).map(category => category.sync_id)
+    const { getCollections, createCollection, image, object, getUser, settings, categories } = this.props;
     const collections = getCollections();
-    const categories = getCategories().filter(category => museumCategoriesSyncIds.includes(category.sync_id));
     const user = getUser();
     const categoriesCollectionArray = [];
+    const maxCategoryLevel = Math.max(...categories.map(category => category.category_level));
     if(object && image) this.shotToast()
-    let level = 1;
+    let level = user.level;
     for(let i=0; i < categories.length; i++){
       const object_ids = convertToArray(categories[i].sync_object_ids);
       let category_id = null, newCollection = null;
@@ -61,15 +59,40 @@ class CollectionScene extends Component {
       if(newCollection && categories[i].collections.length === 3) this.setState({congratulationsDialog:true});
       if(categories[i].collections.length >= 3) {
         level++;
-        if(newCollection) this.updateUserLevel(user, level)
+        if(newCollection) {
+          this.updateUserLevel(user, level)
+          
+          if(level <= maxCategoryLevel)
+          this.setState({
+            isVisible: true,
+            title: strings.newCategoryUnlocked,
+            position: {
+              horizontal: 1,
+              vertical: 0.7
+            }
+          });
+        }
       }
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
-      categoriesCollectionArray.push(categories[i]);
+      
+      if(categories[i].category_level <= user.level) categoriesCollectionArray.push(categories[i]);
     }
+
+    if(this._confettiView) {
+      this._confettiView.startConfetti();
+   }
 
     const redirection_timout = settings.redirection_timout*1000;
     setTimeout(() => this.dialog.isActive && this.setState({isModalOpen:true}), redirection_timout || 5000)
-    this.setState({ categories:categoriesCollectionArray, user, categoryID:user.category });
+    this.setState({ categories:categoriesCollectionArray.sort((a, b) => b.category_level - a.category_level), user, categoryID:user.category });
+  }
+
+  componentWillUnmount ()
+  {
+      if (this._confettiView)
+      {
+          this._confettiView.stopConfetti();
+      }
   }
 
   async shotToast(){
@@ -169,8 +192,12 @@ class CollectionScene extends Component {
         {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false})} screen='collection' position={position} /> : null}
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
         {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
-        {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}
         <ScrollView>
+          {confetti && 
+            <View style={{position:'absolute', zIndex: 1000, width: '100%', height: '100%'}}>
+              <Confetti ref={(node) => this._confettiView = node} duration={4000} timeout={1} confettiCount={200}/>
+            </View>
+          }
           {categories.map( category => {
             const complieted = typeof category.collections === 'object' && category.collections.filter(item=>item.image).length;
             const checked = categoryID === category.sync_id;
@@ -214,7 +241,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user }) => ({ settings: user.settings }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user, museums }) => ({ settings: user.settings, categories: museums.categories  }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;

@@ -75,6 +75,7 @@ class Swiper extends React.Component {
     render() {
         const { swipeData, currentSelectIndex } = this.state;
         const floor = swipeData[currentSelectIndex] ? swipeData[currentSelectIndex].floor : 0;
+        const section_name = swipeData[currentSelectIndex] ? swipeData[currentSelectIndex].title : 'Unknown';
         const length = swipeData.length || 1
         return (
           <View style={{flex: 1, width }}>
@@ -85,7 +86,7 @@ class Swiper extends React.Component {
                 </TouchableWithoutFeedback>
               )}
               <View style={{height:30, justifyContent:'center'}}>
-                <Text style={{color:colors.brownGrey, fontSize:16, fontWeight:'bold'}}>{`Level: ${floor}rd Floor`}</Text>
+                <Text style={{color:colors.brownGrey, fontSize:16, fontWeight:'bold'}}>{section_name}</Text>
                 <TouchableOpacity onPress={()=>Toaster.showMessage(strings.youAreInvited, ToasterTypes.MESSAGE)} style={{position:'absolute', right:-50, height:30, justifyContent:'center', paddingHorizontal:15}}>
                   <FIcon color={colors.white} name="question-circle" size={20} />
                 </TouchableOpacity>
