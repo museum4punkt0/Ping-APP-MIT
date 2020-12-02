@@ -1,4 +1,4 @@
-package com.meinobjekt.stage;
+package com.meinobjekt;
 
 import com.facebook.react.ReactActivity;
 
