@@ -75,7 +75,7 @@ class MuseumsScene extends Component {
       if(plan === 2) return Actions.Tours();
       return Actions.TinderScene();
     }    
-    if(!onboardingObject) return Toaster.showMessage(strings.museumIsCurrently, ToasterTypes.ERROR);
+    if(!onboardingObject) return Actions.Tours();
     if(onboardingObject) {
       const chat = await createChat(onboardingObject);
       return Actions.ChatsScene({ object: onboardingObject, chatID:chat.sync_id })
