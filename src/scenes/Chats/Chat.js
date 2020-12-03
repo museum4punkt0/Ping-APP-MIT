@@ -94,15 +94,14 @@ class Chats extends Component {
     if (nextStep.text) nextStep.text = nextStep.text.replace('{name}', messageInput);
     
     const isOption = nextStep.responses.length > 0;
-
+    this.messageDelay = calculateMessageDelay(nextStep.text, this.minimumMessageDelay);
     setTimeout(() => {
-      this.messageDelay = calculateMessageDelay(nextStep.text, this.minimumMessageDelay);
         if (isOption) {
             this.setState({ msgArray: [...msgArray, nextStep], options: nextStep.responses, isIndicatorShow:false});
         } else {
             this.setState({ msgArray: [...msgArray, nextStep], isIndicatorShow:false }, () => this.nextMessage());
         }        
-     }, speed || this.messageDelay);
+    }, speed || this.messageDelay);
   }
 
   async updateChat(chat){
