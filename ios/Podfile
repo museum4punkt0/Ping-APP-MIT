@@ -49,12 +49,3 @@ target 'MeinObjekt' do
   use_native_modules!
 end
 
-target 'MeinObjekt-tvOS' do
-  # Pods for MeinObjekt-tvOS
-
-  target 'MeinObjekt-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
