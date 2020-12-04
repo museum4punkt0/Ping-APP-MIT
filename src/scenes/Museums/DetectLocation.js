@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, View, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import { Image, ImageBackground, View, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -33,11 +33,15 @@ class DetectLocation extends Component {
     }
   }
 
-componentWillMount(){  
+async componentWillMount(){  
   // eslint-disable-next-line 
   setTimeout(()=>{if(!this.state.type) this.setState({type:0})}, 6000); //For Xiaomi hack
-  
-    PermissionsAndroid.request(getPermission('location'));
+    if(Platform.OS === 'android') {
+      await PermissionsAndroid.request(getPermission('location'));
+    } else {
+      await Geolocation.requestAuthorization('whenInUse');
+    }
+    
     Geolocation.getCurrentPosition(
       location => getMuseumsList(location.coords.latitude, location.coords.longitude)
         .then(museums => {
