@@ -2,6 +2,9 @@
   "name": "MeinObjekt",
   "version": "0.0.1",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -11,7 +14,6 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
-    "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/toolbar-android": "0.1.0-rc.2",
     "axios": "^0.19.0",
     "prop-types": "^15.7.2",
@@ -22,6 +24,7 @@
     "react-native-confetti": "^0.1.0",
     "react-native-deck-swiper": "^1.6.7",
     "react-native-device-info": "^4.0.1",
+    "react-native-geolocation-service": "^5.0.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-pan-zoom": "^2.1.11",
     "react-native-image-picker": "^1.1.0",

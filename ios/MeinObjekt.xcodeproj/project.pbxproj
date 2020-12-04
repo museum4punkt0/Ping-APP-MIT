@@ -18,6 +18,7 @@
 		6F27E0088D8164A9ABA9227E /* libPods-MeinObjektTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74C1ED3C2DEEDAD37826A61A /* libPods-MeinObjektTests.a */; };
 		744562B9A2754E5FB3610C2A /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B971340F1E574B7FA23A1A17 /* SF-Pro-Text-Semibold.otf */; };
 		C44931D1B05A477D8698A24F /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 90C8669BBEDF4262B5A44A6E /* libc++.tbd */; };
+		C4FE0963257854260027191A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FE0962257854260027191A /* File.swift */; };
 		E575444C6E2F447D850011A9 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 702A7617A4424AAFAA7CEE6B /* SF-Pro-Text-Regular.otf */; };
 		EDF223AC8BD4416B8122133D /* Pacifico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3C53B5EF139C40AE84D489B8 /* Pacifico-Regular.ttf */; };
 		EEA4F8F8F8B447269B0BCB5D /* libRealmReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3E5DF5186BB4498BB868758 /* libRealmReact.a */; };
@@ -97,6 +98,8 @@
 		B57C5B57D15C4231B4B9EF4A /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		B971340F1E574B7FA23A1A17 /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Text-Semibold.otf"; path = "../src/assets/fonts/SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
 		BE5BB851853B4F3EBA5283D7 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		C4FE0961257854260027191A /* MeinObjekt-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MeinObjekt-Bridging-Header.h"; sourceTree = "<group>"; };
+		C4FE0962257854260027191A /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		D08A7F396E33431A8FBB8FA4 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		DB4EC9B7F0964CD3AA597E6E /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		E3FAD0172E5BC5F0F0B5E0A6 /* Pods-MeinObjektTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeinObjektTests.debug.xcconfig"; path = "Target Support Files/Pods-MeinObjektTests/Pods-MeinObjektTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -251,6 +254,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C4FE0962257854260027191A /* File.swift */,
 				13B07FAE1A68108700A75B9A /* MeinObjekt */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MeinObjektTests */,
@@ -259,6 +263,7 @@
 				8D074494140BB28FABC2A1B3 /* Pods */,
 				29E1E6EF5B744C99B98B0364 /* Resources */,
 				32E36B2823799C9B008BD04D /* Recovered References */,
+				C4FE0961257854260027191A /* MeinObjekt-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -348,6 +353,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = ZTQY27RWBC;
+						LastSwiftMigration = 1220;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -575,6 +581,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				C4FE0963257854260027191A /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -606,6 +613,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E3FAD0172E5BC5F0F0B5E0A6 /* Pods-MeinObjektTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = BEQ42K94DF;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -640,6 +648,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5872D5CDE55C76F08C5FFBC6 /* Pods-MeinObjektTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = BEQ42K94DF;
@@ -672,6 +681,7 @@
 			baseConfigurationReference = 0A8F65852EAE165F1D39CD18 /* Pods-MeinObjekt.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 12;
@@ -692,6 +702,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.meinobjekt.iphone;
 				PRODUCT_NAME = MeinObjekt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "MeinObjekt-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -702,6 +715,7 @@
 			baseConfigurationReference = 0EC02817A21BCF1526826210 /* Pods-MeinObjekt.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 12;
@@ -721,6 +735,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.meinobjekt.iphone;
 				PRODUCT_NAME = MeinObjekt;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "MeinObjekt-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
