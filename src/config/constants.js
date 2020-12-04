@@ -4,8 +4,8 @@ export default {
     // host: 'http://192.168.0.105:8000/',
 
     //prod
-    api: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/api/v1/',
-    host: 'http://prod-meinobjekt-1116714249.eu-central-1.elb.amazonaws.com/',
+    api: 'http://18.193.74.137/api/v1/',
+    host: 'http://18.193.74.137/',
 
     //qa
     // api: 'http://qa-meinobjekt-1978777567.eu-central-1.elb.amazonaws.com/api/v1/',
