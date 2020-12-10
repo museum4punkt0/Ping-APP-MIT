@@ -89,10 +89,11 @@ const getRemoteDialogue = (path) =>
     .then(response => Promise.resolve(response.data))
     .catch(() => Promise.resolve(null));
 
-export const saveDataToStorage = async (museums = [], settings = []) => { 
+export const saveDataToStorage = async (museums = [], settings = [], incrementTotal) => { 
   const objects = [], predefined_avatars = [], images = [], sections = [];
   await Promise.all(
     museums.objects.map(async item => {
+      incrementTotal()
       const avatar = await ImageCache(item.avatar, item.sync_id);
       let cropped_avatar = avatar;
       if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
@@ -114,18 +115,21 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
   )
   await Promise.all(
     museums.images.map(async item => {
+      incrementTotal()
       const image = await ImageCache(item.image, item.sync_id);
       images.push({...item, image});
     })
   )
   await Promise.all(
     museums.sections.map(async (item, index) => {
+      incrementTotal()
       const map = await ImageCache(item.map, item.sync_id);
       sections.push({...item, map, isMainEntrance: index === 0})
     })
   )
   await Promise.all(
     settings.predefined_avatars.map(async (item, i) => {
+      incrementTotal()
       const path = await ImageCache(item, `avatar${i}`);
       predefined_avatars.push(path);
     })
@@ -156,9 +160,19 @@ export const setTensorFile = async (tensor) => {
   setTensor(tensor);
 }
 
-export const setAllData = (id) => (dispatch) => getRemoteData(id)
+export const setAllData = (id, updateTotal, incrementTotal) => (dispatch) => getRemoteData(id)
 .then( async (response) => { 
-  const data = await saveDataToStorage(response.museums, response.settings);
+  let total = response.museums
+    ? response.museums.objects.length +
+      response.museums.images.length +
+      response.museums.sections.length
+    : 0;
+  total += response.settings
+    ? response.settings.predefined_avatars.length
+    : 0;
+  updateTotal(total);
+
+  const data = await saveDataToStorage(response.museums, response.settings, incrementTotal);
   await setUser(response.users)(dispatch)
   await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
   setTensorFile({...response.museums.tensor[0], museum_id:response.museums.sync_id});

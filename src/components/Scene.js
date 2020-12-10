@@ -27,12 +27,24 @@ class Scene extends Component {
 
 
   render(){
-    const {children, label, description, backBtnFunc, isHaderShow, isFooterShow, index, loading, headerStyle} = this.props;
+    const {
+      children,
+      label,
+      description,
+      backBtnFunc,
+      isHaderShow,
+      isFooterShow,
+      index,
+      loading,
+      headerStyle,
+      loadingCaption,
+      loadingPercentage,
+    } = this.props;
     return (
       <View style={styles.common.rootContainer}>
         <StatusBar backgroundColor={colors.dark} barStyle='light-content' />
         {isHaderShow && <Header title={label} description={description} backBtnFunc={backBtnFunc} headerStyle={headerStyle} />}
-        <Loader visible={loading} />
+        <Loader visible={loading} caption={loadingCaption} percentage={loadingPercentage} />
         <View style={{flex:1}} {...this.props}>
           {children}
         </View>
@@ -54,6 +66,8 @@ Scene.propTypes = {
   isHaderShow: PropTypes.bool,
   isFooterShow: PropTypes.bool,
   loading: PropTypes.bool,
+  loadingCaption: PropTypes.string,
+  loadingPercentage: PropTypes.number,
   index: PropTypes.number,
   headerStyle: ViewPropTypes.style,
 };
@@ -68,6 +82,8 @@ Scene.defaultProps = {
   isHaderShow:true,
   isFooterShow:false,
   loading:false,
+  loadingCaption: '',
+  loadingPercentage: 0,
   index:0,
   headerStyle: {}
 };
