@@ -27,6 +27,7 @@ class MuseumsScene extends Component {
         loadingCaption: '',
         totalLoadingObjects: 0,
         currentlyLoadedObjects: 0,
+        chosenMuseumLogo: null,
      }
   }
 
@@ -49,8 +50,20 @@ class MuseumsScene extends Component {
 
   async handleChooseMuseum(museum_id){
     const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, plan, updateUser } = this.props;
-    this.setState({loading:true, loadingCaption: 'Downloading...'});
-    const museums = convertToArray(getMuseums()), settings = getSettings();
+    
+    let { museums } = this.state
+    const currentMuseum = museums.find(item => item.sync_id === museum_id)
+    this.setState({
+      loading: true,
+      loadingCaption: strings.downloading,
+      totalLoadingObjects: 0,
+      currentlyLoadedObjects: 0,
+      chosenMuseumLogo: currentMuseum.museumimages.find(
+        (image) => image.image_type === "logo"
+      ).image,
+    });
+
+    museums = convertToArray(getMuseums()), settings = getSettings();
     let museum = museums.find(item => item.sync_id === museum_id);
 
     if(museum) museum = getMuseum(museum_id);
@@ -72,7 +85,7 @@ class MuseumsScene extends Component {
     
     if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
     this.setState({
-      loadingCaption: "Synchronising...",
+      loadingCaption: strings.synchronising,
       loadingPercentage: 0,
       totalLoadingObjects: 0,
       currentlyLoadedObjects: 0,
@@ -137,6 +150,7 @@ class MuseumsScene extends Component {
       loadingCaption,
       currentlyLoadedObjects,
       totalLoadingObjects,
+      chosenMuseumLogo,
     } = this.state;
     const percentage = parseInt(
       (currentlyLoadedObjects / totalLoadingObjects) * 100
@@ -148,6 +162,7 @@ class MuseumsScene extends Component {
         loading={loading}
         loadingCaption={loadingCaption}
         loadingPercentage={percentage}
+        loadingLogo={chosenMuseumLogo}
       >
         <ScrollView>
           {museums.map((museum) => {

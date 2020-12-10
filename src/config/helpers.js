@@ -10,6 +10,19 @@ export const convertToArray = ( object ) => {
   return array;
 }
 
+export const calculateTotalObjectsToLoad = (museum, settings) => {
+  let total = museum
+    ? museum.objects.length +
+      museum.images.length +
+      museum.sections.length
+    : 0;
+  total += settings
+    ? settings.predefined_avatars.length
+    : 0;
+  
+    return total
+}
+
 export const updateArrayItem = (array, item, key = 'sync_id') => {
   const result = [...array];
   const index = result.findIndex(i => i[key] === item[key]);

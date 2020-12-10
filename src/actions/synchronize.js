@@ -7,6 +7,7 @@ import { saveDataToStorage} from './museums';
 import { setObjects, setCategories, setMuseums, remove } from '../db/controllers/museums';
 import { setSettings } from './user';
 import { updateItemOrPush, convertToArray } from '../config/helpers';
+import { calculateTotalObjectsToLoad } from '../config/helpers'
 
 export const fetch = (museum_id) =>
     axios.get(remote.api + 'fetch/', { params: { user_id: DeviceInfo.getUniqueId(), museum_id }})
@@ -30,14 +31,7 @@ export const removeItem = async (deleted, array, shema = 'Categories', key = 'sy
 
 export const updateAllData = (response, museum, deleted = {}, updateTotal, incrementTotal) => async (dispatch) => {
     // console.warn('response:',response)
-    let total = response.museums
-      ? response.museums.objects.length +
-        response.museums.images.length +
-        response.museums.sections.length
-      : 0;
-    total += response.settings
-      ? response.settings.predefined_avatars.length
-      : 0;
+    const total = calculateTotalObjectsToLoad(response.museums, response.settings)
     updateTotal(total)
     
     const data = await saveDataToStorage(response.museums || [], response.settings || {predefined_avatars:[]}, incrementTotal);

@@ -7,7 +7,7 @@ import remote from '../config/constants';
 import strings from '../config/localization';
 import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
-import {convertToArray} from '../config/helpers';
+import {calculateTotalObjectsToLoad, convertToArray} from '../config/helpers';
 
 export const getMuseum = (museum_id) => (dispatch) => {
   const museums = convertToArray(getMuseums());
@@ -162,14 +162,7 @@ export const setTensorFile = async (tensor) => {
 
 export const setAllData = (id, updateTotal, incrementTotal) => (dispatch) => getRemoteData(id)
 .then( async (response) => { 
-  let total = response.museums
-    ? response.museums.objects.length +
-      response.museums.images.length +
-      response.museums.sections.length
-    : 0;
-  total += response.settings
-    ? response.settings.predefined_avatars.length
-    : 0;
+  const total = calculateTotalObjectsToLoad(response.museums, response.settings)
   updateTotal(total);
 
   const data = await saveDataToStorage(response.museums, response.settings, incrementTotal);

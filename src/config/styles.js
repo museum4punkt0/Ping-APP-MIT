@@ -41,6 +41,19 @@ export const common = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  loadingCaption:{
+    color: colors.green,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  loadingHeader: {
+    color: colors.white,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 35,
+    paddingHorizontal: 50,
+    fontSize: 18,
+  },
   headerContainer:{
     height: 45 + IOSpadding,
     paddingTop: IOSpadding,
