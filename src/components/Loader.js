@@ -11,7 +11,6 @@ const Loader = ({ visible, caption, percentage, logo }) => (
     visible={visible}
     onRequestClose={() => {}}
     transparent
-    style={{ backgroundColor: "black" }}
   >
     <View
       style={{
