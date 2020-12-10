@@ -17,6 +17,16 @@ export const updateArrayItem = (array, item, key = 'sync_id') => {
   return result;
 };
 
+export const chunkArray = (myArray, chunk_size) => {
+  const tempArray = [];
+  
+  for (let index = 0; index < myArray.length; index += chunk_size) {
+      myChunk = myArray.slice(index, index+chunk_size);
+      tempArray.push(myChunk);
+  }
+  return tempArray;
+}
+
 export const updateItemOrPush = (array, item, key = 'sync_id') => {
   const result = [...array];
   const index = result.findIndex(i => i[key] === item[key]);

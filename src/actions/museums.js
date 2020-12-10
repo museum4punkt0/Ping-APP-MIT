@@ -7,7 +7,7 @@ import remote from '../config/constants';
 import strings from '../config/localization';
 import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
-import {convertToArray} from '../config/helpers';
+import { convertToArray, chunkArray } from '../config/helpers';
 
 export const getMuseum = (museum_id) => (dispatch) => {
   const museums = convertToArray(getMuseums());
@@ -91,27 +91,33 @@ const getRemoteDialogue = (path) =>
 
 export const saveDataToStorage = async (museums = [], settings = []) => { 
   const objects = [], predefined_avatars = [], images = [], sections = [];
-  await Promise.all(
-    museums.objects.map(async item => {
-      const avatar = await ImageCache(item.avatar, item.sync_id);
-      let cropped_avatar = avatar;
-      if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
-      const object_map = await ImageCache(item.object_map, `map-${item.sync_id}`);
-      const images = [], localizations = [];
+  
+  const objects_chunks = chunkArray(museums.objects, 5)
+  objects_chunks.forEach(async objects_chunk => {
+    await Promise.all(
+      objects_chunk.map(async item => {
+        const avatar = await ImageCache(item.avatar, item.sync_id);
+        let cropped_avatar = avatar;
+        if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
+        const object_map = await ImageCache(item.object_map, `map-${item.sync_id}`);
+        const images = [], localizations = [];
+  
+        await Promise.all(item.images.map(async image => {
+          const path = await ImageCache(image.image, image.sync_id);
+          images.push({...image, image:path})
+        }));
+        
+        await Promise.all(item.localizations.map(async localization => {
+          const conversation = await getRemoteDialogue(localization.conversation);
+          localizations.push({...localization, conversation})
+        }));
+        
+        objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
+      })
+    )
+  });
+  
 
-      await Promise.all(item.images.map(async image => {
-        const path = await ImageCache(image.image, image.sync_id);
-        images.push({...image, image:path})
-      }));
-      
-      await Promise.all(item.localizations.map(async localization => {
-        const conversation = await getRemoteDialogue(localization.conversation);
-        localizations.push({...localization, conversation})
-      }));
-      
-      objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
-    })
-  )
   await Promise.all(
     museums.images.map(async item => {
       const image = await ImageCache(item.image, item.sync_id);
