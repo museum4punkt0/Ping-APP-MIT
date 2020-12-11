@@ -15,6 +15,11 @@ class Swiper extends React.Component {
             swipeData: [],
             currentSelectIndex:0
         };
+        this.viewabilityConfig = {
+          waitForInteraction: true,
+          viewAreaCoveragePercentThreshold: 95,
+        }
+
     }
 
     componentWillMount(){        
@@ -107,6 +112,7 @@ class Swiper extends React.Component {
               keyExtractor={index => index.sync_id}
               renderItem={(item) => this.renderItem(item)}
               onViewableItemsChanged={this.onViewableItemsChanged}
+              viewabilityConfig={this.viewabilityConfig}
               getItemLayout={this.getItemLayout.bind(this)}
               horizontal
               directionalLockEnabled

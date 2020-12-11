@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-import RNFetchBlob from "rn-fetch-blob";
 import DeviceInfo from 'react-native-device-info';
 import axios from 'axios/index';
 import { museumsTypes } from './types';
@@ -7,7 +6,9 @@ import remote from '../config/constants';
 import strings from '../config/localization';
 import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
-import {calculateTotalObjectsToLoad, convertToArray} from '../config/helpers';
+import {calculateTotalObjectsToLoad, convertToArray, convertToArray, chunkArray} from '../config/helpers';
+import RNFS from 'react-native-fs'
+global.Buffer = global.Buffer || require('buffer').Buffer
 
 export const getMuseum = (museum_id) => (dispatch) => {
   const museums = convertToArray(getMuseums());
@@ -45,43 +46,55 @@ export const getRemoteData = (museum_id) =>
 
 export const ImageCache = async (image, sync_id) => {
   if(!image) image = 'https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png';
-  const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";
-  return await RNFetchBlob.fs.exists(path).then(async exists => {
+  const path = `${RNFS.DocumentDirectoryPath}/images/${sync_id}.jpg`
+  return await RNFS.exists(path).then(async exists => {
     if(exists) {
-      const isSameImage = await RNFetchBlob.fs.readFile(path, 'base64')
-      .then(data => RNFetchBlob.fetch( 'GET', image )
-      .then(response => response.data === data));
+      const isSameImage = await RNFS.readFile(path, "base64").then(
+        (data) =>
+          axios
+            .get(image, {
+              responseType: "arraybuffer",
+            })
+            .then((response) => 
+              Buffer.from(response.data, 'binary').toString('base64')
+            )
+            .then((base64) => base64 === data)
+      );
       if(isSameImage) return sync_id;
     }
-
-    return await RNFetchBlob.fetch( 'GET', image )
-    .then(response => RNFetchBlob.fs.writeFile(path, response.data, 'base64')
-    .then(() => sync_id));
-  });
+    return RNFS.downloadFile({
+      fromUrl: image,
+      toFile: path,
+    }).promise.then(() => sync_id);
+  })
 };
 
 export const WriteAndSaveOrientation = async (img, sync_id) => {
-  let imgBase64 = (Platform.OS === 'android') ? await RNFetchBlob.fs.readFile(img.uri, 'base64') : img.base64
+  let imgBase64 = (Platform.OS === 'android') ? await RNFS.readFile(img.uri, 'base64') : img.base64
   return WriteBase64Image(imgBase64, sync_id)
 } 
 
 export const WriteBase64Image = async (img, sync_id) => {
-  const path = RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";  
-  await RNFetchBlob.fs.writeFile(path, img, 'base64')
+  const path = RNFS.DocumentDirectoryPath + "/images/" + sync_id + ".jpg";  
+  await RNFS.writeFile(path, img, 'base64')
   return sync_id
 };
 
 export const CopyImage = async (image, sync_id) => {
-  const img = await RNFetchBlob.fs.readFile(image, 'base64')
+  const img = await RNFS.readFile(image, 'base64')
   return WriteBase64Image(img, sync_id)
 } 
 
 
 export const TensorCache = async (file, sync_id) => {
-  const path = RNFetchBlob.fs.dirs.DocumentDir + "/tensor/" + sync_id;  
-    return await RNFetchBlob.config({ fileCache : true, path })
-            .fetch("GET", file, {})
-            .then(() => Platform.OS === 'android' ? 'file://' + path : '' + path)
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/tensor`)
+  const path = RNFS.DocumentDirectoryPath + "/tensor/" + sync_id;  
+  return await RNFS.downloadFile({
+    fromUrl: file,
+    toFile: path,
+  }).promise.then(() =>
+    Platform.OS === "android" ? "file://" + path : "" + path
+  );
 };
 
 const getRemoteDialogue = (path) =>
@@ -91,28 +104,33 @@ const getRemoteDialogue = (path) =>
 
 export const saveDataToStorage = async (museums = [], settings = [], incrementTotal) => { 
   const objects = [], predefined_avatars = [], images = [], sections = [];
-  await Promise.all(
-    museums.objects.map(async item => {
-      incrementTotal()
-      const avatar = await ImageCache(item.avatar, item.sync_id);
-      let cropped_avatar = avatar;
-      if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
-      const object_map = await ImageCache(item.object_map, `map-${item.sync_id}`);
-      const images = [], localizations = [];
-
-      await Promise.all(item.images.map(async image => {
-        const path = await ImageCache(image.image, image.sync_id);
-        images.push({...image, image:path})
-      }));
-      
-      await Promise.all(item.localizations.map(async localization => {
-        const conversation = await getRemoteDialogue(localization.conversation);
-        localizations.push({...localization, conversation})
-      }));
-      
-      objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
-    })
-  )
+  await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/images`)
+  
+  const objects_chunks = chunkArray(museums.objects, 5)
+  objects_chunks.forEach(async objects_chunk => {
+    await Promise.all(
+      objects_chunk.map(async item => {
+        const avatar = await ImageCache(item.avatar, item.sync_id);
+        let cropped_avatar = avatar;
+        if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
+        const object_map = await ImageCache(item.object_map, `map-${item.sync_id}`);
+        const images = [], localizations = [];
+  
+        await Promise.all(item.images.map(async image => {
+          const path = await ImageCache(image.image, image.sync_id);
+          images.push({...image, image:path})
+        }));
+        
+        await Promise.all(item.localizations.map(async localization => {
+          const conversation = await getRemoteDialogue(localization.conversation);
+          localizations.push({...localization, conversation})
+        }));
+        
+        objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
+      })
+    )
+  });
+  
   await Promise.all(
     museums.images.map(async item => {
       incrementTotal()
