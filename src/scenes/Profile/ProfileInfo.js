@@ -25,6 +25,7 @@ import gold from '../../assets/images/frame/gold.png'
 import silver from '../../assets/images/frame/silver.png'
 import bronze from '../../assets/images/frame/bronze.png'
 import Toaster, {ToasterTypes} from "../../components/Popup";
+import user_logo from '../../assets/images/user.png'
 
 const options = {
   title: 'Profile Picture',
@@ -41,7 +42,7 @@ class ProfileInfoScene extends Component {
       input:'',
       language:'en',
       font_size:'normal',
-      avatar:'http:///www.lol.kek.cheburek',
+      avatar:'',
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
@@ -58,7 +59,7 @@ class ProfileInfoScene extends Component {
     if(!user.font_size) await updateUser({...user, font_size: 'normal'})
 
     if(user.levelup) this.showAnimation()
-    this.setState({avatar: user.avatar || 'http:///www.lol.kek.cheburek', input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
+    this.setState({avatar: user.avatar, input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
   }
 
   showAnimation(){
@@ -262,7 +263,7 @@ export const AvatarView = (props) => {
   return(
     <View style={{width:130, height:130, alignItems:'center', justifyContent:'center'}}>
       {borderView()}
-      <Image source={{uri: getImage(avatar), cache: 'reload'}} style={styles.profile.profileAvatar} />
+      <Image source={avatar ? {uri: getImage(avatar), cache: 'reload'} : user_logo} style={styles.profile.profileAvatar} />
       <TouchableOpacity style={styles.profile.cameraIcon} onPress={handleChangeAvatarButtonPress}>
         <Icon style={{fontFamily:'meinobjekt', fontSize:24, color:'rgba(255,255,255,0.8)'}}>a</Icon>
       </TouchableOpacity>

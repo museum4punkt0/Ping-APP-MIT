@@ -41,6 +41,8 @@ target 'MeinObjekt' do
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse.podspec"
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'MeinObjektTests' do
     inherit! :search_paths
     # Pods for testing
