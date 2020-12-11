@@ -7,6 +7,7 @@ import { saveDataToStorage} from './museums';
 import { setObjects, setCategories, setMuseums, remove } from '../db/controllers/museums';
 import { setSettings } from './user';
 import { updateItemOrPush, convertToArray } from '../config/helpers';
+import { calculateTotalObjectsToLoad } from '../config/helpers'
 
 export const fetch = (museum_id) =>
     axios.get(remote.api + 'fetch/', { params: { user_id: DeviceInfo.getUniqueId(), museum_id }})
@@ -28,9 +29,12 @@ export const removeItem = async (deleted, array, shema = 'Categories', key = 'sy
     if(itemToDelete) await remove(itemToDelete.sync_id, shema)
 })
 
-export const updateAllData = (response, museum, deleted = {}) => async (dispatch) => {
+export const updateAllData = (response, museum, deleted = {}, updateTotal, incrementTotal) => async (dispatch) => {
     // console.warn('response:',response)
-    const data = await saveDataToStorage(response.museums || [], response.settings || {predefined_avatars:[]});
+    const total = calculateTotalObjectsToLoad(response.museums, response.settings)
+    updateTotal(total)
+    
+    const data = await saveDataToStorage(response.museums || [], response.settings || {predefined_avatars:[]}, incrementTotal);
     if(response.settings) await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
     await Promise.all(
         data.objects.map(item => setObjects(item).then(object => {
@@ -65,7 +69,7 @@ export const updateAllData = (response, museum, deleted = {}) => async (dispatch
 };
 
 
-export const sync = (data) => (dispatch) => fetch(data.museum.sync_id) 
+export const sync = (data, updateTotal, incrementTotal) => (dispatch) => fetch(data.museum.sync_id) 
     .then( async fetch => { 
         let json = { "add": {}, "update": {}, "delete": {}, "get": {} }  
         json = {...syncMuseums(fetch.museums, json)};
@@ -78,6 +82,6 @@ export const sync = (data) => (dispatch) => fetch(data.museum.sync_id)
         user.images.forEach(item => item.path && formdata.append(item.path, {uri:item.img, name:item.path, type: 'image/jpeg'}));
         // console.warn('ID:',data.museum.sync_id, 'data:',json.add.collections)
         return await synchroniseRemote(formdata, data.museum.sync_id)
-        .then(async response => await updateAllData(response, {...data.museum}, fetch.deleted)(dispatch))
+        .then(async response => await updateAllData(response, {...data.museum}, fetch.deleted, updateTotal, incrementTotal)(dispatch))
         // .catch((err) => console.warn('Synchronise Remote Error:',err))
 });

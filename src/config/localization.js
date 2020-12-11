@@ -109,6 +109,9 @@ const strings = new LocalizedStrings({
     museumTours:'Museum Tours',
     noPlannedTour:'You have no Planned Tours',
     likeObjectsInPlanned:'Like objects in "Plan Mode" to match and chat with them.',
+    dataIsBeingProcessed: "Please wait, the museum's data is being processed",
+    downloading: 'Downloading...',
+    synchronising: 'Synchronising...',
     
 
     //Permission to use camera
@@ -251,6 +254,9 @@ const strings = new LocalizedStrings({
     museumTours:'Museums-Touren',
     noPlannedTour:'Keine geplanten Touren',
     likeObjectsInPlanned:'Like Objekte im Plan-Modus, um mit ihnen zu chatten.',
+    dataIsBeingProcessed: "Bitte warten Sie, die Daten des Museums werden verarbeitet",
+    downloading: 'Wird heruntergeladen...',
+    synchronising: 'Synchronisieren...',
 
     //Permission to use camera
     permissionDialogTitle:'Erlaubnis zur Verwendung der Kamera',

@@ -6,7 +6,7 @@ import remote from '../config/constants';
 import strings from '../config/localization';
 import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
-import { convertToArray, chunkArray } from '../config/helpers';
+import {calculateTotalObjectsToLoad, convertToArray, convertToArray, chunkArray} from '../config/helpers';
 import RNFS from 'react-native-fs'
 global.Buffer = global.Buffer || require('buffer').Buffer
 
@@ -102,7 +102,7 @@ const getRemoteDialogue = (path) =>
     .then(response => Promise.resolve(response.data))
     .catch(() => Promise.resolve(null));
 
-export const saveDataToStorage = async (museums = [], settings = []) => { 
+export const saveDataToStorage = async (museums = [], settings = [], incrementTotal) => { 
   const objects = [], predefined_avatars = [], images = [], sections = [];
   await RNFS.mkdir(`${RNFS.DocumentDirectoryPath}/images`)
   
@@ -131,21 +131,23 @@ export const saveDataToStorage = async (museums = [], settings = []) => {
     )
   });
   
-
   await Promise.all(
     museums.images.map(async item => {
+      incrementTotal()
       const image = await ImageCache(item.image, item.sync_id);
       images.push({...item, image});
     })
   )
   await Promise.all(
     museums.sections.map(async (item, index) => {
+      incrementTotal()
       const map = await ImageCache(item.map, item.sync_id);
       sections.push({...item, map, isMainEntrance: index === 0})
     })
   )
   await Promise.all(
     settings.predefined_avatars.map(async (item, i) => {
+      incrementTotal()
       const path = await ImageCache(item, `avatar${i}`);
       predefined_avatars.push(path);
     })
@@ -176,9 +178,12 @@ export const setTensorFile = async (tensor) => {
   setTensor(tensor);
 }
 
-export const setAllData = (id) => (dispatch) => getRemoteData(id)
+export const setAllData = (id, updateTotal, incrementTotal) => (dispatch) => getRemoteData(id)
 .then( async (response) => { 
-  const data = await saveDataToStorage(response.museums, response.settings);
+  const total = calculateTotalObjectsToLoad(response.museums, response.settings)
+  updateTotal(total);
+
+  const data = await saveDataToStorage(response.museums, response.settings, incrementTotal);
   await setUser(response.users)(dispatch)
   await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
   setTensorFile({...response.museums.tensor[0], museum_id:response.museums.sync_id});

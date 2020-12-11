@@ -23,7 +23,11 @@ class MuseumsScene extends Component {
     super(props);
     this.state = { 
         museums:[],
-        loading:false
+        loading:false,
+        loadingCaption: '',
+        totalLoadingObjects: 0,
+        currentlyLoadedObjects: 0,
+        chosenMuseumLogo: null,
      }
   }
 
@@ -34,24 +38,80 @@ class MuseumsScene extends Component {
       .finally(() => this.setState({loading:false}))
   }
 
+  updateTotalLoadingObjects(number) {
+    this.setState({totalLoadingObjects: number})
+  }
+
+  incrementCurrentlyLoadedObjects() {
+    this.setState((prevState, props) => ({
+      currentlyLoadedObjects: prevState.currentlyLoadedObjects + 1
+    }))
+  }
+
   async handleChooseMuseum(museum_id){
     const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, plan, updateUser } = this.props;
-    this.setState({loading:true});
-    const museums = convertToArray(getMuseums()), settings = getSettings();
+    
+    let { museums } = this.state
+    const currentMuseum = museums.find(item => item.sync_id === museum_id)
+    this.setState({
+      loading: true,
+      loadingCaption: strings.downloading,
+      totalLoadingObjects: 0,
+      currentlyLoadedObjects: 0,
+      chosenMuseumLogo: currentMuseum.museumimages.find(
+        (image) => image.image_type === "logo"
+      ).image,
+    });
+
+    museums = convertToArray(getMuseums()), settings = getSettings();
     let museum = museums.find(item => item.sync_id === museum_id);
 
     if(museum) museum = getMuseum(museum_id);
-    if(!museum) museum = await setAllData(museum_id)
-    .catch((err) => this.setState({loading: false}, () => Toaster.showMessage(`${strings.wentWrong}: '${err}'`, ToasterTypes.ERROR)))
+    if (!museum)
+      museum = await setAllData(
+        museum_id,
+        this.updateTotalLoadingObjects.bind(this),
+        this.incrementCurrentlyLoadedObjects.bind(this)
+      ).catch((err) =>
+        this.setState({ loading: false }, () =>
+          Toaster.showMessage(
+            `${strings.wentWrong}: '${err}'`,
+            ToasterTypes.ERROR
+          )
+        )
+      );
 
     const user = getUser(), chats = getChats();
     
     if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
+    this.setState({
+      loadingCaption: strings.synchronising,
+      loadingPercentage: 0,
+      totalLoadingObjects: 0,
+      currentlyLoadedObjects: 0,
+    });
     
-    await sync({ museum, user, settings })
-    .then(() => this.setState({loading: false},() => AsyncStorage.setItem('museum', museum_id)))
-    .catch(() => Toaster.showMessage(strings.updatingError, ToasterTypes.ERROR))
-    .finally(() => this.setState({loading: false}, () => AsyncStorage.setItem('museum', museum_id)));
+    await sync(
+      { museum, user, settings },
+      this.updateTotalLoadingObjects.bind(this),
+      this.incrementCurrentlyLoadedObjects.bind(this)
+    )
+      .then(() =>
+        this.setState({ loading: false }, () =>
+          AsyncStorage.setItem("museum", museum_id)
+        )
+      )
+      .catch((err) =>
+        Toaster.showMessage(
+          strings.updatingError + ":" + err,
+          ToasterTypes.ERROR
+        )
+      )
+      .finally(() =>
+        this.setState({ loading: false }, () =>
+          AsyncStorage.setItem("museum", museum_id)
+        )
+      );
     
     
     let object = null; 
@@ -84,41 +144,87 @@ class MuseumsScene extends Component {
   }
 
   render() {
-    const {museums, loading} = this.state;
-
+    const {
+      museums,
+      loading,
+      loadingCaption,
+      currentlyLoadedObjects,
+      totalLoadingObjects,
+      chosenMuseumLogo,
+    } = this.state;
+    const percentage = parseInt(
+      (currentlyLoadedObjects / totalLoadingObjects) * 100
+    );
     return (
-      <Scene label='Museums' backBtnFunc={()=>Actions.pop()} loading={loading}>
+      <Scene
+        label="Museums"
+        backBtnFunc={() => Actions.pop()}
+        loading={loading}
+        loadingCaption={loadingCaption}
+        loadingPercentage={percentage}
+        loadingLogo={chosenMuseumLogo}
+      >
         <ScrollView>
-          {museums.map(museum => {
+          {museums.map((museum) => {
             // let from_hour = '', to_hour = '';
             // if(museum.opennings) from_hour = museum.opennings.from_hour;
             // if(museum.opennings) to_hour = museum.opennings.to_hour;
-            const image = convertToArray(museum.museumimages).find( image => image.image_type === 'logo');
-            const logo = image ? image.image : 'https://logo';
+            const image = convertToArray(museum.museumimages).find(
+              (image) => image.image_type === "logo"
+            );
+            const logo = image ? image.image : "https://logo";
             return (
               <TouchableOpacity
-                key={museum.sync_id} 
+                key={museum.sync_id}
                 style={styles.main.museumsRowContainer}
                 onPress={() => this.handleChooseMuseum(museum.sync_id)}
               >
-                <View style={{backgroundColor:colors.black}}>
-                  <Image source={{uri: logo}} style={{width:100, height:73, alignSelf:'center'}} resizeMode="contain"  />
+                <View style={{ backgroundColor: colors.black }}>
+                  <Image
+                    source={{ uri: logo }}
+                    style={{ width: 100, height: 73, alignSelf: "center" }}
+                    resizeMode="contain"
+                  />
                 </View>
 
                 <View style={styles.main.museumsRowDescriptionContainer}>
                   <View>
-                    <Text style={styles.main.museumsRowTitle}>{getLocalization(museum.localizations, getDeviceLocale(), 'title')}</Text>
-                    <Text style={styles.main.museumsRowDescription}>{getLocalization(museum.localizations, getDeviceLocale(), 'specialization')}</Text>   
-                  </View> 
-                  <Icon name='keyboard-arrow-right' size={24} color={colors.white} /> 
+                    <Text style={styles.main.museumsRowTitle}>
+                      {getLocalization(
+                        museum.localizations,
+                        getDeviceLocale(),
+                        "title"
+                      )}
+                    </Text>
+                    <Text style={styles.main.museumsRowDescription}>
+                      {getLocalization(
+                        museum.localizations,
+                        getDeviceLocale(),
+                        "specialization"
+                      )}
+                    </Text>
+                  </View>
+                  <Icon
+                    name="keyboard-arrow-right"
+                    size={24}
+                    color={colors.white}
+                  />
                   {/* <View key={museum.sync_id} style={{flexDirection:'row', marginTop:10, alignItems:'center'}}>
                     <Icon name='access-time' size={16} color='rgb(92,94,96)' /> 
                     <Text style={{color:'rgb(92,94,96)', fontSize:12, fontWeight:'bold', marginHorizontal:10}}>{`${from_hour} - ${to_hour}`}</Text>
                   </View> */}
                 </View>
               </TouchableOpacity>
-            )})}
-          {museums.length === 0 && <NoMore title={strings.noMuseums} description='' icon='m' containerStyle={{marginTop:25}} />}
+            );
+          })}
+          {museums.length === 0 && (
+            <NoMore
+              title={strings.noMuseums}
+              description=""
+              icon="m"
+              containerStyle={{ marginTop: 25 }}
+            />
+          )}
         </ScrollView>
       </Scene>
     );
