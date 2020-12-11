@@ -110,6 +110,7 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
   objects_chunks.forEach(async objects_chunk => {
     await Promise.all(
       objects_chunk.map(async item => {
+        incrementTotal()
         const avatar = await ImageCache(item.avatar, item.sync_id);
         let cropped_avatar = avatar;
         if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
