@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Image, View, Text as Icon } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-// import RNFetchBlob from "rn-fetch-blob";
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -27,7 +26,6 @@ class LoaderScene extends Component {
 
   async componentWillMount() {
     const { getUser } = this.props;
-    // console.warn(RNFetchBlob.fs.dirs)
     const user = await getUser();
     this.setState({user});
 
