@@ -6,7 +6,7 @@ import remote from '../config/constants';
 import strings from '../config/localization';
 import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
-import {calculateTotalObjectsToLoad, convertToArray, convertToArray, chunkArray} from '../config/helpers';
+import {calculateTotalObjectsToLoad, convertToArray, chunkArray} from '../config/helpers';
 import RNFS from 'react-native-fs'
 global.Buffer = global.Buffer || require('buffer').Buffer
 
