@@ -1,6 +1,6 @@
 import { Platform, NativeModules } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNFetchBlob from "rn-fetch-blob";
+import RNFS from 'react-native-fs'
 import {PERMISSIONS} from 'react-native-permissions';
 import Toaster, {ToasterTypes} from "../components/Popup";
 
@@ -33,6 +33,16 @@ export const updateArrayItem = (array, item, key = 'sync_id') => {
   if(index !== -1) result[index] = {...result[index], ...item};
   return result;
 };
+
+export const chunkArray = (myArray, chunk_size) => {
+  const tempArray = [];
+  
+  for (let index = 0; index < myArray.length; index += chunk_size) {
+      myChunk = myArray.slice(index, index+chunk_size);
+      tempArray.push(myChunk);
+  }
+  return tempArray;
+}
 
 export const updateItemOrPush = (array, item, key = 'sync_id') => {
   const result = [...array];
@@ -73,8 +83,8 @@ export const showToObject = async () => {
 }
 
 export const getImage = (sync_id) => Platform.OS === 'android' ? 
-'file://' + RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg" 
-: RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";
+'file://' + RNFS.DocumentDirectoryPath + "/images/" + sync_id + ".jpg" 
+: RNFS.DocumentDirectoryPath + "/images/" + sync_id + ".jpg";
 
 export const calculateMessageDelay = (message = '', minimumDelay, divider = 4) => {
   // calculate delay to show the next messages (reading delay)
