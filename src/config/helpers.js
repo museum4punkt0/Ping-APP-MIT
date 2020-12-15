@@ -12,15 +12,19 @@ export const convertToArray = ( object ) => {
 
 export const calculateTotalObjectsToLoad = (museum, settings) => {
   let total = museum
-    ? museum.objects.length +
+    ? museum.objects.length * 2 +
+      museum.objects.filter(item => item.cropped_avatar).length +
+      museum.objects.reduce((sum, item) => item.images ? sum + item.images.length : sum , 0) +
+      museum.objects.reduce((sum, item) => item.localizations ? sum + item.localizations.length : sum, 0) +
       museum.images.length +
       museum.sections.length
     : 0;
+
   total += settings
     ? settings.predefined_avatars.length
     : 0;
-  
-    return total
+
+  return total
 }
 
 export const updateArrayItem = (array, item, key = 'sync_id') => {

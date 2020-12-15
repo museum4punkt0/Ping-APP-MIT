@@ -93,19 +93,27 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
   const objects = [], predefined_avatars = [], images = [], sections = [];
   await Promise.all(
     museums.objects.map(async item => {
-      incrementTotal()
       const avatar = await ImageCache(item.avatar, item.sync_id);
+      incrementTotal()
+      
       let cropped_avatar = avatar;
-      if(item.cropped_avatar) cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
+      if(item.cropped_avatar) {
+        incrementTotal()
+        cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
+      }
       const object_map = await ImageCache(item.object_map, `map-${item.sync_id}`);
+      incrementTotal()
+
       const images = [], localizations = [];
 
       await Promise.all(item.images.map(async image => {
+        incrementTotal()
         const path = await ImageCache(image.image, image.sync_id);
         images.push({...image, image:path})
       }));
       
       await Promise.all(item.localizations.map(async localization => {
+        incrementTotal()
         const conversation = await getRemoteDialogue(localization.conversation);
         localizations.push({...localization, conversation})
       }));
