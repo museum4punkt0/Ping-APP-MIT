@@ -42,7 +42,7 @@ class PhotoScene extends Component {
     return (
       <Scene label={strings.objectPhoto}>
 
-        <View style={{flex:0.6, margin:15}}>
+        <View style={{flex:0.5, margin:15}}>
           <Image style={{flex:1, backgroundColor: colors.dark, borderRadius:10}} source={{uri: img.uri}} />
           <View style={styles.camera.photoTitleContainer}>
             <Text style={styles.camera.photoTitle}>{getLocalization(object.localizations, user.language, 'title')}</Text>
@@ -57,7 +57,7 @@ class PhotoScene extends Component {
           </View>
         )}
 
-        <View style={{flex:0.4, paddingHorizontal:15}}>
+        <View style={{flex:0.5, paddingHorizontal:15}}>
           {isRecognized && <Button onPress={() => this.handleSavePhoto(img, chatID, object)} title={strings.addThis} />}
           <Button containerStyle={{ backgroundColor:isRecognized ? colors.dark : colors.green }} onPress={()=>Actions.pop()} title={strings.takeAnother} />
           {!isRecognized && <Button containerStyle={{backgroundColor:colors.dark}} onPress={() => this.handleSavePhoto(img, chatID, object)} title={strings.useThisPhoto} />} 
