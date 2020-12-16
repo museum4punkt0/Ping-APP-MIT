@@ -36,7 +36,8 @@ class CollectionScene extends Component {
         vertical: 1
       },
       isVisible: false,
-      title: ''
+      title: '',
+      isCategoryWithTwoObjects: false,
     }
     this.dialog = { isActive:true }
   }
@@ -47,13 +48,15 @@ class CollectionScene extends Component {
     const user = getUser();
     const categoriesCollectionArray = [];
     const maxCategoryLevel = Math.max(...categories.map(category => category.category_level));
-    if(object && image) this.shotToast()
     let level = user.level;
+    let isCategoryWithTwoObjects = false
     for(let i=0; i < categories.length; i++){
       const object_ids = convertToArray(categories[i].sync_object_ids);
       let category_id = null, newCollection = null;
       if(object && image && object_ids) category_id = object_ids.find(item => item === object.sync_id);   
-      categories[i].collections = collections.filter(collection => collection.category_id === categories[i].sync_id); 
+      const categoryCollections = collections.filter(collection => collection.category_id === categories[i].sync_id); 
+      categories[i].collections = categoryCollections
+      isCategoryWithTwoObjects = isCategoryWithTwoObjects || categoryCollections.filter((collection) => collection.category_id).length < 2
       if(category_id) newCollection = await createCollection({image, object_id: object.sync_id, category_id: categories[i].sync_id});
       if(newCollection) categories[i].collections.push(newCollection);
       if(newCollection && categories[i].collections.length === 3) this.setState({congratulationsDialog:true});
@@ -84,7 +87,15 @@ class CollectionScene extends Component {
 
     const redirection_timout = settings.redirection_timout*1000;
     setTimeout(() => this.dialog.isActive && this.setState({isModalOpen:true}), redirection_timout || 5000)
-    this.setState({ categories:categoriesCollectionArray.sort((a, b) => b.category_level - a.category_level), user, categoryID:user.category });
+    this.setState({
+      categories: categoriesCollectionArray.sort(
+        (a, b) => b.category_level - a.category_level
+      ),
+      isCategoryWithTwoObjects,
+      user,
+      categoryID: user.category,
+    });
+    if(object && image) this.shotToast()
   }
 
   componentWillUnmount ()
@@ -96,40 +107,31 @@ class CollectionScene extends Component {
   }
 
   async shotToast(){
-    const {categories} = this.state;
-    //get position
-    categories.map((item, index) => {
-      item.collections.map((i, id) => {
-        if (i.category_id) {
-          const posXY = {
-            x: index + 1,
-            y: id + 1
-          };
-          this.setState({
-            position: posXY
-          });
-        }
-        return true;
-      });
-      return true;
-    });
+    let {categories, isCategoryWithTwoObjects} = this.state;
+    categories = convertToArray(categories)
+    const {object} = this.props;
+    
+    let x = categories.findIndex(category => convertToArray(category.sync_object_ids).includes(object.sync_id));
+    let y = convertToArray(categories[x].collections).reverse().findIndex(collection => collection.category_id);
+    if(y === -1) y = 0
+    else y = 2 - y
 
-    this.setState({confetti:true}, () => {
+    this.setState({confetti:true, position: {vertical: x + 1, horizontal: y + 1}}, () => {
       this.setState({
         isVisible: true,
         title: strings.startCollection
       });
     });
-    if(await getStorageItem('firstCollection').then(value => value)) {
+    if(!await getStorageItem('firstCollection').then(value => value)) {
       setTimeout(() => {
-        getStorageItem('firstCollection_2').then(value => {
+        getStorageItem('tappingTip').then(value => {
           this.setState({
             isVisible: typeof value !== 'string',
             title: strings.tappingOnTheObject
           });
         });
         setTimeout(() => {
-          getStorageItem('firstCollection_3').then(value => {
+          getStorageItem('allObjectsBelongTip').then(value => {
             this.setState({
               isVisible: typeof value !== 'string',
               title: strings.allObjectsBelong
@@ -137,15 +139,18 @@ class CollectionScene extends Component {
           });
         }, 5500)
       }, 5500)
-    } else {
-      getStorageItem('firstCollection_4').then(value => {
+    } 
+    
+    if(isCategoryWithTwoObjects)
+    {
+      getStorageItem('twoObjectsTip').then(value => {
         this.setState({
           isVisible: typeof value !== 'string',
           title: strings.youHaveTwoObjects
         });
       });
       setTimeout(() => {
-        getStorageItem('firstCollection_5').then(value => {
+        getStorageItem('collectMoreTip').then(value => {
           this.setState({
             isVisible: typeof value !== 'string',
             title: strings.toCollectMore
@@ -171,7 +176,7 @@ class CollectionScene extends Component {
   hundleCheckBoxPress(categoryID, checked, title){
     const { updateUser } = this.props;
     const { user } = this.state;
-    if(!checked) {showToast('firstCollection_6', strings.greatYouSelected); Toaster.showMessage(`${strings.filterFor} ${title} ${strings.set}`, ToasterTypes.SUCCESS)}
+    if(!checked) {showToast('firstFilterTip', strings.greatYouSelected); Toaster.showMessage(`${strings.filterFor} ${title} ${strings.set}`, ToasterTypes.SUCCESS)}
     updateUser({ ...user, category:categoryID });
     this.dialog.isActive = false;
     this.setState({ categoryID })
