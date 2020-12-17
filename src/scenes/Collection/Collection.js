@@ -36,8 +36,7 @@ class CollectionScene extends Component {
         vertical: 1
       },
       isVisible: false,
-      title: '',
-      isCategoryWithTwoObjects: false,
+      title: ''
     }
     this.dialog = { isActive:true }
   }
@@ -49,14 +48,11 @@ class CollectionScene extends Component {
     const categoriesCollectionArray = [];
     const maxCategoryLevel = Math.max(...categories.map(category => category.category_level));
     let level = user.level;
-    let isCategoryWithTwoObjects = false
     for(let i=0; i < categories.length; i++){
       const object_ids = convertToArray(categories[i].sync_object_ids);
       let category_id = null, newCollection = null;
       if(object && image && object_ids) category_id = object_ids.find(item => item === object.sync_id);   
-      const categoryCollections = collections.filter(collection => collection.category_id === categories[i].sync_id); 
-      categories[i].collections = categoryCollections
-      isCategoryWithTwoObjects = isCategoryWithTwoObjects || categoryCollections.filter((collection) => collection.category_id).length < 2
+      categories[i].collections = collections.filter(collection => collection.category_id === categories[i].sync_id); 
       if(category_id) newCollection = await createCollection({image, object_id: object.sync_id, category_id: categories[i].sync_id});
       if(newCollection) categories[i].collections.push(newCollection);
       if(newCollection && categories[i].collections.length === 3) this.setState({congratulationsDialog:true});
@@ -86,12 +82,18 @@ class CollectionScene extends Component {
    }
 
     const redirection_timout = settings.redirection_timout*1000;
+    
+    let sorted_categories = categoriesCollectionArray.sort(
+      (a, b) => b.category_level - a.category_level
+    )
+    if(object){
+      const rightCategory = sorted_categories.filter(category => convertToArray(category.sync_object_ids).includes(object.sync_id))[0]
+      sorted_categories = [rightCategory, ...sorted_categories.filter(category => !convertToArray(category.sync_object_ids).includes(object.sync_id))]
+    }
+
     setTimeout(() => this.dialog.isActive && this.setState({isModalOpen:true}), redirection_timout || 5000)
     this.setState({
-      categories: categoriesCollectionArray.sort(
-        (a, b) => b.category_level - a.category_level
-      ),
-      isCategoryWithTwoObjects,
+      categories: sorted_categories,
       user,
       categoryID: user.category,
     });
@@ -107,7 +109,7 @@ class CollectionScene extends Component {
   }
 
   async shotToast(){
-    let {categories, isCategoryWithTwoObjects} = this.state;
+    let {categories} = this.state;
     categories = convertToArray(categories)
     const {object} = this.props;
     
@@ -116,12 +118,18 @@ class CollectionScene extends Component {
     if(y === -1) y = 0
     else y = 2 - y
 
-    this.setState({confetti:true, position: {vertical: x + 1, horizontal: y + 1}}, () => {
+    this.setState({confetti:true, position: {vertical: x + 1, horizontal: y + 1}});
+    if (
+      convertToArray(categories[x].collections).filter(
+        (collection) => collection.category_id
+      ).length == 1
+    ) {
       this.setState({
         isVisible: true,
-        title: strings.startCollection
+        title: strings.startCollection,
       });
-    });
+    }
+
     if(!await getStorageItem('firstCollection').then(value => value)) {
       setTimeout(() => {
         getStorageItem('tappingTip').then(value => {
@@ -140,8 +148,7 @@ class CollectionScene extends Component {
         }, 5500)
       }, 5500)
     } 
-    
-    if(isCategoryWithTwoObjects)
+    if(y === 1)
     {
       getStorageItem('twoObjectsTip').then(value => {
         this.setState({
@@ -181,7 +188,6 @@ class CollectionScene extends Component {
     this.dialog.isActive = false;
     this.setState({ categoryID })
   } 
-  
   // eslint-disable-next-line
   handleCollectionButtonPress(collection){
     const objects = convertToArray(getObjects());
