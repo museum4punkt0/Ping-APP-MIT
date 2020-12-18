@@ -1,7 +1,3 @@
-import strings from './localization'
-
-console.log('test:', strings.fontSizesLarge)
-
 export default {
     //local
     // api: 'http://192.168.0.105:8000/api/v1/',
