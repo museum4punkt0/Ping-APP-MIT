@@ -12,8 +12,8 @@ import Option from '../components/Profile/OptionContainer'
 import logo from "../assets/images/logo.png";
 import styles, { colors } from '../config/styles';
 import strings from '../config/localization';
-import constant from '../config/constants';
 import { getUser, updateUser } from '../actions/user'
+import { getOptions } from '../config/helpers'
 
 class LoaderScene extends Component {
   constructor(props) {
@@ -72,11 +72,13 @@ export default connect(() => ({ }), { getUser, updateUser })(LoaderScene);
 const AppStartComponent = (props) => {
   // eslint-disable-next-line react/prop-types
   const {onUserChanged, language, handleAppStart, font_size} = props;
+  const options = getOptions()
+
   return(
     <View style={{margin:15}}>
       <Option title={strings.chooseYourLanguage}>
         <Picker
-          items={constant.lang}
+          items={options.lang}
           onValueChange={(value) => onUserChanged('language', value)}
           value={language}
           style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
@@ -86,7 +88,7 @@ const AppStartComponent = (props) => {
       </Option>
       <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
         <Picker
-          items={constant.fontSizes}
+          items={options.fontSizes}
           onValueChange={(value) => onUserChanged('font_size',value)}
           value={font_size}
           style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
