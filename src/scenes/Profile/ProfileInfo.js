@@ -13,8 +13,7 @@ import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
 import strings from '../../config/localization';
-import {getImage, getLocalization} from '../../config/helpers';
-import constant from '../../config/constants';
+import {getImage, getLocalization, getOptions} from '../../config/helpers';
 import Button from '../../components/Button'
 import ChooseAvatarDialog from '../../components/Dialogs/ChooseAvatarDialog'
 import Option from '../../components/Profile/OptionContainer'
@@ -154,6 +153,7 @@ class ProfileInfoScene extends Component {
         }
     };
     const spin = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
+    const options = getOptions()
     return (
       <Scene label={strings.info} isFooterShow index={5} loading={loading}>
         <ChooseAvatarDialog
@@ -191,7 +191,7 @@ class ProfileInfoScene extends Component {
 
               <Option title={strings.languageLabel} style={{marginTop:5}}>
                 <Picker
-                  items={constant.lang}
+                  items={options.lang}
                   onValueChange={(value) => this.onUserChanged('language', value)}
                   value={language}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
@@ -202,7 +202,7 @@ class ProfileInfoScene extends Component {
 
               <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
                 <Picker
-                  items={constant.fontSizes}
+                  items={options.fontSizes}
                   onValueChange={(value) => this.onUserChanged('font_size',value)}
                   value={font_size}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
@@ -213,7 +213,7 @@ class ProfileInfoScene extends Component {
 
               <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
                 <Picker
-                  items={constant.chatInterval}
+                  items={options.chatInterval}
                   onValueChange={(speed) => this.handleChatIntervalChange(speed)}
                   value={speed}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
