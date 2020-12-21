@@ -55,7 +55,7 @@ export const common = StyleSheet.create({
     fontSize: 18,
   },
   headerContainer:{
-    paddingVertical: 5,
+    paddingVertical: 10,
     paddingTop: IOSpadding,
     alignItems: 'center',
     justifyContent: 'space-between',
