@@ -1,4 +1,4 @@
-import { Platform, NativeModules } from 'react-native';
+import { Platform, NativeModules, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNFS from 'react-native-fs'
 import {PERMISSIONS} from 'react-native-permissions';
@@ -116,6 +116,12 @@ export const getPermission = (type = 'location') => {
       android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
     });
   }
+}
+
+export const scale = size => {
+  const { width, height } = Dimensions.get("window");
+  const guidelineBaseWidth = 350;
+  return width / guidelineBaseWidth * size;
 }
 
 export const format_url_for_linking = url => url.startsWith('http') ? url : 'http://' + url
