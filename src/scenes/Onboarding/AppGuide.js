@@ -1,8 +1,9 @@
 import React from "react";
-import { View, FlatList, Dimensions, Image, TouchableOpacity, PixelRatio } from "react-native";
+import { View, FlatList, Dimensions, Image, TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
 import strings from "../../config/localization";
 import styles, { colors } from "../../config/styles";
+import { scale } from "../../config/helpers"
 import Text from '../../components/Text';
 import Scene from '../../components/Scene';
 import img_1 from '../../assets/images/onboarding/1.png'
@@ -11,9 +12,6 @@ import img_3 from '../../assets/images/onboarding/3.png'
 import img_4 from '../../assets/images/onboarding/4.png'
 
 const { width, height } = Dimensions.get("window");
-
-const guidelineBaseWidth = 350;
-const scale = size => width / guidelineBaseWidth * size;
 
 class Swiper extends React.Component {
     constructor(props) {
