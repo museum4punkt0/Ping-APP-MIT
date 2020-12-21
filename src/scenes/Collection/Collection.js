@@ -192,12 +192,12 @@ class CollectionScene extends Component {
         {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false})} screen='collection' position={position} /> : null}
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
         {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
-        <ScrollView>
           {confetti && 
-            <View style={{position:'absolute', zIndex: 1000, width: '100%', height: '100%'}}>
-              <Confetti ref={(node) => this._confettiView = node} duration={4000} timeout={1} confettiCount={200}/>
+            <View pointerEvents='none' style={{position:'absolute', zIndex: 1000, width: '100%', height: '100%'}}>
+              <Confetti ref={(node) => this._confettiView = node} duration={5000} timeout={20} confettiCount={100}/>
             </View>
           }
+        <ScrollView>
           {categories.map( category => {
             const complieted = typeof category.collections === 'object' && category.collections.filter(item=>item.image).length;
             const checked = categoryID === category.sync_id;

@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 export const getFontSize = (size, type = 'normal') => {
   if(type === 'normal') {
     return size;
-  } else if (type === 'groß') {
+  } else if (type === 'big') {
     return size + 2;
-  } else if (type === 'extra groß') {
+  } else if (type === 'large') {
     return size + 3.5;
   } else{
     return size;

@@ -145,6 +145,16 @@ const strings = new LocalizedStrings({
 
     // Plan
     startYouOwnTour: 'Congratulations! You have started your own planned tour! This way you can prepare your next museum visit!',
+
+    // Options
+    fontSizesNormal: 'Normal',
+    fontSizesBig: 'Big',
+    fontSizesLarge: 'Large',
+    chatInervalsAuto: 'Auto',
+    chatInervalsSlow: 'Slow',
+    chatInervalsNormal: 'Normal',
+    chatInervalsFast: 'Fast',
+    chatInervalsVeryFast: 'Very fast',
   },
   de: {
     //Bottom navigation
@@ -289,6 +299,15 @@ const strings = new LocalizedStrings({
 
     // Plan
     startYouOwnTour: 'Herzliche Glückwünsche! Du hast deine eigene geplante Tour gestartet!',
+    
+    // Options
+    fontSizesNormal: 'Normal',
+    fontSizesBig: 'Groß',
+    fontSizesLarge: 'Extra groß',
+    chatInervalsSlow: 'Schleppend',
+    chatInervalsNormal: 'Normal',
+    chatInervalsFast: 'Schnell',
+    chatInervalsVeryFast: 'Extra schnell',
   }
 });
 

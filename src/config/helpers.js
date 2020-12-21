@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNFS from 'react-native-fs'
 import {PERMISSIONS} from 'react-native-permissions';
 import Toaster, {ToasterTypes} from "../components/Popup";
+import strings from "./localization"
 
 export const convertToArray = ( object ) => {
   let array = object || [];
@@ -123,5 +124,23 @@ export const scale = size => {
   const guidelineBaseWidth = 350;
   return width / guidelineBaseWidth * size;
 }
+export const getOptions = () => ({
+  lang: [
+    { label: "English", value: "en", key: "en" },
+    { label: "Deutsch", value: "de", key: "de" },
+  ],
+  fontSizes: [
+    { label: strings.fontSizesNormal, value: "normal", key: "normal" },
+    { label: strings.fontSizesBig, value: "big", key: "big" },
+    { label: strings.fontSizesLarge, value: "large", key: "large" },
+  ],
+  chatInterval: [
+    { label: strings.chatInervalsAuto, value: "", key: "auto" },
+    { label: strings.chatInervalsSlow, value: "2300", key: "slow" },
+    { label: strings.chatInervalsNormal, value: "1500", key: "normal" },
+    { label: strings.chatInervalsFast, value: "800", key: "fast" },
+    { label: strings.chatInervalsVeryFast, value: "300", key: "very fast" },
+  ],
+});
 
 export const format_url_for_linking = url => url.startsWith('http') ? url : 'http://' + url
