@@ -16,7 +16,7 @@ class Swiper extends React.Component {
             currentSelectIndex:0
         };
         this.viewabilityConfig = {
-          waitForInteraction: true,
+          waitForInteraction: false,
           viewAreaCoveragePercentThreshold: 95,
         }
 
@@ -90,9 +90,9 @@ class Swiper extends React.Component {
                   <Icon color={colors.brownGrey} name="keyboard-arrow-left" size={30} />
                 </TouchableWithoutFeedback>
               )}
-              <View style={{height:30, justifyContent:'center'}}>
+              <View style={{height:30, justifyContent:'center', alignItems: 'center', flexDirection: 'row'}}>
                 <Text style={{color:colors.brownGrey, fontSize:16, fontWeight:'bold'}}>{section_name}</Text>
-                <TouchableOpacity onPress={()=>Toaster.showMessage(strings.youAreInvited, ToasterTypes.MESSAGE)} style={{position:'absolute', right:-50, height:30, justifyContent:'center', paddingHorizontal:15}}>
+                <TouchableOpacity onPress={()=>Toaster.showMessage(strings.youAreInvited, ToasterTypes.MESSAGE)} style={{height:30, justifyContent:'center', paddingHorizontal:10}}>
                   <FIcon color={colors.white} name="question-circle" size={20} />
                 </TouchableOpacity>
               </View>
