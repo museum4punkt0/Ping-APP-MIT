@@ -115,7 +115,7 @@ class ProfileInfoScene extends Component {
           .then(async () => {
             await AsyncStorage.multiRemove([
               'firstEntry','museum', 'firstLike', 'firstDislike', 'firstDiscovery', 'firstDiscoverySwipe', 'firstMatch', 'firstVip', 'firstChatImage',
-              'firstCollection', 'firstCollection_2', 'firstCollection_3', 'firstCollection_4', 'firstCollection_5', 'firstCollection_6'
+              'firstCollection', 'tappingTip', 'allObjectsBelongTip', 'twoObjectsTip', 'collectMoreTip', 'firstFilterTip'
             ]);
             Actions.PreloaderScene()
           }))))
