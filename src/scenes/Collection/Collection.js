@@ -97,7 +97,7 @@ class CollectionScene extends Component {
       user,
       categoryID: user.category,
     });
-    if(object && image) this.shotToast()
+    if(object && image) this.showToast()
   }
 
   componentWillUnmount ()
@@ -108,62 +108,67 @@ class CollectionScene extends Component {
       }
   }
 
-  async shotToast(){
+  showFirstCollectionTips(){
+    setTimeout(() => {
+      getStorageItem('tappingTip').then(value => {
+        this.setState({
+          isVisible: typeof value !== 'string',
+          title: strings.tappingOnTheObject
+        });
+      });
+      setTimeout(() => {
+        getStorageItem('allObjectsBelongTip').then(value => {
+          this.setState({
+            isVisible: typeof value !== 'string',
+            title: strings.allObjectsBelong
+          });
+        });
+      }, 5500)
+    }, 5500)
+  }
+
+  showTwoObjectsInCategoryTips(){
+    getStorageItem('twoObjectsTip').then(value => {
+      this.setState({
+        isVisible: typeof value !== 'string',
+        title: strings.youHaveTwoObjects
+      });
+    });
+    setTimeout(() => {
+      getStorageItem('collectMoreTip').then(value => {
+        this.setState({
+          isVisible: typeof value !== 'string',
+          title: strings.toCollectMore
+        });
+      });
+    }, 5500)
+  }
+
+  async showToast(){
     let {categories} = this.state;
     categories = convertToArray(categories)
-    const {object} = this.props;
     
-    let x = categories.findIndex(category => convertToArray(category.sync_object_ids).includes(object.sync_id));
-    let y = convertToArray(categories[x].collections).reverse().findIndex(collection => collection.category_id);
-    if(y === -1) y = 0
-    else y = 2 - y
+    let x = 0;
+    let y = convertToArray(categories[x].collections).findIndex(collection => !collection.category_id);
 
-    this.setState({confetti:true, position: {vertical: x + 1, horizontal: y + 1}});
-    if (
-      convertToArray(categories[x].collections).filter(
-        (collection) => collection.category_id
-      ).length == 1
-    ) {
+    this.setState({confetti:true, position: {vertical: x + 1, horizontal: y}});
+    
+    // First time adding an object to a collection
+    if(!await getStorageItem('firstCollection').then(value => value)){
+      this.showFirstCollectionTips();
+    } 
+
+    // First object in a new category
+    if (y == 1) {
       this.setState({
         isVisible: true,
         title: strings.startCollection,
       });
     }
 
-    if(!await getStorageItem('firstCollection').then(value => value)) {
-      setTimeout(() => {
-        getStorageItem('tappingTip').then(value => {
-          this.setState({
-            isVisible: typeof value !== 'string',
-            title: strings.tappingOnTheObject
-          });
-        });
-        setTimeout(() => {
-          getStorageItem('allObjectsBelongTip').then(value => {
-            this.setState({
-              isVisible: typeof value !== 'string',
-              title: strings.allObjectsBelong
-            });
-          });
-        }, 5500)
-      }, 5500)
-    } 
-    if(y === 1)
-    {
-      getStorageItem('twoObjectsTip').then(value => {
-        this.setState({
-          isVisible: typeof value !== 'string',
-          title: strings.youHaveTwoObjects
-        });
-      });
-      setTimeout(() => {
-        getStorageItem('collectMoreTip').then(value => {
-          this.setState({
-            isVisible: typeof value !== 'string',
-            title: strings.toCollectMore
-          });
-        });
-      }, 5500)
+    // Second object in a category (1 more and level up)
+    if(y === 2){
+      this.showTwoObjectsInCategoryTips();
     }
   }
 
