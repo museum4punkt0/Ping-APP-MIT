@@ -154,7 +154,7 @@ class CollectionScene extends Component {
     this.setState({confetti:true, position: {vertical: x + 1, horizontal: y}});
     
     // First time adding an object to a collection
-    if(!await getStorageItem('firstCollection').then(value => value)){
+    if(!await getStorageItem('firstCollection')){
       this.showFirstCollectionTips();
     } 
 
