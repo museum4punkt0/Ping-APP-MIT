@@ -136,8 +136,10 @@ class ProfileInfoScene extends Component {
   }
   
   async handleChatIntervalChange(speed){
-    this.setState({speed});
-    await AsyncStorage.setItem('speed', speed);
+    if(speed !== null && speed !== this.state.speed){
+      this.setState({speed});
+      await AsyncStorage.setItem('speed', speed);
+    }
   }
 
   render() {
@@ -258,7 +260,6 @@ export const AvatarView = (props) => {
       } else if(level === 3 ) { return <Animated.Image source={silver} style={[ styles.profile.profileAvatarBorder,{transform: [{rotate: spin}]} ]} />
       } else if(level >= 4 ) { return <Animated.Image source={gold} style={[ styles.profile.profileAvatarBorder,{transform: [{rotate: spin}]} ]} />
       } else { return null; }
-      
   };
   return(
     <View style={{width:130, height:130, alignItems:'center', justifyContent:'center'}}>
