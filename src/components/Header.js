@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Image, ViewPropTypes, Text as Icon  } from 'react-native';
+import { View, TouchableOpacity, Image, ViewPropTypes, Text as Icon, SafeAreaView  } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
@@ -18,7 +18,7 @@ const Header = (props) => {
       </View>
     )
     return (
-      <View style={[headerStyle, {zIndex: 1}]}>
+      <SafeAreaView style={[headerStyle, {zIndex: 1}]}>
         <View style={[styles.common.headerContainer, headerStyle && {backgroundColor:"rgba(255,255,255,0)"}]}>
           {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text numberOfLines={3} adjustsFontSizeToFit={true} style={styles.common.headerName}>{title}</Text>}
           <TouchableOpacity onPress={()=>Actions.MuseumsScene()}>
@@ -26,7 +26,7 @@ const Header = (props) => {
           </TouchableOpacity>    
         </View>
         {getLocalization(tour.localizations, user.language, 'title') && tourButton()}
-      </View>
+      </SafeAreaView>
     );
   }
 
