@@ -77,10 +77,6 @@ class CollectionScene extends Component {
       if(categories[i].category_level <= user.level) categoriesCollectionArray.push(categories[i]);
     }
 
-    if(this._confettiView) {
-      this._confettiView.startConfetti();
-   }
-
     const redirection_timout = settings.redirection_timout*1000;
     
     let sorted_categories = categoriesCollectionArray.sort(
@@ -97,7 +93,12 @@ class CollectionScene extends Component {
       user,
       categoryID: user.category,
     });
+    
     if(object && image) this.showToast()
+    
+    if(this._confettiView) {
+      this._confettiView.startConfetti();
+    }
   }
 
   componentWillUnmount ()
