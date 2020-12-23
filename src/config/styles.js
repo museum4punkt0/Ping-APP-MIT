@@ -56,7 +56,6 @@ export const common = StyleSheet.create({
   },
   headerContainer:{
     paddingVertical: 10,
-    paddingTop: IOSpadding,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -68,7 +67,7 @@ export const common = StyleSheet.create({
     color: colors.white,
     fontWeight:'bold', 
     flex:0.95,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   headerTitle:{
     fontSize: 16, 
