@@ -94,8 +94,10 @@ class CollectionScene extends Component {
       categoryID: user.category,
     });
     
-    if(object && image) this.showToast()
-    
+    this.showToast()
+  }
+
+  startConfetti() {
     if(this._confettiView) {
       this._confettiView.startConfetti();
     }
@@ -152,7 +154,7 @@ class CollectionScene extends Component {
     let x = 0;
     let y = convertToArray(categories[x].collections).findIndex(collection => !collection.category_id);
 
-    this.setState({confetti:true, position: {vertical: x + 1, horizontal: y}});
+    this.setState({position: {vertical: x + 1, horizontal: y}});
     
     // First time adding an object to a collection
     if(!await getStorageItem('firstCollection')){
@@ -206,7 +208,7 @@ class CollectionScene extends Component {
     const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti, isVisible, title, position} = this.state;
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
-        {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false})} screen='collection' position={position} /> : null}
+        {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false, confetti: true}, () => this.startConfetti())} screen='collection' position={position} /> : null}
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
         {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
           {confetti && 
