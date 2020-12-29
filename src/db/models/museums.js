@@ -32,7 +32,6 @@ Objects.schema = {
       language_style: 'string', // (easy or kids or fun or professional)
       avatar: 'string?', // (path)
       cropped_avatar: 'string?',
-      object_map: 'string?',
       level: {type: 'int?', default: 0},
       onboarding: 'bool',
       created_at: 'date',

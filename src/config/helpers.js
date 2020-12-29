@@ -13,7 +13,7 @@ export const convertToArray = ( object ) => {
 
 export const calculateTotalObjectsToLoad = (museum, settings) => {
   let total = museum
-    ? museum.objects.length * 2 +
+    ? museum.objects.length +
       museum.objects.filter(item => item.cropped_avatar).length +
       museum.objects.reduce((sum, item) => item.images ? sum + item.images.length : sum , 0) +
       museum.objects.reduce((sum, item) => item.localizations ? sum + item.localizations.length : sum, 0) +

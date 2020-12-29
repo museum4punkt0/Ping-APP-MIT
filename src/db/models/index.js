@@ -9,7 +9,7 @@ const realm = new Realm({
         Museums.schema, Objects.schema, Categories.schema, Images.schema, Localizations.schema, Tensor.schema,Semantic_relations.schema, Tours.schema, Museums_list.schema, Objects_to_suggest.schema,
         Settings.schema, Position_scores.schema, Exit_position.schema, Likes_scores.schema, Chat_scores.schema, Priority_scores.schema, Distance_scores.schema, Sections.schema
     ],
-    schemaVersion:8,
+    schemaVersion:9,
 });
 
   
