@@ -118,8 +118,6 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
           incrementTotal()
           cropped_avatar = await ImageCache(item.cropped_avatar, `cropped_avatar_${item.sync_id}`);
         }
-        const object_map = await ImageCache(item.object_map, `map-${item.sync_id}`);
-        incrementTotal()
 
         const images = [], localizations = [];
   
@@ -135,7 +133,7 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
           localizations.push({...localization, conversation})
         }));
         
-        objects.push({...item, avatar, cropped_avatar, images, object_map, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
+        objects.push({...item, avatar, cropped_avatar, images, localizations, positionX:parseFloat(item.positionX), positionY:parseFloat(item.positionY)});
       })
     )
   });
