@@ -182,12 +182,10 @@ export const CouldntDetect = ({handlePlanTourButton, handleSelectMuseumButton}) 
 )
 CouldntDetect.propTypes = {handlePlanTourButton: PropTypes.func.isRequired, handleSelectMuseumButton: PropTypes.func.isRequired};
 
-export const DetectedMuseum = ({title, logo, handleSelectMuseumButton, handleChooseMuseum, museum_id}) => (
+export const DetectedMuseum = ({title, handleSelectMuseumButton, handleChooseMuseum, museum_id}) => (
   <View style={{flex:1}}>
     <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-      <ImageBackground source={detected} style={{width:200, height:200, alignItems:'center', justifyContent:'center'}} resizeMode="contain">
-        <Image source={{uri:logo}} style={{width:240, height:50}} resizeMode="contain"  />
-      </ImageBackground>
+      <Image source={detected} style={{width:200, height:200}} resizeMode="contain"  />
       <Text style={styles.main.locationTitleRow}>{`${strings.weDetectedThatYou} ${title}`}</Text>
     </View>
     <View style={{padding:15}}>
