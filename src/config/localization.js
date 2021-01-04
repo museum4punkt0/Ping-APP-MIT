@@ -145,6 +145,12 @@ const strings = new LocalizedStrings({
 
     // Plan
     startYouOwnTour: 'Congratulations! You have started your own planned tour! This way you can prepare your next museum visit!',
+    quitPlan: 'Quit Plan Mode',
+    quitTour: 'Quit Tour',
+    quitDiscovery: 'Quit Discovery',
+    quitPlannedTour: 'Quit Planned Tour',
+    quit: 'Quit',
+    completePlan: 'Complete Plan',
 
     // Options
     fontSizesNormal: 'Normal',
@@ -299,6 +305,12 @@ const strings = new LocalizedStrings({
 
     // Plan
     startYouOwnTour: 'Herzliche Glückwünsche! Du hast deine eigene geplante Tour gestartet!',
+    quitPlan: 'Planmodus Beenden',
+    quitTour: 'Tour Beenden',
+    quitDiscovery: 'Discovery Beenden',
+    quitPlannedTour: 'Geplante Tour Beenden',
+    quit: 'Verlassen',
+    completePlan: 'Plan Abschließen',
     
     // Options
     fontSizesNormal: 'Normal',

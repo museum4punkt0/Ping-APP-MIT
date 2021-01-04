@@ -94,6 +94,16 @@ export const calculateMessageDelay = (message = '', minimumDelay, divider = 4) =
   return messageDelay;
 }
 
+export const planString = (plan, isFromPlanScene=false) => {
+  switch(plan){   
+      case 1: return isFromPlanScene ? strings.completePlan : strings.quitPlan;
+      case 2: return strings.quitTour;
+      case 3: return strings.quitDiscovery;
+      case 4: return strings.quitPlannedTour;
+      default: return strings.quit;      
+  }
+};
+
 export const getDeviceLocale = () => Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLanguages ? NativeModules.SettingsManager.settings.AppleLanguages[0].split('-')[0] : 'en'
     : NativeModules.I18nManager.localeIdentifier.split('-')[0].split('_')[0]; 
