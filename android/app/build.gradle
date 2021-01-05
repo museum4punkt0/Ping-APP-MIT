@@ -131,7 +131,7 @@ android {
         applicationId "com.meinobjekt"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 74
+        versionCode 78
         versionName "1.2.1 "
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
@@ -195,6 +195,10 @@ android {
     productFlavors { //add this object
         stage {
             applicationIdSuffix ".stage"
+            resValue "string", "build_config_package", "com.meinobjekt"
+        }
+        prod {
+            applicationIdSuffix ""
             resValue "string", "build_config_package", "com.meinobjekt"
         }
     }
