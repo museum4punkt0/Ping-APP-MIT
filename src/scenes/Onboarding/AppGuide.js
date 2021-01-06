@@ -10,7 +10,7 @@ import img_1 from '../../assets/images/onboarding/1.png'
 import img_2 from '../../assets/images/onboarding/2.png'
 import img_3 from '../../assets/images/onboarding/3.png'
 import img_4 from '../../assets/images/onboarding/4.png'
-import detected from '../../assets/images/detected.png'
+import img_5 from '../../assets/images/onboarding/5.png'
 import detectedPlan from '../../assets/images/detectedPlan.png'
 
 const { width, height } = Dimensions.get("window");
@@ -30,7 +30,7 @@ class Swiper extends React.Component {
           {id:1, title:strings.title_2, description:strings.description_2, image:img_2},
           {id:2, title:strings.title_3, description:strings.description_3, image:img_3},
           {id:3, title:strings.title_4, description:strings.description_4, image:img_4},
-          {id:4, title:strings.title_5, description:strings.description_5, image:detected},
+          {id:4, title:strings.title_5, description:strings.description_5, image:img_5},
           {id:5, title:strings.title_6, description:strings.description_6, image:detectedPlan},
       ]
     }

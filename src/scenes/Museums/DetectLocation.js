@@ -45,7 +45,7 @@ async componentWillMount(){
     Geolocation.getCurrentPosition(
       location => getMuseumsList(location.coords.latitude, location.coords.longitude)
         .then(museums => {
-          const museum = museums.find(museum => museum.located);
+          const museum = museums[0]
           if(!museum) return this.setState({type:2});
           this.setState({museum, type:1})
         }).catch(() => this.setState({type:0})),
@@ -182,10 +182,12 @@ export const CouldntDetect = ({handlePlanTourButton, handleSelectMuseumButton}) 
 )
 CouldntDetect.propTypes = {handlePlanTourButton: PropTypes.func.isRequired, handleSelectMuseumButton: PropTypes.func.isRequired};
 
-export const DetectedMuseum = ({title, handleSelectMuseumButton, handleChooseMuseum, museum_id}) => (
+export const DetectedMuseum = ({title, logo, handleSelectMuseumButton, handleChooseMuseum, museum_id}) => (
   <View style={{flex:1}}>
     <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-      <Image source={detected} style={{width:200, height:200}} resizeMode="contain"  />
+      <ImageBackground source={detected} style={{width:200, height:200, alignItems:'center', justifyContent:'center'}} resizeMode="contain">
+        <Image source={{uri:logo}} style={{width:240, height:50}} resizeMode="contain"  />
+      </ImageBackground>
       <Text style={styles.main.locationTitleRow}>{`${strings.weDetectedThatYou} ${title}`}</Text>
     </View>
     <View style={{padding:15}}>
