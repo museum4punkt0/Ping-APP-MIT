@@ -304,6 +304,7 @@ const strings = new LocalizedStrings({
     fontSizesNormal: 'Normal',
     fontSizesBig: 'Groß',
     fontSizesLarge: 'Extra groß',
+    chatInervalsAuto: 'Auto',
     chatInervalsSlow: 'Schleppend',
     chatInervalsNormal: 'Normal',
     chatInervalsFast: 'Schnell',
