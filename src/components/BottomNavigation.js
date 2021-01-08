@@ -7,6 +7,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons';
 import Text from "./Text";
 import styles, { colors } from '../config/styles';
 import strings from "../config/localization";
+import { SafeAreaView } from 'react-native';
 
 
 const getColor = (currIndex, index) => {
@@ -42,7 +43,7 @@ export default connect(({plan}) => ({ plan:plan.plan }) , { })(Navigator);
 export const DiscoverNavigator = (props) => {  
   const {index, isPlannedTour} = props
   return(
-    <View style={styles.common.navigationContainer}>
+    <SafeAreaView style={styles.common.navigationContainer}>
       {!isPlannedTour && (
         <TouchableOpacity onPress={Actions.TinderScene} style={styles.common.navigatorItem}>
           <Icon style={[styles.common.navigatorItemIcon,{color:getColor(1, index)}]}>m</Icon>
@@ -65,7 +66,7 @@ export const DiscoverNavigator = (props) => {
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(5, index)}]}>k</Icon>
         <Icon style={{fontSize:10, color:getColor(5, index)}}>{strings.info.toUpperCase()}</Icon>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }
 DiscoverNavigator.propTypes = {
