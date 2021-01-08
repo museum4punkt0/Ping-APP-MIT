@@ -491,8 +491,6 @@ const profile = StyleSheet.create({
       justifyContent:'space-between',
       flexDirection:'row',
       padding:15,
-      borderBottomWidth:0.5,
-      borderColor:colors.gray
     },
     profileTitle:{
       fontSize: 16,
@@ -509,8 +507,9 @@ const profile = StyleSheet.create({
     },
     profileDescription:{
       fontSize: 16,
-      color:colors.white,
-      padding:15
+      color:colors.brownGrey,
+      padding:15,
+      textAlign: 'center'
     },
     versionTitle: {
       fontSize: 10,
@@ -521,6 +520,11 @@ const profile = StyleSheet.create({
       fontSize: 10,
       color:colors.brownGrey,
       marginVertical:10
+    },
+    explanationText:{
+      color:colors.brownGrey, 
+      fontSize: 12, 
+      textAlign: 'center'
     },
     profileAvatar:{
       width:120,
@@ -559,6 +563,14 @@ const profile = StyleSheet.create({
       color:colors.gray
     }
  })
+
+const profileWithProps = ({ plan, isRed }) => StyleSheet.create({
+  profileButton:{
+    marginHorizontal: 15, 
+    backgroundColor: isRed ? colors.red : plan === 1 ? colors.blue : colors.green, 
+    flex: 1
+  },
+})
 
 const tinder = StyleSheet.create({  
   card: {
@@ -678,4 +690,4 @@ const camera = StyleSheet.create({
 });
 
 
-export default { common, main, chat, tinder, profile, camera };
+export default { common, main, chat, tinder, profile, profileWithProps, camera };
