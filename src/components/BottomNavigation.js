@@ -28,9 +28,9 @@ const Navigator = (props) => {
     }
   };
   return(
-    <View style={styles.common.navigationContainer}>
+    <SafeAreaView style={{backgroundColor:colors.dark}}>
       {navigator()}
-    </View>
+    </SafeAreaView>
   );
 }
 Navigator.propTypes = {
@@ -43,7 +43,7 @@ export default connect(({plan}) => ({ plan:plan.plan }) , { })(Navigator);
 export const DiscoverNavigator = (props) => {  
   const {index, isPlannedTour} = props
   return(
-    <SafeAreaView style={styles.common.navigationContainer}>
+    <View style={styles.common.navigationContainer}>
       {!isPlannedTour && (
         <TouchableOpacity onPress={Actions.TinderScene} style={styles.common.navigatorItem}>
           <Icon style={[styles.common.navigatorItemIcon,{color:getColor(1, index)}]}>m</Icon>
@@ -66,7 +66,7 @@ export const DiscoverNavigator = (props) => {
         <Icon style={[styles.common.navigatorItemIcon,{color:getColor(5, index)}]}>k</Icon>
         <Icon style={{fontSize:10, color:getColor(5, index)}}>{strings.info.toUpperCase()}</Icon>
       </TouchableOpacity>
-    </SafeAreaView>
+    </View>
   );
 }
 DiscoverNavigator.propTypes = {
