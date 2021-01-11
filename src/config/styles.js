@@ -606,13 +606,11 @@ const tinder = StyleSheet.create({
   },
   boxLabel:{
     fontSize: 14,
-    color: colors.white,
     textAlign: 'center',
     // textTransform: 'uppercase'
   },
   boxTitle: {
     fontSize: 18,
-    color: colors.white,
     fontWeight:'bold',
     textAlign: 'center',
     marginVertical:5
