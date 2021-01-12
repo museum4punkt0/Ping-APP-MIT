@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 // import s_mark from '../assets/images/semanticObj.png';
 // import object from '../assets/images/object.png';
 import {getImage, scale} from '../config/helpers';
+import ImageSize from 'react-native-image-size'
 import { colors } from '../config/styles';
 
 class MapImage extends Component {
@@ -23,7 +24,7 @@ class MapImage extends Component {
       const {width, height } = event.nativeEvent.layout;
       // eslint-disable-next-line no-invalid-this
       const { map } = this.props;
-      Image.getSize(getImage(map.map), (w, h) => {        
+      ImageSize.getSize(getImage(map.map)).then(({width: w, height: h}) => {
         const kofX = width / w, kofY = height / h;
         const ratio = Math.min(kofX, kofY);
         const imgWidth = w*ratio, imgHeight = h*ratio;
