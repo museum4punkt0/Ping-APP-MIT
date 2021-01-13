@@ -43,7 +43,11 @@ class Swiper extends React.Component {
                 index: currentSelectIndex + 1,
                 animated: true,
             });
-        }else{ Actions.DetectLocation(); }
+        } else {
+          Actions.prevScene === "PreloaderScene"
+            ? Actions.DetectLocation()
+            : Actions[Actions.prevScene]();      
+        }
     }
 
     onViewableItemsChanged = ({ viewableItems }) => {
@@ -85,7 +89,7 @@ class Swiper extends React.Component {
             />
             
             <View style={styles.main.appGuideButtonContainer}>
-              <TouchableOpacity onPress={() => Actions.DetectLocation()}>
+              <TouchableOpacity onPress={() => Actions.prevScene === 'PreloaderScene' ? Actions.DetectLocation() : Actions[Actions.prevScene]()}>
                 <Text style={styles.main.appGuideButtonTitle}>{strings.skip}</Text>
               </TouchableOpacity>
               <View style={{flexDirection:'row'}}>
