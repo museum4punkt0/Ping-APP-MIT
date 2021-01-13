@@ -93,6 +93,7 @@ class ProfileInfoScene extends Component {
 
   handleChangeAvatarButtonPress(){
     ImagePicker.showImagePicker(options, async response => {
+      if(response.didCancel) return
       if(response.customButton) return this.setState({isChooseAvatarModalOpen: true});
       const avatar = await WriteBase64Image(response.data, uuidv1());
       if(!response.error && !response.didCancel) this.setState({avatar})
@@ -149,6 +150,8 @@ class ProfileInfoScene extends Component {
     const {settings, museums, plan} = this.props;
     const spin = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
     const options = getOptions()
+    const currentMuseumTitle = getLocalization(museums.localizations, language, 'title')
+    const currentMuseumDescription = getLocalization(museums.localizations, language, 'description')
     return (
       <Scene label={strings.info} isFooterShow index={5} loading={loading}>
         <ChooseAvatarDialog
@@ -218,14 +221,34 @@ class ProfileInfoScene extends Component {
               </Option> 
             </View>
           </View>  
-          <Button onPress={() => this.handleQuitTourButton()} title={planString(plan)} containerStyle={{marginHorizontal:15, backgroundColor:colors.green}} /> 
-          <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.green}]} onPress={() => this.handleClick(museums.museum_site_url)}>{getLocalization(museums.localizations, user.language, 'title')}</Text>
-          <Text style={styles.profile.profileDescription}>{getLocalization(museums.localizations, user.language, 'description')}</Text>
-          <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.brownGrey}]} onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')}>{strings.termsAnd}</Text>
-          <Button onPress={() => Actions.AppGuideScreen()} title={strings.openGuide} containerStyle={{marginHorizontal:15, backgroundColor: plan === 1 ? colors.blue : colors.green}} />  
-          <TouchableOpacity style={{alignSelf:'center'}} onPress={() => this.handleResetUserButtonPress()}>
-            <Text style={styles.profile.btnTitle}>{strings.resetDevice}</Text>
-          </TouchableOpacity>
+
+          <View>
+            <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={styles.profileWithProps({plan}).profileButton} /> 
+            <TouchableOpacity onPress={()=>Toaster.showMessage(strings.quitDiscoveryExplanation, ToasterTypes.MESSAGE)}>
+              <Text style={styles.profile.explanationText}>{strings.whatDoes}</Text>
+            </TouchableOpacity>
+          </View>
+          
+          <View style={{marginTop: 10}}>
+            <Button onPress={() => Actions.AppGuideScreen()} title={strings.openGuide} containerStyle={styles.profileWithProps({plan}).profileButton} />  
+            <TouchableOpacity onPress={()=>Toaster.showMessage(strings.openVisitorsGuideExplanation, ToasterTypes.MESSAGE)}>
+              <Text style={styles.profile.explanationText}>{strings.whatDoes}</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{marginTop: 10}}>
+            <Button onPress={() => this.handleClick(museums.museum_site_url)} title={`${currentMuseumTitle} ${strings.website}`} containerStyle={styles.profileWithProps({plan}).profileButton} />  
+            {currentMuseumDescription ? <Text style={styles.profile.profileDescription}>{currentMuseumDescription}</Text> : undefined}
+          </View>
+
+          <View style={{marginTop: 10}}>
+            <Button onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')} title={strings.termsAnd} containerStyle={styles.profileWithProps({plan}).profileButton} />  
+          </View>
+
+          <View style={{marginTop: 10}}>
+            <Button onPress={() => this.handleResetUserButtonPress()} title={strings.resetDevice} containerStyle={styles.profileWithProps({isRed: true}).profileButton} />  
+          </View>
+
         </ScrollView>
       </Scene>
     );

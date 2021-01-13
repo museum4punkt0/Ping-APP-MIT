@@ -165,6 +165,12 @@ const strings = new LocalizedStrings({
     chatInervalsNormal: 'Normal',
     chatInervalsFast: 'Fast',
     chatInervalsVeryFast: 'Very fast',
+
+    // Profile
+    website: 'Website',
+    quitDiscoveryExplanation: 'You can exit current mode and go back to choosing another mode or another museum',
+    openVisitorsGuideExplanation: 'Look through app guide slides which explain core concepts of this app',
+    
   },
   de: {
     //Bottom navigation
@@ -329,6 +335,11 @@ const strings = new LocalizedStrings({
     chatInervalsNormal: 'Normal',
     chatInervalsFast: 'Schnell',
     chatInervalsVeryFast: 'Extra schnell',
+
+    // Profile
+    website: 'Webseite',
+    quitDiscoveryExplanation: 'Sie können den aktuellen Modus verlassen und wieder einen anderen Modus oder ein anderes Museum auswählen',
+    openVisitorsGuideExplanation: 'Schauen Sie sich die Folien der App-Anleitung an, in denen die Kernkonzepte dieser App erläutert werden',
   }
 });
 
