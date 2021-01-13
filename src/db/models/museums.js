@@ -86,6 +86,7 @@ Localizations.schema = {
       conversation: 'string?',
       description: 'string?',
       phrase: 'string?',
+      text_color: 'string?',
       title: {type: 'string?', default: ''},
       object_kind: 'string?', // (sculpture, painting, ethnological)
       created_at: 'date',
