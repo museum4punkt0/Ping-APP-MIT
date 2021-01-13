@@ -329,8 +329,9 @@ export const main = StyleSheet.create({
     locationTitleRow:{
       color:colors.white,
       fontSize: 16,
-      marginTop:15,
-      textAlign:'center'
+      marginTop:35,
+      textAlign:'center',
+      width: '70%'
     },
     toursButtonContainer:{
       flex:1,
