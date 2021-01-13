@@ -312,7 +312,7 @@ const strings = new LocalizedStrings({
 
 
     // Plan
-    startYouOwnTour: 'Herzliche Glückwünsche! Du hast deine eigene geplante Tour gestartet!',
+    startYouOwnTour: 'Herzlichen Glückwunsch! Du hast deine eigene geplante Tour gestartet!',
     quitPlan: 'Planmodus Beenden',
     quitTour: 'Tour Beenden',
     quitDiscovery: 'Discovery Beenden',
