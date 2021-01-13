@@ -80,13 +80,15 @@ class ProfileInfoScene extends Component {
   }
 
   onUserChanged(key, value){
-    const { updateUser, getUser } = this.props;
-    const { user } = this.state; 
-    const dbUser = getUser();
-    if(dbUser.sync_id !== user.sync_id || !value) return;
-    this.setState({[key]: value})
-    if(key === 'language') strings.setLanguage(value); 
-    updateUser({ ...user, [key]: value})
+    if(this.state[key] !== value){
+      const { updateUser, getUser } = this.props;
+      const { user } = this.state; 
+      const dbUser = getUser();
+      if(dbUser.sync_id !== user.sync_id || !value) return;
+      this.setState({[key]: value})
+      if(key === 'language' && strings.getLanguage() !== value) strings.setLanguage(value); 
+      updateUser({ ...user, [key]: value})
+    }
   }
 
   handleChangeAvatarButtonPress(){
