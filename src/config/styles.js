@@ -579,7 +579,7 @@ const tinder = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     position:'absolute',
-    bottom:50,
+    bottom:30,
     alignSelf:'center'
   },
   actionBtn: {
