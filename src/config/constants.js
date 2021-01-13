@@ -13,7 +13,7 @@ export default {
 
     //stage
     api: 'http://18.193.31.198/api/v1/',
-    host: 'http://18.193.31.198/',
+    host: 'http://18.193.31.198',
    
     base: 'api/v1/',
 };
