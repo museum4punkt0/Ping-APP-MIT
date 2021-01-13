@@ -38,7 +38,7 @@ class CardComponent extends Component{
     const distance = Math.floor(getDistance(user, card, position)/meter);
     const textColor = getLocalization(localizations, user.language, 'text_color') || 'white';
     return(
-      <ImageBackground resizeMode='stretch' source={card.vip && vipObject} style={{flex:1, padding:5, paddingBottom:10}}>
+      <ImageBackground resizeMode='stretch' source={card.vip && vipObject} style={{flex:1}}>
         <View style={styles.tinder.card}>
           <Animated.Image
             onLoadEnd={() => {if(card.index === 0) this.onLoad()}} 
