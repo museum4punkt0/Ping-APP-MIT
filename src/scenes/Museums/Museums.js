@@ -68,6 +68,7 @@ class MuseumsScene extends Component {
 
     if(museum) museum = getMuseum(museum_id);
     if (!museum)
+    {
       museum = await setAllData(
         museum_id,
         this.updateTotalLoadingObjects.bind(this),
@@ -80,13 +81,13 @@ class MuseumsScene extends Component {
           )
         )
       );
+    }
 
     const user = getUser(), chats = getChats();
     
     if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
     this.setState({
       loadingCaption: strings.synchronising,
-      loadingPercentage: 0,
       totalLoadingObjects: 0,
       currentlyLoadedObjects: 0,
     });

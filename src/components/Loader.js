@@ -21,7 +21,7 @@ const Loader = ({ visible, caption, percentage, logo }) => (
       {caption ? (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Image
-            source={{ uri: logo || detecting }}
+            source={logo ? { uri: logo } : detecting}
             style={{ width: 200, height: 200 }}
             resizeMode="contain"
           />

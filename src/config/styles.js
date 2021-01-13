@@ -109,7 +109,7 @@ export const common = StyleSheet.create({
   navigationContainer:{
     flexDirection:'row',
     justifyContent:'space-around',
-    paddingVertical:5,
+    paddingVertical: 10,
     backgroundColor:colors.dark
   },
   navigatorItem:{
@@ -329,8 +329,9 @@ export const main = StyleSheet.create({
     locationTitleRow:{
       color:colors.white,
       fontSize: 16,
-      marginTop:15,
-      textAlign:'center'
+      marginTop:35,
+      textAlign:'center',
+      width: '70%'
     },
     toursButtonContainer:{
       flex:1,
@@ -349,8 +350,8 @@ export const main = StyleSheet.create({
     toursButtonLabel:{
       fontSize:26,
       color:colors.white,
-      alignSelf: 'center',
-      width: '50%'
+      paddingHorizontal: 40,
+      textAlign: 'center',
     },
     appGuideButtonContainer:{
       flexDirection:'row',
@@ -579,7 +580,7 @@ const tinder = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     position:'absolute',
-    bottom:30,
+    bottom:20,
     alignSelf:'center'
   },
   actionBtn: {
@@ -606,13 +607,11 @@ const tinder = StyleSheet.create({
   },
   boxLabel:{
     fontSize: 14,
-    color: colors.white,
     textAlign: 'center',
     // textTransform: 'uppercase'
   },
   boxTitle: {
     fontSize: 18,
-    color: colors.white,
     fontWeight:'bold',
     textAlign: 'center',
     marginVertical:5

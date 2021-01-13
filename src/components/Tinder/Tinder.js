@@ -36,6 +36,7 @@ class CardComponent extends Component{
     const meter = pixelMeter || 1
     const position = card.section.exit_position
     const distance = Math.floor(getDistance(user, card, position)/meter);
+    const textColor = getLocalization(localizations, user.language, 'text_color') || 'white';
     return(
       <ImageBackground resizeMode='stretch' source={card.vip && vipObject} style={{flex:1}}>
         <View style={styles.tinder.card}>
@@ -53,8 +54,8 @@ class CardComponent extends Component{
             resizeMode='cover'
           />
           <View style={styles.tinder.boxLabelWrapper}>
-            <Text style={styles.tinder.boxTitle}>{getLocalization(localizations, user.language, 'phrase')}</Text>
-            <Text style={styles.tinder.boxLabel}>{`${getLocalization(localizations, user.language, 'object_kind')} ${distance}m ${strings.away}`.toUpperCase()}</Text>
+            <Text style={{...styles.tinder.boxTitle, color: textColor}}>{getLocalization(localizations, user.language, 'phrase')}</Text>
+            <Text style={{...styles.tinder.boxLabel, color: textColor}}>{`${getLocalization(localizations, user.language, 'object_kind')} ${distance}m ${strings.away}`.toUpperCase()}</Text>
           </View>
         </View>
       </ImageBackground>

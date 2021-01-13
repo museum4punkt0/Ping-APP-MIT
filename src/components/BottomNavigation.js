@@ -7,6 +7,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons';
 import Text from "./Text";
 import styles, { colors } from '../config/styles';
 import strings from "../config/localization";
+import { SafeAreaView } from 'react-native';
 
 
 const getColor = (currIndex, index) => {
@@ -27,9 +28,9 @@ const Navigator = (props) => {
     }
   };
   return(
-    <View style={styles.common.navigationContainer}>
+    <SafeAreaView style={{backgroundColor:colors.dark}}>
       {navigator()}
-    </View>
+    </SafeAreaView>
   );
 }
 Navigator.propTypes = {
