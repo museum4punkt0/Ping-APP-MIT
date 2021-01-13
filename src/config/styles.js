@@ -109,7 +109,7 @@ export const common = StyleSheet.create({
   navigationContainer:{
     flexDirection:'row',
     justifyContent:'space-around',
-    paddingVertical:5,
+    paddingVertical: 10,
     backgroundColor:colors.dark
   },
   navigatorItem:{
@@ -580,7 +580,7 @@ const tinder = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     position:'absolute',
-    bottom:50,
+    bottom:20,
     alignSelf:'center'
   },
   actionBtn: {
