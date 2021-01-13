@@ -21,6 +21,8 @@ import { sync } from '../../actions/synchronize';
 import Tips from '../../components/Tips';
 import strings from '../../config/localization';
 import { getStorageItem } from "../../config/helpers";
+import { SafeAreaView } from 'react-native';
+import { colors } from '../../config/styles';
 
 const isMessageIncoming = (message)=> message.isIncoming === 1 || message.isIncoming === undefined
 
@@ -248,9 +250,9 @@ handleCameraFunc(){
             ))} 
               {isIndicatorShow && (<AnimatedEllipsis numberOfDots={3} minOpacity={0.4} animationDelay={200} />)}
             </ScrollView>
-            {(options && options.length > 0) && <Options options={options} optionSelected={(key)=>this.optionSelected(key)} />}
-            {isInputShow && <Input messageInput={messageInput} onStateChanged={(messageInput)=>this.setState({messageInput})} handleSendMessageButtonPress={()=>this.handleSendMessageButtonPress()} />}
-            {isChooseAvatarShow && <ChooseAvatar settings={settings} handleChooseAvatarPress={(avatar)=>this.handleChooseAvatarPress(avatar)} />}   
+            {(options && options.length > 0) && <SafeAreaView><Options options={options} optionSelected={(key)=>this.optionSelected(key)} /></SafeAreaView>}
+            {isInputShow && <SafeAreaView style={{backgroundColor: colors.dark}}><Input messageInput={messageInput} onStateChanged={(messageInput)=>this.setState({messageInput})} handleSendMessageButtonPress={()=>this.handleSendMessageButtonPress()} /></SafeAreaView>}
+            {isChooseAvatarShow && <SafeAreaView><ChooseAvatar settings={settings} handleChooseAvatarPress={(avatar)=>this.handleChooseAvatarPress(avatar)} /></SafeAreaView>}   
             {isModalShow && <Tips title={strings.youCanPinch} visible={isModalShow} onRequestClose={() => this.setState({isModalShow: false})} screen='chat'/>}
             <ZoomImageDialog visible={isZoomImageDialogShow} onRequestClose={() => this.setState({isZoomImageDialogShow:!isZoomImageDialogShow})} image={zoomImage} />
           </Scene>

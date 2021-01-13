@@ -13,7 +13,7 @@ import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
 import strings from '../../config/localization';
-import {getImage, getLocalization, getOptions} from '../../config/helpers';
+import {getImage, getLocalization, getOptions, planString} from '../../config/helpers';
 import Button from '../../components/Button'
 import ChooseAvatarDialog from '../../components/Dialogs/ChooseAvatarDialog'
 import Option from '../../components/Profile/OptionContainer'
@@ -80,13 +80,15 @@ class ProfileInfoScene extends Component {
   }
 
   onUserChanged(key, value){
-    const { updateUser, getUser } = this.props;
-    const { user } = this.state; 
-    const dbUser = getUser();
-    if(dbUser.sync_id !== user.sync_id || !value) return;
-    this.setState({[key]: value})
-    if(key === 'language') strings.setLanguage(value); 
-    updateUser({ ...user, [key]: value})
+    if(this.state[key] !== value){
+      const { updateUser, getUser } = this.props;
+      const { user } = this.state; 
+      const dbUser = getUser();
+      if(dbUser.sync_id !== user.sync_id || !value) return;
+      this.setState({[key]: value})
+      if(key === 'language' && strings.getLanguage() !== value) strings.setLanguage(value); 
+      updateUser({ ...user, [key]: value})
+    }
   }
 
   handleChangeAvatarButtonPress(){
@@ -145,15 +147,6 @@ class ProfileInfoScene extends Component {
   render() {
     const {input, language, font_size, avatar, isChooseAvatarModalOpen, chosenIndex, loading, speed, user} = this.state;
     const {settings, museums, plan} = this.props;
-    const planString = () => {
-        switch(plan){   
-            case 1: return "Quit Plan Mode";
-            case 2: return "Quit Tour";
-            case 3: return "Quit Discovery";
-            case 4: return "Quit Planned Tour";
-            default: return "Quit";      
-        }
-    };
     const spin = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
     const options = getOptions()
     return (
@@ -225,7 +218,7 @@ class ProfileInfoScene extends Component {
               </Option> 
             </View>
           </View>  
-          <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={{marginHorizontal:15, backgroundColor:colors.green}} /> 
+          <Button onPress={() => this.handleQuitTourButton()} title={planString(plan)} containerStyle={{marginHorizontal:15, backgroundColor:colors.green}} /> 
           <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.green}]} onPress={() => this.handleClick(museums.museum_site_url)}>{getLocalization(museums.localizations, user.language, 'title')}</Text>
           <Text style={styles.profile.profileDescription}>{getLocalization(museums.localizations, user.language, 'description')}</Text>
           <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.brownGrey}]} onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')}>{strings.termsAnd}</Text>

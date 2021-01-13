@@ -94,7 +94,7 @@ class CollectionScene extends Component {
       categoryID: user.category,
     });
     
-    this.showToast()
+    if(object && image) this.shotToast()
   }
 
   startConfetti() {
