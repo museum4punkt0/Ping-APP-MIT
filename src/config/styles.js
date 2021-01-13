@@ -350,8 +350,8 @@ export const main = StyleSheet.create({
     toursButtonLabel:{
       fontSize:26,
       color:colors.white,
-      alignSelf: 'center',
-      width: '50%'
+      paddingHorizontal: 40,
+      textAlign: 'center',
     },
     appGuideButtonContainer:{
       flexDirection:'row',
