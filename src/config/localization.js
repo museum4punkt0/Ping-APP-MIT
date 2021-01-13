@@ -302,7 +302,7 @@ const strings = new LocalizedStrings({
     title_6:'Plan-Modus',
     description_6:'Wenn Sie sich außerhalb von Museen befinden, können Sie nur in den Plan-Modus wechseln. In diesem Modus können Sie nur sehen, welche Objekte sich im Museum befinden, und mit ihnen sprechen. Sie können sie jedoch nicht im Museum suchen oder Ihrer Sammlung hinzufügen.',
     next:'Weiter',
-    skip:'Überspringen',
+    skip:'Springen',
     swipeRightIf:'Wische nach rechts, wenn du ein Objekt liken willst, oder wische nach links, um es zu verwerfen',
     orUseButtons:'Oder verwende die Buttons anstelle von Gesten, um ein Objekt zu liken oder es zu verwerfen',  
     greatYouLiked:"Toll! Du mochtest dieses Objekt! Leider passt dieses Objekt nicht zu deinem Profil. Das ist in Ordnung! Versuch es weiter, das nächste könnte passen",

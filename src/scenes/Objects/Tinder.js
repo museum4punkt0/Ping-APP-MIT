@@ -130,8 +130,7 @@ class Tinder extends Component{
               onSwipedLeft={(index) => this.onSwipedLeft(index)}
               backgroundColor='transparent'
               verticalSwipe={false}
-              marginBottom={220}
-              cardVerticalMargin={50}
+              marginBottom={230}
               useViewOverflow={false}
               outputRotationRange={["-5deg", "0deg", "5deg"]}
               stackSize={2}
