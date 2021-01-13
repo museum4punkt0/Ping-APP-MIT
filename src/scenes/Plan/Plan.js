@@ -3,13 +3,16 @@ import {  ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { getChats } from '../../actions/chats'
+import { setPlanMode } from '../../actions/user'
 import { getObjects } from '../../db/controllers/museums';
-import {convertToArray, getImage} from '../../config/helpers';
+import {convertToArray, getImage, planString} from '../../config/helpers';
 import Scene from "../../components/Scene";
 import NoMore from '../../components/Tinder/NoMore';
 import Dialog from '../../components/Dialogs/Dialog'
 import strings from '../../config/localization';
-import styles from '../../config/styles';
+import styles, { colors } from '../../config/styles';
+import { Actions } from 'react-native-router-flux';
+import Button from '../../components/Button';
 
 
 class DetectLocation extends Component {
@@ -34,8 +37,15 @@ class DetectLocation extends Component {
     this.setState({ chats:chatsObj.reverse(), planDialog: newPlan })
   }
 
+  handleQuitTourButton(){
+    const {setPlanMode} = this.props;
+    setPlanMode(3)
+    Actions.DetectLocation()
+  }
+
   render() {
     const {chats, planDialog} = this.state;
+    const { plan } = this.props
     return (
       <Scene label={strings.myPlan} isFooterShow index={3}>
         {chats.length === 0 && (
@@ -56,18 +66,20 @@ class DetectLocation extends Component {
             )
           })}    
         </ScrollView>
+        <Button onPress={() => this.handleQuitTourButton()} title={planString(plan, isFromPlanScene=true)} containerStyle={{marginHorizontal:35, marginBottom: 20, backgroundColor:colors.green}}/> 
         <Dialog visible={planDialog} onRequestClose={()=>this.setState({planDialog:false})} title={strings.congratulations} bodyText={strings.startYouOwnTour} btnTetx={strings.gotIt} />
       </Scene>
     );
   }
 }
 
-export default connect(({plan}) => ({ plan:plan.plan }) , { getChats })(DetectLocation);
+export default connect(({plan}) => ({ plan:plan.plan }) , { getChats, setPlanMode  })(DetectLocation);
 
 DetectLocation.propTypes = ({
   getChats: PropTypes.func.isRequired,
   plan: PropTypes.number.isRequired,
-  newPlan: PropTypes.bool
+  newPlan: PropTypes.bool,
+  setPlanMode: PropTypes.func.isRequired,
 });
 
 DetectLocation.defaultProps = {

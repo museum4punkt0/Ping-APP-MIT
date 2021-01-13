@@ -33,7 +33,7 @@ class RootScene extends Component {
     const toastsArray = [...toasts];
     toastsArray.unshift({ message, type });
     this.setState({ toasts:toastsArray });
-    setTimeout(this.handlePopToastMessage.bind(this), calculateMessageDelay(message, 5000, 3.5));
+    setTimeout(this.handlePopToastMessage.bind(this), calculateMessageDelay(message, 4000, 5.5));
   }
 
   handlePopToastMessage() {
