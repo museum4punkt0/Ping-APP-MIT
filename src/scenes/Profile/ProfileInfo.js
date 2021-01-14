@@ -223,7 +223,7 @@ class ProfileInfoScene extends Component {
           </View>  
 
           <View>
-            <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={styles.profileWithProps({plan}).profileButton} /> 
+            <Button onPress={() => this.handleQuitTourButton()} title={planString(plan)} containerStyle={styles.profileWithProps({plan}).profileButton} /> 
             <TouchableOpacity onPress={()=>Toaster.showMessage(strings.quitDiscoveryExplanation, ToasterTypes.MESSAGE)}>
               <Text style={styles.profile.explanationText}>{strings.whatDoes}</Text>
             </TouchableOpacity>

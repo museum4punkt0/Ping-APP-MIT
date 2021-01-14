@@ -93,7 +93,7 @@ class Swiper extends React.Component {
                 <Text style={styles.main.appGuideButtonTitle}>{strings.skip}</Text>
               </TouchableOpacity>
               <View style={{flexDirection:'row'}}>
-                {this.swipeData.map(item=>(<View key={item.id} style={{width:10, height:10, borderRadius:5, marginHorizontal:5, backgroundColor:item.id === currentSelectIndex ? colors.white : colors.darkGrey}} />))}
+                {this.swipeData.map(item=>(<View key={item.id} style={{width:scale(10), height:scale(10), borderRadius:scale(5), marginHorizontal:scale(5), backgroundColor:item.id === currentSelectIndex ? colors.white : colors.darkGrey}} />))}
               </View>
               <TouchableOpacity onPress={() => this._onPressNextBtn(currentSelectIndex)}>
                 <Text style={styles.main.appGuideButtonTitle}>{strings.next}</Text>
