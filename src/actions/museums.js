@@ -44,8 +44,8 @@ export const getRemoteData = (museum_id) =>
     .then(response => Promise.resolve(response.data))
     .catch(() => Promise.resolve(null));
 
-export const ImageCache = async (originalImage, sync_id) => {
-  const image = originalImage || 'https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png'
+export const ImageCache = async (image, sync_id) => {
+  if(!image) image = 'https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png';
   const path = `${RNFS.DocumentDirectoryPath}/images/${sync_id}.jpg`
   return await RNFS.exists(path).then(async exists => {
     if(exists) {
