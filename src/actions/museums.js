@@ -122,9 +122,10 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
 
         const images = [], localizations = [];
   
-        await Promise.all(item.images.map(image => {
+        await Promise.all(item.images.map(async image => {
           incrementTotal()
-          ImageCache(image.image, image.sync_id).then(path => images.push({...image, image:path}));
+          const path = await ImageCache(image.image, image.sync_id);
+          images.push({...image, image:path})
         }));
         
         await Promise.all(item.localizations.map(async localization => {
