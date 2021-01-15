@@ -34,7 +34,7 @@ export const updateAllData = (response, museum, deleted = {}, updateTotal, incre
     const total = calculateTotalObjectsToLoad(response.museums, response.settings)
     updateTotal(total)
     
-    const data = await saveDataToStorage(response.museums || [], response.settings || {predefined_avatars:[]}, incrementTotal);
+    const data = await saveDataToStorage(response.museums || [], response.settings || {predefined_avatars:['_SKIP_']}, incrementTotal);
     if(response.settings) await setSettings({...response.settings, predefined_avatars: data.predefined_avatars })(dispatch);
     await Promise.all(
         data.objects.map(item => setObjects(item).then(object => {
