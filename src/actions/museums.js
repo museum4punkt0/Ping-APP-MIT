@@ -8,7 +8,6 @@ import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
 import {calculateTotalObjectsToLoad, convertToArray, chunkArray} from '../config/helpers';
 import RNFS from 'react-native-fs'
-import { bool } from 'prop-types';
 global.Buffer = global.Buffer || require('buffer').Buffer
 
 export const getMuseum = (museum_id) => (dispatch) => {
@@ -45,9 +44,8 @@ export const getRemoteData = (museum_id) =>
     .then(response => Promise.resolve(response.data))
     .catch(() => Promise.resolve(null));
 
-export const ImageCache = async (image, sync_id) => {
-  if(image === '_SKIP_') return sync_id
-  if(!image) image = 'https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png';
+export const ImageCache = async (originalImage, sync_id) => {
+  const image = originalImage || 'https://d32ogoqmya1dw8.cloudfront.net/images/serc/empty_user_icon_256.v2.png'
   const path = `${RNFS.DocumentDirectoryPath}/images/${sync_id}.jpg`
   return await RNFS.exists(path).then(async exists => {
     if(exists) {
@@ -61,6 +59,7 @@ export const ImageCache = async (image, sync_id) => {
               Buffer.from(response.data, 'binary').toString('base64')
             )
             .then((base64) => base64 === data)
+            .catch(() => true)
       );
       if(isSameImage) return sync_id;
     }
@@ -156,7 +155,7 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
   )
   await Promise.all(
     settings.predefined_avatars.map(async (item, i) => {
-      incrementTotal()
+      if(item !== '_SKIP_') incrementTotal()
       const path = await ImageCache(item, `avatar${i}`);
       predefined_avatars.push(path);
     })
