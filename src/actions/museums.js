@@ -59,6 +59,7 @@ export const ImageCache = async (image, sync_id) => {
               Buffer.from(response.data, 'binary').toString('base64')
             )
             .then((base64) => base64 === data)
+            .catch(() => true)
       );
       if(isSameImage) return sync_id;
     }
@@ -153,7 +154,7 @@ export const saveDataToStorage = async (museums = [], settings = [], incrementTo
   )
   await Promise.all(
     settings.predefined_avatars.map(async (item, i) => {
-      incrementTotal()
+      if(item !== '_SKIP_') incrementTotal()
       const path = await ImageCache(item, `avatar${i}`);
       predefined_avatars.push(path);
     })
