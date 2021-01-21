@@ -1,11 +1,11 @@
 variables:
-  ANDROID_HOME: "/opt/android-sdk"
   LOCAL_PATH: "/home/gitlab-runner/projects/mein-object"
-  OUTPUTS_PATH: android/app/build/outputs/apk
-  PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
 
 before_script:
+  - cp -rf .env $LOCAL_PATH/.env
   - cp -rf $LOCAL_PATH/.signing android/.signing
+  - cp -rf $LOCAL_PATH/.env .env
+  - export $(cat .env | grep FIREBASE_TOKEN)
   - npm cache clean --force
   - npm install
 
@@ -13,17 +13,41 @@ after_script:
   - rm -rf android/.signing
 
 stages:
-  - deploy
+  - deploy_prod_android
+  - deploy_stage_android
 
-androidBuildRelease:
-  stage: deploy
+android_deploy_prod_release:
+  stage: deploy_prod_android
   tags:
     - shell
   artifacts:
     paths:
-      - android/app/build/outputs/apk
+      - android/app/build/outputs/apk/prod/release
   script:
-    - react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
-    - cd android && ./gradlew clean
-    - GRADLE_OPTS="-Xmx2048m" ./gradlew app:assembleRelease --stacktrace
+    - react-native bundle 
+                      --platform android 
+                      --dev false 
+                      --entry-file index.js 
+                      --bundle-output android/app/src/main/assets/index.android.bundle 
+                      --assets-dest android/app/src/main/res
+    - rm -rf android/app/src/main/res/drawable-*
+    - cd android && ./gradlew app:clean app:assembleProdRelease appDistributionUploadProdRelease
+  when: manual
+
+android_deploy_stage_release:
+  stage: deploy_stage_android
+  tags:
+    - shell
+  artifacts:
+    paths:
+      - android/app/build/outputs/apk/stage/release
+  script:
+    - react-native bundle 
+                      --platform android 
+                      --dev false 
+                      --entry-file index.js 
+                      --bundle-output android/app/src/main/assets/index.android.bundle 
+                      --assets-dest android/app/src/main/res
+    - rm -rf android/app/src/main/res/drawable-*
+    - cd android && ./gradlew app:clean app:assembleStageRelease appDistributionUploadStageRelease
   when: manual
