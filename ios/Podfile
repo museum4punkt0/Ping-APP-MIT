@@ -43,6 +43,8 @@ target 'MeinObjekt' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'react-native-config', :path => '../node_modules/react-native-config'
+
   target 'MeinObjektTests' do
     inherit! :search_paths
     # Pods for testing

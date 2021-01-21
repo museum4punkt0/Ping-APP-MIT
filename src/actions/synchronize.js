@@ -1,6 +1,6 @@
 import axios from 'axios/index';
 import DeviceInfo from 'react-native-device-info';
-import remote from '../config/constants';
+import Config from "react-native-config";
 import { museumsTypes } from './types';
 import {syncMuseums, syncSettings, syncUser} from '../services/synchronize';
 import { saveDataToStorage} from './museums';
@@ -10,14 +10,14 @@ import { updateItemOrPush, convertToArray } from '../config/helpers';
 import { calculateTotalObjectsToLoad } from '../config/helpers'
 
 export const fetch = (museum_id) =>
-    axios.get(remote.api + 'fetch/', { params: { user_id: DeviceInfo.getUniqueId(), museum_id }})
+    axios.get(Config.API + 'fetch/', { params: { user_id: DeviceInfo.getUniqueId(), museum_id }})
         .then(response => Promise.resolve(response.data))
         .catch(() => Promise.resolve(null));
 
 export const synchroniseRemote = (data, museum_id) =>
         axios({
             method: 'post',
-            url: `${remote.api}synchronise/?user_id=${DeviceInfo.getUniqueId()}&museum_id=${museum_id}`,
+            url: `${Config.API}synchronise/?user_id=${DeviceInfo.getUniqueId()}&museum_id=${museum_id}`,
             data, config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
           .then(response => Promise.resolve(response.data))

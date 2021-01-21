@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import axios from 'axios/index';
 import { museumsTypes } from './types';
-import remote from '../config/constants';
+import Config from "react-native-config";
 import strings from '../config/localization';
 import {setSettings, updateUser} from './user';
 import { setMuseums, getMuseums, setTensor, setMuseumsList, getMuseumsList as getMuseumsListFromDB } from '../db/controllers/museums';
@@ -21,7 +21,7 @@ export const getMuseum = (museum_id) => (dispatch) => {
 }
 
 export const getMuseumsList = (lat = '', lon = '') =>
-  axios.get(`${remote.api}museums/`, { params: { lat, lon }})  
+  axios.get(`${Config.API}museums/`, { params: { lat, lon }})  
     .then(response => {
       response.data.forEach(museum => setMuseumsList(museum))
       return Promise.resolve(response.data)
@@ -35,12 +35,12 @@ export const getMuseumsList = (lat = '', lon = '') =>
 export const setObject = (object) => (dispatch) => dispatch({ type: museumsTypes.OBJECT_LOADED, payload: object });
 
 export const Recognize = (data, museum_id) =>
-  axios.post(`${remote.api}recognize/?user_id=${DeviceInfo.getUniqueId()}&museum_id=${museum_id}`, data, {timeout: 6000} )
+  axios.post(`${Config.API}recognize/?user_id=${DeviceInfo.getUniqueId()}&museum_id=${museum_id}`, data, {timeout: 6000} )
     .then(response => Promise.resolve(response.data))
     // .catch((error) => console.warn(`Error: ${error}`));
     
 export const getRemoteData = (museum_id) =>
-  axios.get(remote.api + 'synchronise/', { params: { user_id: DeviceInfo.getUniqueId(), museum_id }})
+  axios.get(Config.API + 'synchronise/', { params: { user_id: DeviceInfo.getUniqueId(), museum_id }})
     .then(response => Promise.resolve(response.data))
     .catch(() => Promise.resolve(null));
 

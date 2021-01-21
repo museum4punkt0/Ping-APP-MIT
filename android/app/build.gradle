@@ -1,4 +1,6 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.firebase.appdistribution'
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -131,7 +133,7 @@ android {
         applicationId "com.meinobjekt"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 74
+        versionCode 82
         versionName "1.2.1 "
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
@@ -196,11 +198,24 @@ android {
         stage {
             applicationIdSuffix ".stage"
             resValue "string", "build_config_package", "com.meinobjekt"
+            firebaseAppDistribution {
+              testers="denys.bodnar@teamvoy.com"
+              appId=project.env.get("STAGE_APP_ID")
+            }
+        }
+        prod {
+            applicationIdSuffix ""
+            resValue "string", "build_config_package", "com.meinobjekt"
+            firebaseAppDistribution {
+              testers="denys.bodnar@teamvoy.com"
+              appId=project.env.get("PROD_APP_ID")
+            }
         }
     }
 }
 
 dependencies {
+    implementation project(':react-native-config')
     implementation project(':react-native-image-size')
     implementation project(':react-native-fs')
     implementation project(':react-native-vector-icons')
