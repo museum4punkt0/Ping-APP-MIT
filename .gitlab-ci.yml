@@ -2,15 +2,17 @@ variables:
   LOCAL_PATH: "/home/gitlab-runner/projects/mein-object"
 
 before_script:
-  - cp -rf .env $LOCAL_PATH/.env
   - cp -rf $LOCAL_PATH/.signing android/.signing
-  - cp -rf $LOCAL_PATH/.env .env
-  - export $(cat .env | grep FIREBASE_TOKEN)
+  - cp -rf $LOCAL_PATH/.env.prod .env.prod
+  - cp -rf $LOCAL_PATH/.env.stage .env.stage
+  - export $(cat .env.prod | grep FIREBASE_TOKEN)
   - npm cache clean --force
   - npm install
 
 after_script:
   - rm -rf android/.signing
+  - rm -rf .env.prod
+  - rm -rf .env.stage
 
 stages:
   - deploy_prod_android

@@ -1,5 +1,10 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.google.firebase.appdistribution'
+
+project.ext.envConfigFiles = [
+    prod: ".env.prod",
+    stage: ".env.stage",
+]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
@@ -200,7 +205,7 @@ android {
             resValue "string", "build_config_package", "com.meinobjekt"
             firebaseAppDistribution {
               testers="denys.bodnar@teamvoy.com"
-              appId=project.env.get("STAGE_APP_ID")
+              appId=project.env.get("APP_ID")
             }
         }
         prod {
@@ -208,7 +213,7 @@ android {
             resValue "string", "build_config_package", "com.meinobjekt"
             firebaseAppDistribution {
               testers="denys.bodnar@teamvoy.com"
-              appId=project.env.get("PROD_APP_ID")
+              appId=project.env.get("APP_ID")
             }
         }
     }
