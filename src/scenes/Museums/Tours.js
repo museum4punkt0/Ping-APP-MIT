@@ -40,15 +40,13 @@ class Tours extends Component {
   }
 
   onPressStartDiscoverButton(){
-    const {setTour, setPlanMode, first} = this.props;
-    setTour({localizations:[{title:strings.discover, language:'en'}]});
+    const {setPlanMode, first} = this.props;
     setPlanMode(3);
     Actions.TinderScene({first});
   }
 
   onPressPlanetButton(){
-    const {setTour, setPlanMode} = this.props;
-    setTour({localizations:[{title:strings.plannedTour, language:'en'}]});
+    const {setPlanMode} = this.props;
     setPlanMode(4);
     Actions.ChatsListScene();
   }

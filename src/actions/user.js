@@ -13,6 +13,7 @@ import {
 } from '../db/controllers/user';
 import { settingsTypes, userTypes, voteTypes } from './types';
 import strings from '../config/localization';
+import { getTourLocalization } from '../config/helpers'
 import realm from '../db/models';
 import uuidv1 from 'uuid/v1';
 
@@ -89,6 +90,10 @@ export const getVotes = () => (dispatch) => {
         return vote;
     }
 
-export const setPlanMode = (plan) => (dispatch) => dispatch({ type: settingsTypes.PLAN_UPDATE, payload: plan});
 
 export const setTour = (plan) => (dispatch) => dispatch({ type: settingsTypes.TOUR_LOADED, payload: plan})
+
+export const setPlanMode = (plan) => (dispatch) => {
+    dispatch({ type: settingsTypes.TOUR_LOADED, payload: getTourLocalization(plan)})
+    dispatch({ type: settingsTypes.PLAN_UPDATE, payload: plan})
+};
