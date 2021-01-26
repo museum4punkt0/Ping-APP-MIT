@@ -23,7 +23,7 @@ class ChatsListScene extends Component {
   }
 
   componentWillMount(){
-    const { getChats, user, updateUser, plan } = this.props;
+    const { getChats, user, updateUser, plan, museumObjectsIds } = this.props;
     const objects = convertToArray(getObjects());
     let chats = getChats();
     updateUser({sync_id:user.sync_id, chats});
@@ -31,7 +31,7 @@ class ChatsListScene extends Component {
     if(plan === 1) chats = chats.filter(chat => chat.planned)
     chats.forEach(chat=>{
       const object = objects.find((object)=> object.sync_id === chat.object_id)
-      if(!object || object.onboarding) return true;
+      if(!object || !museumObjectsIds.includes(object.sync_id) || object.onboarding) return true;
       let history = []
       if(chat.history) history = JSON.parse(chat.history)
       let lastMessage = '';
@@ -77,7 +77,16 @@ class ChatsListScene extends Component {
   }
 }
 
-export default connect(({ user, plan }) => ({ user:user.user, plan:plan.plan }) , { getChats, updateUser })(ChatsListScene);
+export default connect(
+  ({ user, plan, museums }) => ({
+    user: user.user,
+    plan: plan.plan,
+    museumObjectsIds: convertToArray(museums.museums.objects).map(
+      (item) => item.sync_id
+    ),
+  }),
+  { getChats, updateUser }
+)(ChatsListScene);
 
 ChatsListScene.propTypes = ({
   getChats: PropTypes.func.isRequired,
