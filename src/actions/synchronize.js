@@ -21,7 +21,7 @@ export const synchroniseRemote = (data, museum_id) =>
             data, config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
           .then(response => Promise.resolve(response.data))
-          .catch((error) => Promise.reject(error));
+          .catch((error) => Promise.reject(error.response ? JSON.stringify(error.response.data) : error));
 
 export const removeItem = async (deleted, array, shema = 'Categories', key = 'sync_id') => await deleted.forEach( async item => {
     const itemToDelete = array.find(arrayItem => arrayItem[key] === item);
