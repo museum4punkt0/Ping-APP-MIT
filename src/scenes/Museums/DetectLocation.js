@@ -19,7 +19,7 @@ import styles, { colors } from '../../config/styles';
 import { getMuseums } from '../../db/controllers/museums';
 import { getMuseumsList, setAllData, getMuseum, setObject } from '../../actions/museums';
 import { sync } from "../../actions/synchronize";
-import { getSettings, getUser, setTour, setPlanMode, updateUser } from "../../actions/user";
+import { getSettings, getUser, setPlanMode, updateUser } from "../../actions/user";
 import { createChat, getChats } from "../../actions/chats";
 
 
@@ -69,11 +69,9 @@ async componentWillMount(){
   }
   
   handlePlanTourButton(){
-    const {setPlanMode, setTour} = this.props;
+    const {setPlanMode} = this.props;
     setPlanMode(1);
-    setTour({localizations:[{title:strings.planMode, language:'en'}]});
     Actions.MuseumsScene()
-
   }
 
   handleSelectMuseumButton(){
@@ -86,7 +84,6 @@ async componentWillMount(){
     const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, setTour, setPlanMode } = this.props;
     const { museum: currentMuseum } = this.state
     setPlanMode(plan);
-    if(plan === 1) setTour({localizations:[{title:strings.planMode, language:'en'}]});
     
     this.setState({
       loading: true,
@@ -230,7 +227,7 @@ DetectLocation.propTypes = {
   createChat: PropTypes.func.isRequired,
 };
 
-export default connect(() => ({ }) , { setPlanMode, setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, setTour, createChat })(DetectLocation);
+export default connect(() => ({ }) , { setPlanMode, setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, createChat })(DetectLocation);
 
 export const Detecting = () => (
   <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>

@@ -129,6 +129,21 @@ export const getPermission = (type = 'location') => {
   }
 }
 
+export const getTourLocalization = (plan) => {
+  switch(plan){
+      case 1:
+          return {localizations:[{title:strings.planMode, language:'en'}]}
+      case 2:
+          return {localizations:[{title:null, language:'en'}]}
+      case 3:
+          return {localizations:[{title:strings.discover, language:'en'}]}
+      case 4:
+          return {localizations:[{title:strings.plannedTour, language:'en'}]}
+      default:
+          return {localizations:[{title:strings.discover, language:'en'}]}
+  }
+}
+
 export const scale = size => {
   const { width, height } = Dimensions.get("window");
   const guidelineBaseWidth = 350;
