@@ -13,6 +13,7 @@ import {getLocalization} from '../../config/helpers';
 import styles, { colors } from '../../config/styles';
 import {setTour, setPlanMode} from '../../actions/user';
 import { getChats } from '../../actions/chats'
+import { ScrollView } from 'react-native';
 
 class Tours extends Component {
   constructor(props) {
@@ -58,33 +59,35 @@ class Tours extends Component {
     const {isPlannedChats} = this.state;
     return (
       <Scene label='Tours' backBtnFunc={()=>Actions.pop()} navigator={false} style={{flex:1, padding:15}}>
-        <View style={{flexDirection:'row'}}>
-          {
-            isPlannedChats ? (
-              <TouchableOpacity style={[styles.main.toursButtonContainer, {marginLeft:5}]} onPress={()=>this.onPressPlanetButton()}>
-                <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>m</Icon>
-                <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)', transform:[{ rotateY: '180deg'}]}]}>m</Icon>
-                <Text style={styles.main.toursButtonLabel}>{strings.startPlannedTour}</Text>
-              </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={[styles.main.toursButtonContainer, {marginRight:5}]} onPress={()=>this.onPressStartDiscoverButton()}>
-              <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>l</Icon>
-              <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)'}]}>i</Icon>
-              <Text style={styles.main.toursButtonLabel}>{strings.startDiscover}</Text>
-            </TouchableOpacity>
-         )}
+        <ScrollView>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={[styles.main.toursButtonContainer, {marginRight:5}]} onPress={()=>this.onPressStartDiscoverButton()}>
+            <Icon style={[styles.main.toursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>l</Icon>
+            <Icon style={[styles.main.toursButtonIcon, {right:0, bottom:50, color:'rgba(0,0,0,0.2)'}]}>i</Icon>
+            <Text style={styles.main.toursButtonLabel}>{strings.startDiscover}</Text>
+          </TouchableOpacity>
         </View>
+        {isPlannedChats && 
+          <View style={{flexDirection: 'row', marginTop: 25}}>          
+            <TouchableOpacity style={[styles.main.toursButtonContainer, {marginLeft:5, height: 120, backgroundColor:colors.blue}]} onPress={()=>this.onPressPlanetButton()}>
+              <Icon style={[styles.main.smallToursButtonIcon, {left:0, color:'rgba(255,255,255,0.2)'}]}>m</Icon>
+              <Icon style={[styles.main.smallToursButtonIcon, {right:0, bottom:25, color:'rgba(0,0,0,0.2)', transform:[{ rotateY: '180deg'}]}]}>m</Icon>
+              <Text style={styles.main.smallToursButtonLabel}>{strings.startPlannedTour}</Text>
+            </TouchableOpacity>
+          </View>
+        }
         <Text style={styles.main.museumTourLabel}>{strings.museumTours}</Text>
         {museums.tours.map(tour => <ToursButton key={tour.sync_id} tour={tour} user={user} onPressTourButton={() => this.onPressTourButton(tour)} />)}
         {/* <NoPlannedDialog
           visible={noPlannedDialog} onRequestClose={()=>this.setState({noPlannedDialog:false})} 
           title={strings.noPlannedTour} bodyText={strings.likeObjectsInPlanned} btnTetx={strings.gotIt}
         /> */}
+        </ScrollView>
       </Scene>
     );
   }
 }
-export default connect(({ museums, user }) => ({ museums: museums.museums, user:user.user }) , {setTour, setPlanMode, getChats})(Tours);
+export default connect(({ museums, user, plan }) => ({ museums: museums.museums, user:user.user, plan: plan.plan }) , {setTour, setPlanMode, getChats})(Tours);
 
 Tours.propTypes = {
   museums: PropTypes.object.isRequired,

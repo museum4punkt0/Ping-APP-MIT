@@ -314,6 +314,7 @@ export const main = StyleSheet.create({
       fontSize:16,
       fontWeight:'bold',
       color:colors.white,
+      marginTop: 25,
       marginVertical:10
     },
     museumTourTitle:{
@@ -347,8 +348,20 @@ export const main = StyleSheet.create({
       fontSize: 96,
       bottom:25,
     },
+    smallToursButtonIcon:{
+      fontFamily:'meinobjekt',
+      position:'absolute',
+      fontSize: 78,
+      bottom:15,
+    },
     toursButtonLabel:{
       fontSize:26,
+      color:colors.white,
+      paddingHorizontal: 40,
+      textAlign: 'center',
+    },
+    smallToursButtonLabel:{
+      fontSize:22,
       color:colors.white,
       paddingHorizontal: 40,
       textAlign: 'center',
@@ -568,7 +581,7 @@ const profile = StyleSheet.create({
 const profileWithProps = ({ plan, isRed }) => StyleSheet.create({
   profileButton:{
     marginHorizontal: 15, 
-    backgroundColor: isRed ? colors.red : plan === 1 ? colors.blue : colors.green, 
+    backgroundColor: isRed ? colors.red : plan === 1 || plan === 4 ? colors.blue : colors.green, 
     flex: 1
   },
 })
