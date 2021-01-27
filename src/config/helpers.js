@@ -130,17 +130,18 @@ export const getPermission = (type = 'location') => {
 }
 
 export const getTourLocalization = (plan) => {
+  const currentLanguage = strings.getLanguage();
   switch(plan){
       case 1:
-          return {localizations:[{title:strings.planMode, language:'en'}]}
+          return {localizations:[{title:strings.planMode, language:currentLanguage}]}
       case 2:
-          return {localizations:[{title:null, language:'en'}]}
+          return {localizations:[{title:null, language:currentLanguage}]}
       case 3:
-          return {localizations:[{title:strings.discover, language:'en'}]}
+          return {localizations:[{title:strings.discover, language:currentLanguage}]}
       case 4:
-          return {localizations:[{title:strings.plannedTour, language:'en'}]}
+          return {localizations:[{title:strings.plannedTour, language:currentLanguage}]}
       default:
-          return {localizations:[{title:strings.discover, language:'en'}]}
+          return {localizations:[{title:strings.discover, language:currentLanguage}]}
   }
 }
 
