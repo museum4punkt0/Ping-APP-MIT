@@ -24,14 +24,14 @@ class DetectLocation extends Component {
   }
 
   componentWillMount(){
-    const { getChats, plan, newPlan } = this.props;
+    const { getChats, plan, newPlan, museumObjectsIds } = this.props;
     const objects = convertToArray(getObjects());
     let chats = getChats();
     const chatsObj = [];
     if(plan === 1) chats = chats.filter(chat => chat.planned)
     chats.forEach(chat=>{
       const object = objects.find((object)=> object.sync_id === chat.object_id)
-      if(!object || object.onboarding) return true;
+      if(!object || !museumObjectsIds.includes(object.sync_id) || object.onboarding) return true;
       chatsObj.push({object, chat})
     })
     this.setState({ chats:chatsObj.reverse(), planDialog: newPlan })
@@ -73,7 +73,15 @@ class DetectLocation extends Component {
   }
 }
 
-export default connect(({plan}) => ({ plan:plan.plan }) , { getChats, setPlanMode  })(DetectLocation);
+export default connect(
+  ({ plan, museums }) => ({
+    plan: plan.plan,
+    museumObjectsIds: convertToArray(museums.museums.objects).map(
+      (item) => item.sync_id
+    ),
+  }),
+  { getChats, setPlanMode }
+)(DetectLocation);
 
 DetectLocation.propTypes = ({
   getChats: PropTypes.func.isRequired,
