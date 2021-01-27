@@ -46,9 +46,9 @@ class Tips extends React.Component {
           <Defs>
             <Mask id="mask" x="0" y="0" height={height} width={width}>
               <Rect height="100%" width="100%" fill="white" />
-              <Circle id="Circle" r={width/2} cx={width/2} cy={height - width/2 - 155 - 155} stroke="green" strokeWidth="4" />
+              <Circle id="Circle" r={width/2} cx={width/2} cy={height / 2 - 50} stroke="green" strokeWidth="4" />
             </Mask>
-            <Circle id="Circle" r={width/2} cx={width/2} cy={height - width/2 - 155 - 155} stroke="green" strokeWidth="4" />
+            <Circle id="Circle" r={width/2} cx={width/2} cy={height / 2 - 50} stroke="green" strokeWidth="4" />
           </Defs>
         );
       
