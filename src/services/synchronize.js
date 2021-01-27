@@ -54,7 +54,7 @@ export const syncUser = async (fetch, user, json, images, deleted = {}) => {
     if(user.chats && fetch.chats) user.chats.forEach(item => {
         const chat = {...item, object_sync_id:item.object_id}
         const isExist = fetch.chats.find(item => item.sync_id === chat.sync_id);   
-        if(objects.find(object => object === item.object_id)) return      
+        if(objects && objects.find(object => object === item.object_id)) return      
         if(!isExist) chatsAdd.push(chat);
         if(isExist && new Date(chat.updated_at).getTime() !== new Date(isExist.updated_at).getTime()) chatsUpdate.push(chat);
     });
@@ -62,7 +62,7 @@ export const syncUser = async (fetch, user, json, images, deleted = {}) => {
     if(user.votings && fetch.votings) user.votings.forEach(item => {
         const vote = {...item, object_sync_id:item.object_id}
         const isExist = fetch.votings.find(item => item.sync_id === vote.sync_id);
-        if(objects.find(object => object === item.object_id)) return 
+        if(objects && objects.find(object => object === item.object_id)) return 
         if(!isExist) voteAdd.push(vote);
         if(isExist && new Date(vote.updated_at).getTime() !== new Date(isExist.updated_at).getTime()) voteUpdate.push(vote);
     });

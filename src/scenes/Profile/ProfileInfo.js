@@ -57,8 +57,12 @@ class ProfileInfoScene extends Component {
 
     if(!user.font_size) await updateUser({...user, font_size: 'normal'})
 
+    const { language, font_size } = Object.fromEntries(
+      await AsyncStorage.multiGet(["language", "font_size"])
+    );
+
     if(user.levelup) this.showAnimation()
-    this.setState({avatar: user.avatar, input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
+    this.setState({avatar: user.avatar, input:user.name, language, font_size, user: {...user}})
   }
 
   showAnimation(){
@@ -79,16 +83,10 @@ class ProfileInfoScene extends Component {
     updateUser({ ...user, name:input, avatar, language, font_size, levelup:false });
   }
 
-  onUserChanged(key, value){
-    if(this.state[key] !== value){
-      const { updateUser, getUser } = this.props;
-      const { user } = this.state; 
-      const dbUser = getUser();
-      if(dbUser.sync_id !== user.sync_id || !value) return;
+  onOptionChanged(key, value){
+      AsyncStorage.setItem(key,value);
       this.setState({[key]: value})
       if(key === 'language' && strings.getLanguage() !== value) strings.setLanguage(value); 
-      updateUser({ ...user, [key]: value})
-    }
   }
 
   handleChangeAvatarButtonPress(){
@@ -190,7 +188,7 @@ class ProfileInfoScene extends Component {
               <Option title={strings.languageLabel} style={{marginTop:5}}>
                 <Picker
                   items={options.lang}
-                  onValueChange={(value) => this.onUserChanged('language', value)}
+                  onValueChange={(value) => this.onOptionChanged('language', value)}
                   value={language}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
                   Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
@@ -201,7 +199,7 @@ class ProfileInfoScene extends Component {
               <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
                 <Picker
                   items={options.fontSizes}
-                  onValueChange={(value) => this.onUserChanged('font_size',value)}
+                  onValueChange={(value) => this.onOptionChanged('font_size',value)}
                   value={font_size}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
                   Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}

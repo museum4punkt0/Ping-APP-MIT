@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text as RNText } from 'react-native';
-import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const getFontSize = (size, type = 'normal') => {
   if(type === 'normal') {
@@ -15,8 +15,14 @@ export const getFontSize = (size, type = 'normal') => {
 };
 
 const Text = (props) => {
-   const {style, user} = props;
-   return(<RNText {...props} style={[style, { fontFamily: 'SFProText-Regular' }, style.fontSize && {fontSize: getFontSize(style.fontSize, user.font_size)} ]} />)
+  const {style} = props;
+  const [fontSize, setFontSize] = useState('normal')
+
+  AsyncStorage.getItem('font_size').then(value => {
+    setFontSize(value)
+  });
+
+  return <RNText {...props} style={[style, { fontFamily: 'SFProText-Regular' }, style.fontSize && {fontSize: getFontSize(style.fontSize, fontSize)} ]} />
 }
 
 Text.propTypes = {
@@ -28,4 +34,4 @@ Text.defaultProps = {
   style: {}
 };
 
-export default connect(({user}) => ({ user:user.user }) , {})(Text);
+export default Text;
