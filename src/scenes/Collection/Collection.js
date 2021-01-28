@@ -42,7 +42,7 @@ class CollectionScene extends Component {
   }
   
   async componentWillMount() {
-    const { getCollections, createCollection, image, object, getUser, settings, categories } = this.props;
+    const { getCollections, createCollection, image, object, getUser, settings, categories, museumObjectsIds } = this.props;
     const collections = getCollections();
     const user = getUser();
     const categoriesCollectionArray = [];
@@ -52,7 +52,11 @@ class CollectionScene extends Component {
       const object_ids = convertToArray(categories[i].sync_object_ids);
       let category_id = null, newCollection = null;
       if(object && image && object_ids) category_id = object_ids.find(item => item === object.sync_id);   
-      categories[i].collections = collections.filter(collection => collection.category_id === categories[i].sync_id); 
+      categories[i].collections = collections.filter(
+        (collection) =>
+          collection.category_id === categories[i].sync_id &&
+          museumObjectsIds.includes(collection.object_id)
+      ); 
       if(category_id) newCollection = await createCollection({image, object_id: object.sync_id, category_id: categories[i].sync_id});
       if(newCollection) categories[i].collections.push(newCollection);
       if(newCollection && categories[i].collections.length === 3) this.setState({congratulationsDialog:true});
@@ -260,7 +264,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user, museums }) => ({ settings: user.settings, categories: museums.categories  }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user, museums }) => ({ settings: user.settings, categories: museums.categories, museumObjectsIds: convertToArray(museums.objects).map(item => item.sync_id) }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;
