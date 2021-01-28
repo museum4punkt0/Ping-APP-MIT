@@ -67,6 +67,22 @@ class Chats extends Component {
     return this.nextMessage(!object.onboarding ? chat.last_step || null : 1, object.sync_id);
   }
 
+  checkIfMapLastAction(current, previous, isNext) {
+    /*
+      We don't want to continue dialogue 
+      if previous message was a map special action 
+      (DIALOGUE_IDS_FOR_SPECIAL_ACTIONS.MAP)
+      and current message is not '||Map' special action
+      and we didnt come from the Map screen (!isNext)
+    */
+    return (
+      previous &&
+      previous.next == DIALOGUE_IDS_FOR_SPECIAL_ACTIONS.MAP &&
+      current.indexOf("||") !== 0 &&
+      !isNext
+    );
+  }
+
   // componentWillUnmount(){
   //   Dialogue.dialogue_states = {};
   //   Dialogue.dialogues = {};
@@ -83,6 +99,24 @@ class Chats extends Component {
       history: JSON.stringify(msgArray),
       last_step: Dialogue.__getState(chat.object_id, 'player')
     });
+
+    const isMapLastAction = this.checkIfMapLastAction(
+      current = nextStep.text,
+      previous = msgArray[msgArray.length - 1],
+      isNext = isNext
+    );
+    /*
+      If our last message was a Map special action:
+      1. If we are in a plan mode - we don't continue dialogue
+      2. If we are in another mode - we go straight to the Map screen
+    */
+    if(isMapLastAction) {
+      if(this.props.plan === 1){
+        return this.setState({isIndicatorShow:false})
+      } else {
+        return this.handleSpecialAction('Map');
+      }
+    }
 
     if(msgArray.length && msgArray[msgArray.length - 1]["type"] === "Image") {
       const value = await getStorageItem('firstChatImage')
