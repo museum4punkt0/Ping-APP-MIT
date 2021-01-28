@@ -66,7 +66,7 @@ class DetectLocation extends Component {
             )
           })}    
         </ScrollView>
-        <Button onPress={() => this.handleQuitTourButton()} title={planString(plan, isFromPlanScene=true)} containerStyle={{marginHorizontal:35, marginBottom: 20, backgroundColor:colors.green}}/> 
+        <Button onPress={() => this.handleQuitTourButton()} title={planString(plan, isFromPlanScene=true)} containerStyle={{marginHorizontal:35, marginBottom: 20, backgroundColor:colors.blue}}/> 
         <Dialog visible={planDialog} onRequestClose={()=>this.setState({planDialog:false})} title={strings.congratulations} bodyText={strings.startYouOwnTour} btnTetx={strings.gotIt} />
       </Scene>
     );
