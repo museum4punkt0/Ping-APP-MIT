@@ -9,7 +9,7 @@ import Text from "../../components/Text";
 // import NoPlannedDialog from "../../components/Dialogs/Dialog";
 // import Toaster, {ToasterTypes} from "../../components/Popup";
 import strings from '../../config/localization';
-import {getLocalization} from '../../config/helpers';
+import {convertToArray, getLocalization} from '../../config/helpers';
 import styles, { colors } from '../../config/styles';
 import {setTour, setPlanMode} from '../../actions/user';
 import { getChats } from '../../actions/chats'
@@ -25,9 +25,10 @@ class Tours extends Component {
   }
 
   componentWillMount() {
-    const {getChats} = this.props;
+    const {getChats, museums} = this.props;
     const chats = getChats();
-    const isPlanned = chats.find(chat => chat.planned);
+    const museumObjectsIds = convertToArray(museums.objects).map(item => item.sync_id);
+    const isPlanned = chats.find(chat => chat.planned && museumObjectsIds.includes(chat.object_id));
     if(!isPlanned) return;
     this.setState({
       isPlannedChats: isPlanned.planned
