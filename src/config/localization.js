@@ -170,6 +170,7 @@ const strings = new LocalizedStrings({
     website: 'Website',
     quitDiscoveryExplanation: 'You can exit current mode and go back to choosing another mode or another museum',
     openVisitorsGuideExplanation: 'Look through app guide slides which explain core concepts of this app',
+    grantGalleryAccess: 'Please grant this app an access to the gallery in the settings of your device'
     
   },
   de: {
@@ -340,6 +341,7 @@ const strings = new LocalizedStrings({
     website: 'Webseite',
     quitDiscoveryExplanation: 'Sie können den aktuellen Modus verlassen und wieder einen anderen Modus oder ein anderes Museum auswählen',
     openVisitorsGuideExplanation: 'Schauen Sie sich die Folien der App-Anleitung an, in denen die Kernkonzepte dieser App erläutert werden',
+    grantGalleryAccess: 'Bitte gewähren Sie dieser App in den Einstellungen Ihres Geräts einen Zugriff auf die Galerie',
   }
 });
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import uuidv1 from 'uuid/v1';
 import ImagePicker from 'react-native-image-picker';
 import Picker from 'react-native-picker-select';
+import Permissions from 'react-native-permissions'
 import { Actions } from 'react-native-router-flux';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import DeviceInfo from 'react-native-device-info';
@@ -13,7 +14,7 @@ import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
 import strings from '../../config/localization';
-import {getImage, getLocalization, getOptions, planString} from '../../config/helpers';
+import {getImage, getLocalization, getOptions, planString, getPermission} from '../../config/helpers';
 import variables from '../../config/constants';
 import Button from '../../components/Button'
 import ChooseAvatarDialog from '../../components/Dialogs/ChooseAvatarDialog'
@@ -91,12 +92,19 @@ class ProfileInfoScene extends Component {
   }
 
   handleChangeAvatarButtonPress(){
-    ImagePicker.showImagePicker(options, async response => {
-      if(response.didCancel) return
-      if(response.customButton) return this.setState({isChooseAvatarModalOpen: true});
-      const avatar = await WriteBase64Image(response.data, uuidv1());
-      if(!response.error && !response.didCancel) this.setState({avatar})
-    });
+    Permissions.request(getPermission("photo")).then(
+      (per) =>
+        per === "granted" ?
+        ImagePicker.showImagePicker(options, async (response) => {
+          if (response.didCancel) return;
+          if (response.customButton)
+            return this.setState({ isChooseAvatarModalOpen: true });
+          const avatar = await WriteBase64Image(response.data, uuidv1());
+          if (!response.error && !response.didCancel)
+            this.setState({ avatar });
+        })
+        : Toaster.showMessage(strings.grantGalleryAccess, ToasterTypes.SUCCESS)
+    );
   }
 
   async handleResetUserButtonPress(){
