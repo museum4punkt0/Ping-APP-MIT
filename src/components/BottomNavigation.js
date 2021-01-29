@@ -7,6 +7,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons';
 import Text from "./Text";
 import styles, { colors } from '../config/styles';
 import strings from "../config/localization";
+import variables from "../config/constants";
 import { SafeAreaView } from 'react-native';
 
 
@@ -22,8 +23,8 @@ const Navigator = (props) => {
   const {index, plan} = props;
   const navigator = () => {
     switch (plan) {
-      case 1: return <PlanNavigator index={index} />
-      case 2: return <DiscoverNavigator index={index} />;
+      case variables.planMode: return <PlanNavigator index={index} />
+      case variables.tourMode: return <DiscoverNavigator index={index} />;
       default: return <DiscoverNavigator index={index} isPlannedTour={plan===4} />;
     }
   };

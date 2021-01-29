@@ -11,6 +11,7 @@ import NoMore from '../../components/Tinder/NoMore';
 import Dialog from '../../components/Dialogs/Dialog'
 import strings from '../../config/localization';
 import styles, { colors } from '../../config/styles';
+import variables from '../../config/constants';
 import { Actions } from 'react-native-router-flux';
 import Button from '../../components/Button';
 
@@ -28,7 +29,7 @@ class DetectLocation extends Component {
     const objects = convertToArray(getObjects());
     let chats = getChats();
     const chatsObj = [];
-    if(plan === 1) chats = chats.filter(chat => chat.planned)
+    if(plan === variables.planMode) chats = chats.filter(chat => chat.planned)
     chats.forEach(chat=>{
       const object = objects.find((object)=> object.sync_id === chat.object_id)
       if(!object || !museumObjectsIds.includes(object.sync_id) || object.onboarding) return true;
@@ -39,7 +40,7 @@ class DetectLocation extends Component {
 
   handleQuitTourButton(){
     const {setPlanMode} = this.props;
-    setPlanMode(3)
+    setPlanMode(variables.discoverMode)
     Actions.DetectLocation()
   }
 

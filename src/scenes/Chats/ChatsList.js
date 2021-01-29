@@ -13,6 +13,7 @@ import styles from '../../config/styles';
 import { getChats } from '../../actions/chats'
 import { updateUser } from '../../actions/user'
 import strings from '../../config/localization';
+import variables from '../../config/constants'
 
 class ChatsListScene extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class ChatsListScene extends Component {
     let chats = getChats();
     updateUser({sync_id:user.sync_id, chats});
     const chatsObj = [];
-    if(plan === 1) chats = chats.filter(chat => chat.planned)
+    if(plan === variables.planMode) chats = chats.filter(chat => chat.planned)
     chats.forEach(chat=>{
       const object = objects.find((object)=> object.sync_id === chat.object_id)
       if(!object || !museumObjectsIds.includes(object.sync_id) || object.onboarding) return true;

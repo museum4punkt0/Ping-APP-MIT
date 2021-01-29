@@ -13,6 +13,7 @@ import {getLocalization, convertToArray, getStorageItem, showToast} from '../../
 import { getChats } from '../../actions/chats'
 import { getUser, voteUpdate, updateUser, getVotes } from '../../actions/user'
 import strings from '../../config/localization';
+import variables from '../../config/constants';
 import { getScore } from '../../services/voting';
 import Tips from '../../components/Tips';
 import Text from '../../components/Text';
@@ -37,7 +38,7 @@ class Tinder extends Component{
 
     updateUser({...user, votings});
     let cardArray = [];
-    if(plan === 2) {
+    if(plan === variables.tourMode) {
       const cards = []
       const tourObjects = convertToArray(tour.tourobjects);
       tourObjects.forEach(obj => {
@@ -146,7 +147,7 @@ class Tinder extends Component{
               <TouchableOpacity style={{marginHorizontal:15}} onPress={()=> Actions.CameraScene()}>
                 <MIcon color={colors.white} name="center-focus-weak" size={50} /> 
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.tinder.actionBtn,{backgroundColor: plan === 1 ? colors.blue : colors.green}]} onPress={()=> this.isSwiperAvailable && this.swiper.swipeRight()}>
+              <TouchableOpacity style={[styles.tinder.actionBtn,{backgroundColor: plan === variables.planMode ? colors.blue : colors.green}]} onPress={()=> this.isSwiperAvailable && this.swiper.swipeRight()}>
                 <Icon style={styles.tinder.likeIcon}>l</Icon>
               </TouchableOpacity>
             </View>

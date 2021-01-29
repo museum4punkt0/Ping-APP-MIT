@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import { Actions } from 'react-native-router-flux';
 import Text from "./Text"
 import styles, { colors }  from '../config/styles';
+import variables from '../config/constants'
 import {convertToArray, getImage, getLocalization} from '../config/helpers';
+import { setPlanMode } from '../actions/user';
 
 const Header = (props) => {
-    const {description, title, backBtnFunc, museums, headerStyle, tour, user, plan} = props;
+    const {description, title, backBtnFunc, museums, headerStyle, tour, user, plan, setPlanMode} = props;
     const image = convertToArray(museums.images).find( image => image.image_type === 'logo');
     const logo = image ? getImage(image.image) : 'https://logo';
     // console.warn(Actions.currentScene)
@@ -17,11 +19,19 @@ const Header = (props) => {
         <Text style={{ color:colors.white, fontSize:10, fontWeight:'bold' }}>{getLocalization(tour.localizations, user.language, 'title').toUpperCase()}</Text>
       </View>
     )
+
+    const onLogoPressed = () => {
+      setPlanMode(
+        plan === variables.plannedTourMode ? variables.tourMode : plan
+      );
+      Actions.MuseumsScene()
+    }
+
     return (
       <SafeAreaView style={[headerStyle, {zIndex: 1}]}>
         <View style={[styles.common.headerContainer, headerStyle && {backgroundColor:"rgba(255,255,255,0)"}]}>
           {backBtnFunc ? <BackBtn description={description || ''} title={title} backBtnFunc={backBtnFunc} /> : <Text numberOfLines={3} adjustsFontSizeToFit={true} style={styles.common.headerName}>{title}</Text>}
-          <TouchableOpacity onPress={()=>Actions.MuseumsScene()}>
+          <TouchableOpacity onPress={onLogoPressed}>
             <Image source={{uri: logo}} style={{width:110, height:25}} resizeMode="contain" />
           </TouchableOpacity>    
         </View>
@@ -49,7 +59,7 @@ Header.defaultProps = {
   title:''
 };
 
-export default connect(({museums, plan, user}) => ({ museums:museums.museums, tour:plan.tour, plan:plan.plan, user:user.user }) , { })(Header);
+export default connect(({museums, plan, user}) => ({ museums:museums.museums, tour:plan.tour, plan:plan.plan, user:user.user }) , { setPlanMode })(Header);
 
 const BackBtn = (props) => {
     const {description, title, backBtnFunc} = props;

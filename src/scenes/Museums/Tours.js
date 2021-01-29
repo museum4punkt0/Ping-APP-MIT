@@ -11,6 +11,7 @@ import Text from "../../components/Text";
 import strings from '../../config/localization';
 import {convertToArray, getLocalization} from '../../config/helpers';
 import styles, { colors } from '../../config/styles';
+import variables from '../../config/constants';
 import {setTour, setPlanMode} from '../../actions/user';
 import { getChats } from '../../actions/chats'
 import { ScrollView } from 'react-native';
@@ -43,13 +44,13 @@ class Tours extends Component {
 
   onPressStartDiscoverButton(){
     const {setPlanMode, first} = this.props;
-    setPlanMode(3);
+    setPlanMode(variables.discoverMode);
     Actions.TinderScene({first});
   }
 
   onPressPlanetButton(){
     const {setPlanMode} = this.props;
-    setPlanMode(4);
+    setPlanMode(variables.plannedTourMode);
     Actions.ChatsListScene();
   }
 
