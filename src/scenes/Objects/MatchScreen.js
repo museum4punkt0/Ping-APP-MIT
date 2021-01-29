@@ -12,6 +12,7 @@ import { createChat } from "../../actions/chats";
 import {getLocalization, getImage, getStorageItem} from '../../config/helpers';
 import strings from '../../config/localization';
 import Tips from '../../components/Tips';
+import variables from '../../config/constants';
 
 class MatchScreen extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class MatchScreen extends Component {
   async handleStartConversationPress(){
     const { object, createChat, plan } = this.props;
     // console.warn(plan);
-    const chat = await createChat({...object, planned: plan === 1});
+    const chat = await createChat({...object, planned: plan === variables.planMode});
     Actions.ChatsScene({ chatID:chat.sync_id, object:{...object, from:'TinderScene'} })
   }
 
@@ -72,7 +73,7 @@ class MatchScreen extends Component {
 
       <View>
         <Text style={styles.main.matchTitle}>{`${strings.youAnd} “${getLocalization(object.localizations, user.language, 'title')}” ${strings.haveLiked}`}</Text>
-        <Button onPress={() => this.handleStartConversationPress()} title={strings.startConversation} containerStyle={{backgroundColor:plan === 1 ? colors.blue : colors.green}} />
+        <Button onPress={() => this.handleStartConversationPress()} title={strings.startConversation} containerStyle={{backgroundColor:plan === variables.planMode ? colors.blue : colors.green}} />
         <Button onPress={Actions.pop} title={strings.noThanks} containerStyle={{backgroundColor:colors.dark}} />
       </View>
       <TouchableOpacity onPress={()=>this.setState({isModalOpen:true})}>

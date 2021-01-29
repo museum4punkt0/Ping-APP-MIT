@@ -21,6 +21,7 @@ import { sync } from '../../actions/synchronize';
 import Tips from '../../components/Tips';
 import strings from '../../config/localization';
 import { getStorageItem } from "../../config/helpers";
+import variables from "../../config/constants";
 import { SafeAreaView } from 'react-native';
 import { colors } from '../../config/styles';
 
@@ -111,7 +112,7 @@ class Chats extends Component {
       2. If we are in another mode - we go straight to the Map screen
     */
     if(isMapLastAction) {
-      if(this.props.plan === 1){
+      if(this.props.plan === variables.planMode){
         return this.setState({isIndicatorShow:false})
       } else {
         return this.handleSpecialAction('Map');
@@ -157,7 +158,7 @@ class Chats extends Component {
 handleDiscoverFunc(){
   const { plan, object } = this.props;
   const { chat } = this.state;
-  if(plan === 1) return Actions.PlanScene({newPlan:true});
+  if(plan === variables.planMode) return Actions.PlanScene({newPlan:true});
   Actions.DiscoverScreen({object, chatID:chat.sync_id});
 }
 
@@ -248,7 +249,7 @@ handleCameraFunc(){
     await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style, section: museums.sections.filter(section => section.isMainEntrance)[0] });
     AsyncStorage.setItem('firstEntry', 'true');
     sync({ museum:museums, user, settings})
-    if(plan === 2) return Actions.Tours({first:true});
+    if(plan === variables.tourMode) return Actions.Tours({first:true});
     Actions.TinderScene({first:true});   
   }
 

@@ -16,6 +16,7 @@ import detectedPlan from "../../assets/images/detectedPlan.png";
 import strings from '../../config/localization';
 import {getLocalization, convertToArray, getDeviceLocale, getPermission} from '../../config/helpers';
 import styles, { colors } from '../../config/styles';
+import variables from '../../config/constants'
 import { getMuseums } from '../../db/controllers/museums';
 import { getMuseumsList, setAllData, getMuseum, setObject } from '../../actions/museums';
 import { sync } from "../../actions/synchronize";
@@ -70,13 +71,13 @@ async componentWillMount(){
   
   handlePlanTourButton(){
     const {setPlanMode} = this.props;
-    setPlanMode(1);
+    setPlanMode(variables.planMode);
     Actions.MuseumsScene()
   }
 
   handleSelectMuseumButton(){
     const {setPlanMode} = this.props;
-    setPlanMode(2)
+    setPlanMode(variables.tourMode)
     Actions.MuseumsScene()
   }
 
@@ -154,7 +155,7 @@ async componentWillMount(){
     
     const first = await AsyncStorage.getItem('firstEntry');
     if(!first) return this.handleUserLogin(museum, chats);
-    if(plan === 2) return Actions.Tours();
+    if(plan === variables.tourMode) return Actions.Tours();
     
     return Actions.TinderScene();    
   }
@@ -166,7 +167,7 @@ async componentWillMount(){
     const finishedChats = chats.filter(chat => chat.finished);
     if(finishedChats.length >= 1) { 
       AsyncStorage.setItem('firstEntry', 'true'); 
-      if(plan === 2) return Actions.Tours();
+      if(plan === variables.tourMode) return Actions.Tours();
       return Actions.TinderScene();
     }
     if(!onboardingObject) return Toaster.showMessage(strings.museumIsCurrently, ToasterTypes.ERROR);    

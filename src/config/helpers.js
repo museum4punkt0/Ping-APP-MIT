@@ -4,6 +4,7 @@ import RNFS from 'react-native-fs'
 import {PERMISSIONS} from 'react-native-permissions';
 import Toaster, {ToasterTypes} from "../components/Popup";
 import strings from "./localization"
+import variables from "./constants"
 
 export const convertToArray = ( object ) => {
   let array = object || [];
@@ -96,10 +97,10 @@ export const calculateMessageDelay = (message = '', minimumDelay, divider = 4) =
 
 export const planString = (plan, isFromPlanScene=false) => {
   switch(plan){   
-      case 1: return isFromPlanScene ? strings.completePlan : strings.quitPlan;
-      case 2: return strings.quitTour;
-      case 3: return strings.quitDiscovery;
-      case 4: return strings.quitPlannedTour;
+      case variables.planMode: return isFromPlanScene ? strings.completePlan : strings.quitPlan;
+      case variables.tourMode: return strings.quitTour;
+      case variables.discoverMode: return strings.quitDiscovery;
+      case variables.plannedTourMode: return strings.quitPlannedTour;
       default: return strings.quit;      
   }
 };

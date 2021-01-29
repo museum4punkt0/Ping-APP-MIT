@@ -14,6 +14,7 @@ import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
 import strings from '../../config/localization';
 import {getImage, getLocalization, getOptions, planString} from '../../config/helpers';
+import variables from '../../config/constants';
 import Button from '../../components/Button'
 import ChooseAvatarDialog from '../../components/Dialogs/ChooseAvatarDialog'
 import Option from '../../components/Profile/OptionContainer'
@@ -132,7 +133,7 @@ class ProfileInfoScene extends Component {
   
   handleQuitTourButton(){
     const {setPlanMode} = this.props;
-    setPlanMode(3)
+    setPlanMode(variables.discoverMode)
     Actions.DetectLocation()
   }
   

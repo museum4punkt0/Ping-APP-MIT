@@ -9,8 +9,9 @@ import Text from "../../components/Text";
 // import NoPlannedDialog from "../../components/Dialogs/Dialog";
 // import Toaster, {ToasterTypes} from "../../components/Popup";
 import strings from '../../config/localization';
-import {getLocalization} from '../../config/helpers';
+import {convertToArray, getLocalization} from '../../config/helpers';
 import styles, { colors } from '../../config/styles';
+import variables from '../../config/constants';
 import {setTour, setPlanMode} from '../../actions/user';
 import { getChats } from '../../actions/chats'
 import { ScrollView } from 'react-native';
@@ -25,9 +26,10 @@ class Tours extends Component {
   }
 
   componentWillMount() {
-    const {getChats} = this.props;
+    const {getChats, museums} = this.props;
     const chats = getChats();
-    const isPlanned = chats.find(chat => chat.planned);
+    const museumObjectsIds = convertToArray(museums.objects).map(item => item.sync_id);
+    const isPlanned = chats.find(chat => chat.planned && museumObjectsIds.includes(chat.object_id));
     if(!isPlanned) return;
     this.setState({
       isPlannedChats: isPlanned.planned
@@ -42,13 +44,13 @@ class Tours extends Component {
 
   onPressStartDiscoverButton(){
     const {setPlanMode, first} = this.props;
-    setPlanMode(3);
+    setPlanMode(variables.discoverMode);
     Actions.TinderScene({first});
   }
 
   onPressPlanetButton(){
     const {setPlanMode} = this.props;
-    setPlanMode(4);
+    setPlanMode(variables.plannedTourMode);
     Actions.ChatsListScene();
   }
 
