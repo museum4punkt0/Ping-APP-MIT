@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Animated, ImageBackground, Platform } from 'react-native';
+import { View, Animated, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
 import Text from "../Text";
 import styles  from '../../config/styles';
@@ -11,10 +11,7 @@ import { getDistance } from '../../services/voting';
 class CardComponent extends Component{
     constructor(props) {
       super(props);
-      this.state = { 
-        opacity: new Animated.Value(0),
-        random: new Date(),
-      }
+      this.state = { opacity: new Animated.Value(0) }
     }
 
   onLoad(){
@@ -30,19 +27,17 @@ class CardComponent extends Component{
   componentWillUpdate(){ this.onLoad(); }
   
     render(){   
-    const { card, user, pixelMeter } = this.props;
+    const { card, user, position, pixelMeter } = this.props;
     const { avatar, cropped_avatar, localizations } = card;
     const { opacity } = this.state
     const meter = pixelMeter || 1
-    const position = card.section.exit_position
     const distance = Math.floor(getDistance(user, card, position)/meter);
-    const textColor = getLocalization(localizations, user.language, 'text_color') || 'white';
     return(
-      <ImageBackground resizeMode='stretch' source={card.vip && vipObject} style={{flex:1}}>
+      <ImageBackground resizeMode='stretch' source={card.vip && vipObject} style={{flex:1, padding:5, paddingBottom:10}}>
         <View style={styles.tinder.card}>
           <Animated.Image
             onLoadEnd={() => {if(card.index === 0) this.onLoad()}} 
-            source={{uri: getImage(cropped_avatar || avatar) + (Platform.OS === 'ios' ? '' : '?' + this.state.random)}}
+            source={{uri: getImage(cropped_avatar || avatar)}}
             style={[styles.tinder.cardImage, 
             { 
                 transform: [
@@ -54,8 +49,8 @@ class CardComponent extends Component{
             resizeMode='cover'
           />
           <View style={styles.tinder.boxLabelWrapper}>
-            <Text style={{...styles.tinder.boxTitle, color: textColor}}>{getLocalization(localizations, user.language, 'phrase')}</Text>
-            <Text style={{...styles.tinder.boxLabel, color: textColor}}>{`${getLocalization(localizations, user.language, 'object_kind')} ${distance}m ${strings.away}`.toUpperCase()}</Text>
+            <Text style={styles.tinder.boxTitle}>{getLocalization(localizations, user.language, 'phrase')}</Text>
+            <Text style={styles.tinder.boxLabel}>{`${getLocalization(localizations, user.language, 'object_kind')} ${distance}m ${strings.away}`.toUpperCase()}</Text>
           </View>
         </View>
       </ImageBackground>

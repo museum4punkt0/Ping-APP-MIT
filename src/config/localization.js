@@ -26,7 +26,7 @@ const strings = new LocalizedStrings({
     accountInfo: 'Account Settings',
     humboldtForm:'Humboldt Forum',
     humboldtDescription:'With the Humboldt Forum, a whole new cultural district is being created in the very heart of the city. It represents an approach that brings together diverse cultures and perspectives and seeks new insights into topical issues such as migration, religion and globalization.',
-    openGuide:'Show introduction',   
+    openGuide:'Open Visitor Guide',   
     resetDevice:'Reset MeinObjekt-App',
     typeYourName: 'Type your name…',
     termsAnd:'Terms and conditions',
@@ -37,7 +37,6 @@ const strings = new LocalizedStrings({
     like:'Like',
     dislike:'Dislike',
     away:'Away',
-    noObjectsLeft: 'No objects left!',
 
     //Match screen
     startConversation:'Start Conversation',
@@ -63,14 +62,11 @@ const strings = new LocalizedStrings({
     NotRecognized: 'Image not recognized',
     cannotTalk:'This object cannot talk yet - but we have noted your interest and will try to integrate it soon!',
     back:'Back',
-    youCanPinch: 'You can enlarge and zoom in on images inserted in chats by pressing them and enlarging them with two fingers',
 
     //Discover
     iFound:'I found you!',
     startChat:'Do you want to start a chat?',
     zoomIn: 'Zoom in with two finger gesture',
-    youCanSwipe: 'You can click on arrows at the top to switch to a different museum location map. Or you can just simply swipe them!',
-    youCanZoom: 'You can also click on the map and zoom into it for more details!',
 
     //Collection
     completed:'Completed',
@@ -83,7 +79,6 @@ const strings = new LocalizedStrings({
     set:'set',
     youWill:'You will find the suggested objects on top of the stack now',
     toObject:'To Object Selection',
-    newCategoryUnlocked: 'A new Category has been unlocked in your collection. Check it out!',
 
     // Choose Avatar Dialog
     chooseAvatar:'Choose Avatar',
@@ -95,13 +90,13 @@ const strings = new LocalizedStrings({
     detecting:'Detecting your location…',
     weCouldntDetect:'We couldn’t detect your location.',
     areYouInside:'Are you inside a museum?',
-    selectMuseum:'Already in the museum? Then click here',
+    selectMuseum:'Select a Museum and Start your Tour',
     areYouOutside:'Are you outside a Museum?',
-    planTour:'Plan my own Tour',
+    planTour:'Plan Tour',
     planMode:'Plan Mode',
     weDetectedThatYou:'We detected that you are here: ',
-    startTour:'Start my own Tour',
-    areWeWrong:'Wrong museum? Then click here',
+    startTour:'Start Tour',
+    areWeWrong:'Are you somewhere else?',
     chooseAnotherMuseum:'Choose Another Museum',
     weDetectedThatYouOutside:'We detected that you are outside the museum. Start planning your next visit now!',
     startDiscover:'Start Discovery',
@@ -109,9 +104,6 @@ const strings = new LocalizedStrings({
     museumTours:'Museum Tours',
     noPlannedTour:'You have no Planned Tours',
     likeObjectsInPlanned:'Like objects in "Plan Mode" to match and chat with them.',
-    dataIsBeingProcessed: "Please wait, the museum's data is being processed",
-    downloading: 'Downloading...',
-    synchronising: 'Synchronising...',
     
 
     //Permission to use camera
@@ -128,12 +120,8 @@ const strings = new LocalizedStrings({
     description_3:'In MeinObjekt, objects are alive. After matching with an object, you can start a chat conversation with it. They will tell you untold stories and eventually invite to meet them for real in the museum space. ',
     title_4:'Individual tour through the museum',
     description_4:'Make your path through the museum as individual as yourself. With MeinObjekt you will find your very own tour through the museum with objects that really fascinate you.',
-    title_5:'Discovery Mode',
-    description_5:'When you are inside of one of the museums - the app will detect it and you will enter a Discovery Mode. In this mode you can talk to objects, find them in the museum and add them to your collection.',
-    title_6:'Plan Mode',
-    description_6:'When you are outside of museums - you can only enter Plan mode. In this mode you can only see what objects are in the museum and talk to them. But you cannot look for them in the museum or add them to your collection',
     next:'Next',
-    skip:'Close',
+    skip:'Skip',
     swipeRightIf:'Swipe the object-cards left or right to like or dislike them',
     orUseButtons:'Or use the buttons instead of gestures to like or skip an object',    
     greatYouLiked:"Great! You liked this object! Unfortunately this object does not match with your profile. That is fine, don't worry! Keep trying, the next one might match",
@@ -149,28 +137,6 @@ const strings = new LocalizedStrings({
 
     // Plan
     startYouOwnTour: 'Congratulations! You have started your own planned tour! This way you can prepare your next museum visit!',
-    quitPlan: 'Quit Plan Mode',
-    quitTour: 'Quit Tour',
-    quitDiscovery: 'Quit Discovery',
-    quitPlannedTour: 'Quit Planned Tour',
-    quit: 'Quit',
-    completePlan: 'Complete Plan',
-
-    // Options
-    fontSizesNormal: 'Normal',
-    fontSizesBig: 'Big',
-    fontSizesLarge: 'Large',
-    chatInervalsAuto: 'Auto',
-    chatInervalsSlow: 'Slow',
-    chatInervalsNormal: 'Normal',
-    chatInervalsFast: 'Fast',
-    chatInervalsVeryFast: 'Very fast',
-
-    // Profile
-    website: 'Website',
-    quitDiscoveryExplanation: 'You can exit current mode and go back to choosing another mode or another museum',
-    openVisitorsGuideExplanation: 'Look through app guide slides which explain core concepts of this app',
-    
   },
   de: {
     //Bottom navigation
@@ -197,7 +163,7 @@ const strings = new LocalizedStrings({
     accountInfo: 'Kontoeinstellungen',
     humboldtForm:'Humboldt Forum',
     humboldtDescription:'Mit dem Humboldt Forum entsteht im Herzen der Stadt ein ganz neuer Kulturbezirk. Es stellt einen Ansatz dar, der verschiedene Kulturen und Perspektiven zusammenbringt und neue Einsichten in aktuelle Themen wie Migration, Religion und Globalisierung sucht.',
-    openGuide:'Einführung anzeigen',
+    openGuide:'Visitor Guide öffnen',
     resetDevice:'MeinObjekt-App zurücksetzen',
     typeYourName: 'Gib deinen Namen ein…',
     termsAnd:'Nutzungsbedingungen',
@@ -208,7 +174,6 @@ const strings = new LocalizedStrings({
     like:'Spannend',
     dislike:'Langweilig',
     away:'Weg',
-    noObjectsLeft: 'Keine Objekte mehr!',
 
     //Match screen
     startConversation:'Starte die Unterhaltung',
@@ -234,14 +199,11 @@ const strings = new LocalizedStrings({
     NotRecognized: 'Bild nicht erkannt',
     cannotTalk:'Dieses Objekt kann noch nicht sprechen - aber wir haben dein Interesse bemerkt und werden versuchen, es bald zu integrieren!',
     back:'Zurück',
-    youCanPinch: 'Du kannst Bilder, die in Chats eingefügt sind, vergrößern und zoomen, indem du auf sie drückst und sie mit zwei Fingern vergrößerst',
 
     //Discover
     iFound:'Ich hab dich gefunden!',
     startChat:'Möchtest du mit dem Chat beginnen?',
     zoomIn: 'Karte mit Zwei-Finger-Geste vergrößern',
-    youCanSwipe: 'Du kannst oben auf die Pfeile klicken, um zu einer anderen Standortkarte des Museums zu wechseln. Oder du kannst sie einfach weiter wischen.',
-    youCanZoom: 'Du kannst auch auf die Karte klicken und sie vergrößern, um weitere Informationen zu erhalten!',
 
     //Collection
     completed:'Abgeschlossen',
@@ -254,7 +216,6 @@ const strings = new LocalizedStrings({
     set:'gesetzt',
     youWill:'Die vorgeschlagenen Objekte findest du ganz oben in der Objektauswahl',
     toObject:'Zu den Objekten',
-    newCategoryUnlocked: 'Eine neue Kategorie wurde in deiner Sammlung freigeschaltet!',
 
     // Choose Avatar Dialog
     chooseAvatar:'Wähle einen Avatar',
@@ -266,13 +227,13 @@ const strings = new LocalizedStrings({
     detecting:'Wir suchen deinen Standort...',
     weCouldntDetect:'Wir konnten deinen Standort nicht erkennen.',
     areYouInside:'Bist du in einem Museum?',
-    selectMuseum:'Doch schon im Museum? Dann hier klicken',
+    selectMuseum:'Wähle ein Museum und starte die Tour',
     areYouOutside:'Bist du außerhalb eines Museums?',
-    planTour:'Meine eigene Tour planen',
+    planTour:'Geplante Tour',
     planMode:'Planmodus',
     weDetectedThatYou:'Wir haben festgestellt, dass du dich in folgendem Museum befindest:',
-    startTour:'Meine eigene Tour starten',
-    areWeWrong:'Falsches Museum? Dann hier klicken',
+    startTour:'Tour starten',
+    areWeWrong:'Stimmt das nicht?',
     chooseAnotherMuseum:'Wähle ein anderes Museum',
     weDetectedThatYouOutside:'Wir haben festgestellt, dass du dich nicht in einem Museum befindest. Plane jetzt deinen nächsten Besuch!',
     startDiscover:'Starte deine Entdeckungs reise',
@@ -280,9 +241,6 @@ const strings = new LocalizedStrings({
     museumTours:'Museums-Touren',
     noPlannedTour:'Keine geplanten Touren',
     likeObjectsInPlanned:'Like Objekte im Plan-Modus, um mit ihnen zu chatten.',
-    dataIsBeingProcessed: "Bitte warten Sie, die Daten des Museums werden verarbeitet",
-    downloading: 'Wird heruntergeladen...',
-    synchronising: 'Synchronisieren...',
 
     //Permission to use camera
     permissionDialogTitle:'Erlaubnis zur Verwendung der Kamera',
@@ -297,12 +255,8 @@ const strings = new LocalizedStrings({
     description_3:'In MeinObjekt werden Objekte lebendig. Nach dem Matchen mit einem Objekt kannst du eine Chat-Unterhaltung mit ihm beginnen. Sie erzählen dir unglaubliche Geschichten und laden dich schließlich ein, sie im Museum kennenzulernen.',
     title_4:'Individuelle Führung durch das Museum',
     description_4:'Erstelle deine persönliche Museumstour, die so individuell wie du selbst ist. Mit MeinObjekt hast du die Möglichkeit, eine persönliche Tour durchs Museum zu erstellen, mit Objekten die dich wirklich faszinieren.',
-    title_5:'Erkennungs-Modus',
-    description_5:'Wenn Sie sich in einem der Museen befinden, erkennt die App dies und Sie gelangen in einen Erkennungsmodus. In diesem Modus können Sie mit Objekten sprechen, sie im Museum finden und Ihrer Sammlung hinzufügen.',
-    title_6:'Plan-Modus',
-    description_6:'Wenn Sie sich außerhalb von Museen befinden, können Sie nur in den Plan-Modus wechseln. In diesem Modus können Sie nur sehen, welche Objekte sich im Museum befinden, und mit ihnen sprechen. Sie können sie jedoch nicht im Museum suchen oder Ihrer Sammlung hinzufügen.',
     next:'Weiter',
-    skip:'Schließen',
+    skip:'Überspringen',
     swipeRightIf:'Wische nach rechts, wenn du ein Objekt liken willst, oder wische nach links, um es zu verwerfen',
     orUseButtons:'Oder verwende die Buttons anstelle von Gesten, um ein Objekt zu liken oder es zu verwerfen',  
     greatYouLiked:"Toll! Du mochtest dieses Objekt! Leider passt dieses Objekt nicht zu deinem Profil. Das ist in Ordnung! Versuch es weiter, das nächste könnte passen",
@@ -318,28 +272,7 @@ const strings = new LocalizedStrings({
 
 
     // Plan
-    startYouOwnTour: 'Herzlichen Glückwunsch! Du hast deine eigene geplante Tour gestartet!',
-    quitPlan: 'Planmodus Beenden',
-    quitTour: 'Tour Beenden',
-    quitDiscovery: 'Discovery Beenden',
-    quitPlannedTour: 'Geplante Tour Beenden',
-    quit: 'Verlassen',
-    completePlan: 'Plan Abschließen',
-    
-    // Options
-    fontSizesNormal: 'Normal',
-    fontSizesBig: 'Groß',
-    fontSizesLarge: 'Extra groß',
-    chatInervalsAuto: 'Auto',
-    chatInervalsSlow: 'Schleppend',
-    chatInervalsNormal: 'Normal',
-    chatInervalsFast: 'Schnell',
-    chatInervalsVeryFast: 'Extra schnell',
-
-    // Profile
-    website: 'Webseite',
-    quitDiscoveryExplanation: 'Sie können den aktuellen Modus verlassen und wieder einen anderen Modus oder ein anderes Museum auswählen',
-    openVisitorsGuideExplanation: 'Schauen Sie sich die Folien der App-Anleitung an, in denen die Kernkonzepte dieser App erläutert werden',
+    startYouOwnTour: 'Herzliche Glückwünsche! Du hast deine eigene geplante Tour gestartet!',
   }
 });
 

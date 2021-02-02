@@ -4,7 +4,7 @@ export const getDistance = (user, object, position = {positionX:15,positionY:15}
     const exit_positionX = position.positionX;
     const exit_positionY = position.positionY;
 
-    if (object.section.sync_id === user.section.sync_id) {
+    if (object.floor === user.floor) {
         distance = Math.sqrt(
             Math.pow( Math.abs(user.positionX - object.positionX), 2)
             +

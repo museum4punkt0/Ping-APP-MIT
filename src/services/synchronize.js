@@ -3,7 +3,7 @@ import { getByPrimary } from '../db/controllers/museums';
 import {getImage} from '../config/helpers';
 
 export const syncMuseums = (fetch, json) => {
-    const objects = [], images = [], categories= [], sections = [];
+    const objects = [], images = [], categories= [];
     if(fetch.objects) fetch.objects.forEach(object => {
         const isExist = getByPrimary('Objects', object.sync_id);
         if(!isExist || new Date(object.updated_at).getTime() !== new Date(isExist.updated_at).getTime()) objects.push(object.sync_id);
@@ -16,12 +16,7 @@ export const syncMuseums = (fetch, json) => {
         const isExist = getByPrimary('Images', image.sync_id);
         if(!isExist || new Date(image.updated_at).getTime() !== new Date(isExist.updated_at).getTime()) images.push(image.sync_id);
     });
-    if(fetch.sections) fetch.sections.forEach(section => {
-        const isExist = getByPrimary('Sections', section.sync_id);
-        if(!isExist || new Date(section.updated_at).getTime() !== new Date(isExist.updated_at).getTime()) sections.push(section.sync_id);
-
-    });
-    json.get = {...json.get, objects, images, categories, sections}
+    json.get = {...json.get, objects, images, categories}
     return json
 };
 

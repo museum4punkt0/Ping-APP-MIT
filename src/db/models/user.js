@@ -11,7 +11,7 @@ User.schema = {
         category: 'string?',
         positionX: {type: 'double?', default: 1}, //(11,8)
         positionY: {type: 'double?', default: 1}, //(11,8)
-        section: 'Sections',
+        floor: {type: 'int?', default: 1},
         language: 'string', // (de, eng)
         font_size: {type: 'string?', default: 'medium'},
         // language_style: 'string?', // (easy or fun or kids or professional)

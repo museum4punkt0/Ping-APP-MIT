@@ -8,7 +8,6 @@ import strings from '../../config/localization';
 import { colors, IOSpadding } from '../../config/styles';
 import { ToastView } from '../Popup';
 import { getStorageItem } from '../../config/helpers';
-import { SafeAreaView } from 'react-native';
 
 class ZoomImageDialog extends React.Component {
   state = {
@@ -28,8 +27,8 @@ class ZoomImageDialog extends React.Component {
     const {isShowToast} = this.state;
     return (
       <Modal visible={visible} onRequestClose={onRequestClose} transparent={false}>
-        <SafeAreaView style={{backgroundColor:colors.black}} onTouchStart={() => this.setState({isShowToast: false})}>
-          <TouchableOpacity onPress={onRequestClose} style={{backgroundColor:'rgba(0,0,0,0.5)', width:'100%', flexDirection:'row', alignItems:'center', paddingVertical:10}}>
+        <View style={{backgroundColor:colors.black}} onTouchStart={() => this.setState({isShowToast: false})}>
+          <TouchableOpacity onPress={onRequestClose} style={{backgroundColor:'rgba(0,0,0,0.5)', width:'100%', paddingTop: IOSpadding, flexDirection:'row', alignItems:'center', paddingVertical:10, position:'absolute', top:0, zIndex:2}}>
             <Icon color={colors.white} name="arrow-back" size={24} style={{marginHorizontal:10}} />
             <Text style={{color:colors.white}}>{strings.back}</Text>
           </TouchableOpacity>
@@ -43,7 +42,7 @@ class ZoomImageDialog extends React.Component {
           >
             {image ? <Image style={{flex:1}} resizeMode="contain" source={{uri:image}} /> : imageView}
           </ImageZoom>
-        </SafeAreaView>
+        </View>
         {isShowToast ? <ToastView message={strings.zoomIn} style={{position: 'absolute', bottom: 50, alignSelf: 'center', backgroundColor: colors.green}} /> : null}
       </Modal>
     )

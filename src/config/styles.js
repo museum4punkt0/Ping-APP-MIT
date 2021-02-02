@@ -29,33 +29,14 @@ export const common = StyleSheet.create({
     flex: 1,
     backgroundColor:colors.black
   },
-  noObjectsMessage: {
-    fontWeight:'bold',
-    fontSize:20,
-    color:colors.white,
-    alignSelf: 'center',
-    marginTop: 50,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
-  loadingCaption:{
-    color: colors.green,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  loadingHeader: {
-    color: colors.white,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 35,
-    paddingHorizontal: 50,
-    fontSize: 18,
-  },
   headerContainer:{
-    paddingVertical: 10,
+    height: 45 + IOSpadding,
+    paddingTop: IOSpadding,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -66,8 +47,7 @@ export const common = StyleSheet.create({
     fontSize: 26, 
     color: colors.white,
     fontWeight:'bold', 
-    flex:0.95,
-    paddingHorizontal: 10,
+    flex:0.7
   },
   headerTitle:{
     fontSize: 16, 
@@ -109,7 +89,7 @@ export const common = StyleSheet.create({
   navigationContainer:{
     flexDirection:'row',
     justifyContent:'space-around',
-    paddingVertical: 10,
+    paddingVertical:5,
     backgroundColor:colors.dark
   },
   navigatorItem:{
@@ -329,9 +309,8 @@ export const main = StyleSheet.create({
     locationTitleRow:{
       color:colors.white,
       fontSize: 16,
-      marginTop:35,
-      textAlign:'center',
-      width: '70%'
+      marginTop:15,
+      textAlign:'center'
     },
     toursButtonContainer:{
       flex:1,
@@ -350,8 +329,8 @@ export const main = StyleSheet.create({
     toursButtonLabel:{
       fontSize:26,
       color:colors.white,
-      paddingHorizontal: 40,
-      textAlign: 'center',
+      alignSelf: 'center',
+      width: '50%'
     },
     appGuideButtonContainer:{
       flexDirection:'row',
@@ -437,7 +416,7 @@ export const chat = StyleSheet.create({
     padding:10,
     margin:5,
     alignItems:'center',
-    backgroundColor: colors.green
+    backgroundColor: 'rgb(92,94,96)'
   },
   optionsTitle:{
     fontSize: 16,
@@ -492,6 +471,8 @@ const profile = StyleSheet.create({
       justifyContent:'space-between',
       flexDirection:'row',
       padding:15,
+      borderBottomWidth:0.5,
+      borderColor:colors.gray
     },
     profileTitle:{
       fontSize: 16,
@@ -508,9 +489,8 @@ const profile = StyleSheet.create({
     },
     profileDescription:{
       fontSize: 16,
-      color:colors.brownGrey,
-      padding:15,
-      textAlign: 'center'
+      color:colors.white,
+      padding:15
     },
     versionTitle: {
       fontSize: 10,
@@ -521,11 +501,6 @@ const profile = StyleSheet.create({
       fontSize: 10,
       color:colors.brownGrey,
       marginVertical:10
-    },
-    explanationText:{
-      color:colors.brownGrey, 
-      fontSize: 12, 
-      textAlign: 'center'
     },
     profileAvatar:{
       width:120,
@@ -565,14 +540,6 @@ const profile = StyleSheet.create({
     }
  })
 
-const profileWithProps = ({ plan, isRed }) => StyleSheet.create({
-  profileButton:{
-    marginHorizontal: 15, 
-    backgroundColor: isRed ? colors.red : plan === 1 ? colors.blue : colors.green, 
-    flex: 1
-  },
-})
-
 const tinder = StyleSheet.create({  
   card: {
     flex: 1,
@@ -592,7 +559,7 @@ const tinder = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     position:'absolute',
-    bottom:15,
+    bottom:50,
     alignSelf:'center'
   },
   actionBtn: {
@@ -619,11 +586,13 @@ const tinder = StyleSheet.create({
   },
   boxLabel:{
     fontSize: 14,
+    color: colors.white,
     textAlign: 'center',
     // textTransform: 'uppercase'
   },
   boxTitle: {
     fontSize: 18,
+    color: colors.white,
     fontWeight:'bold',
     textAlign: 'center',
     marginVertical:5
@@ -689,4 +658,4 @@ const camera = StyleSheet.create({
 });
 
 
-export default { common, main, chat, tinder, profile, profileWithProps, camera };
+export default { common, main, chat, tinder, profile, camera };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, PermissionsAndroid } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
@@ -16,7 +16,6 @@ import { createChat } from "../../actions/chats";
 import strings from '../../config/localization';
 import {Recognize} from '../../actions/museums';
 import styles from '../../config/styles';
-
 
 
 export const recognizeImage = (image, tensor, museum_id, data) => Recognize(data, museum_id)
@@ -48,10 +47,6 @@ class CameraScene extends Component {
     }
   }
 
-  async componentDidMount() {
-    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
-  }
-
 
   async takePicture(){
     this.setState({loading:true})
@@ -61,7 +56,7 @@ class CameraScene extends Component {
     const museum_id = await AsyncStorage.getItem('museum');
     const tensor = tensors.find(item => item.museum_id === museum_id);
     if (camera) {
-      const img = await camera.takePictureAsync({ base64: true, width:1080 });
+      const img = await camera.takePictureAsync({ fixOrientation: true, quality: 0.5, base64: true, width:1080 });
       const data = new FormData();
       data.append('image', {uri:img.uri, name:'image.jpg', type: 'image/jpeg'});  
       const result = await recognizeImage(img, tensor, museum_id, data) || {};       
@@ -90,7 +85,8 @@ class CameraScene extends Component {
           ref={ref => { this.camera = ref; }}
           style={{flex: 1}}
           type={RNCamera.Constants.Type.back}
-          captureAudio={false}
+          permissionDialogTitle={strings.permissionDialogTitle}
+          permissionDialogMessage={strings.permissionDialogMessage}
         />
         <TouchableOpacity
           onPress={this.takePicture.bind(this)}

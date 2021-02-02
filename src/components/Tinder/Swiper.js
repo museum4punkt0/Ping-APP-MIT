@@ -15,11 +15,6 @@ class Swiper extends React.Component {
             swipeData: [],
             currentSelectIndex:0
         };
-        this.viewabilityConfig = {
-          waitForInteraction: false,
-          viewAreaCoveragePercentThreshold: 95,
-        }
-
     }
 
     componentWillMount(){        
@@ -80,7 +75,6 @@ class Swiper extends React.Component {
     render() {
         const { swipeData, currentSelectIndex } = this.state;
         const floor = swipeData[currentSelectIndex] ? swipeData[currentSelectIndex].floor : 0;
-        const section_name = swipeData[currentSelectIndex] ? swipeData[currentSelectIndex].title : 'Unknown';
         const length = swipeData.length || 1
         return (
           <View style={{flex: 1, width }}>
@@ -90,9 +84,9 @@ class Swiper extends React.Component {
                   <Icon color={colors.brownGrey} name="keyboard-arrow-left" size={30} />
                 </TouchableWithoutFeedback>
               )}
-              <View style={{height:30, justifyContent:'center', alignItems: 'center', flexDirection: 'row'}}>
-                <Text style={{color:colors.brownGrey, fontSize:16, fontWeight:'bold'}}>{section_name}</Text>
-                <TouchableOpacity onPress={()=>Toaster.showMessage(strings.youAreInvited, ToasterTypes.MESSAGE)} style={{height:30, justifyContent:'center', paddingHorizontal:10}}>
+              <View style={{height:30, justifyContent:'center'}}>
+                <Text style={{color:colors.brownGrey, fontSize:16, fontWeight:'bold'}}>{`Level: ${floor}rd Floor`}</Text>
+                <TouchableOpacity onPress={()=>Toaster.showMessage(strings.youAreInvited, ToasterTypes.MESSAGE)} style={{position:'absolute', right:-50, height:30, justifyContent:'center', paddingHorizontal:15}}>
                   <FIcon color={colors.white} name="question-circle" size={20} />
                 </TouchableOpacity>
               </View>
@@ -112,7 +106,6 @@ class Swiper extends React.Component {
               keyExtractor={index => index.sync_id}
               renderItem={(item) => this.renderItem(item)}
               onViewableItemsChanged={this.onViewableItemsChanged}
-              viewabilityConfig={this.viewabilityConfig}
               getItemLayout={this.getItemLayout.bind(this)}
               horizontal
               directionalLockEnabled

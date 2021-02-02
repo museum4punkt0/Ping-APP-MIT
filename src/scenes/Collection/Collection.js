@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Confetti from 'react-native-confetti';
+import ConfettiCannon from 'react-native-confetti-cannon';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,7 +13,7 @@ import Dialog from "../../components/Dialogs/Dialog";
 import Toaster, {ToasterTypes} from "../../components/Popup";
 import styles, { colors } from '../../config/styles';
 import { convertToArray, getLocalization, getImage, showToast, showToObject, getStorageItem } from '../../config/helpers';
-import { getObjects } from '../../db/controllers/museums';
+import { getObjects, getCategories } from '../../db/controllers/museums';
 import { getCollections, createCollection } from '../../actions/collections';
 import { getUser, updateUser } from '../../actions/user';
 import strings from '../../config/localization';
@@ -42,12 +42,13 @@ class CollectionScene extends Component {
   }
   
   async componentWillMount() {
-    const { getCollections, createCollection, image, object, getUser, settings, categories } = this.props;
+    const { getCollections, createCollection, image, object, getUser, settings } = this.props;
     const collections = getCollections();
+    const categories = getCategories()
     const user = getUser();
     const categoriesCollectionArray = [];
-    const maxCategoryLevel = Math.max(...categories.map(category => category.category_level));
-    let level = user.level;
+    if(object && image) this.shotToast()
+    let level = 1;
     for(let i=0; i < categories.length; i++){
       const object_ids = convertToArray(categories[i].sync_object_ids);
       let category_id = null, newCollection = null;
@@ -58,120 +59,75 @@ class CollectionScene extends Component {
       if(newCollection && categories[i].collections.length === 3) this.setState({congratulationsDialog:true});
       if(categories[i].collections.length >= 3) {
         level++;
-        if(newCollection) {
-          this.updateUserLevel(user, level)
-          
-          if(level <= maxCategoryLevel)
-          this.setState({
-            isVisible: true,
-            title: strings.newCategoryUnlocked,
-            position: {
-              horizontal: 1,
-              vertical: 0.7
-            }
-          });
-        }
+        if(newCollection) this.updateUserLevel(user, level)
       }
       for(let c = categories[i].collections.length; c < 3; c++) categories[i].collections.push({sync_id:c});
-      
-      if(categories[i].category_level <= user.level) categoriesCollectionArray.push(categories[i]);
+      categoriesCollectionArray.push(categories[i]);
     }
 
     const redirection_timout = settings.redirection_timout*1000;
-    
-    let sorted_categories = categoriesCollectionArray.sort(
-      (a, b) => b.category_level - a.category_level
-    )
-    if(object){
-      const rightCategory = sorted_categories.filter(category => convertToArray(category.sync_object_ids).includes(object.sync_id))[0]
-      sorted_categories = [rightCategory, ...sorted_categories.filter(category => !convertToArray(category.sync_object_ids).includes(object.sync_id))]
-    }
-
     setTimeout(() => this.dialog.isActive && this.setState({isModalOpen:true}), redirection_timout || 5000)
-    this.setState({
-      categories: sorted_categories,
-      user,
-      categoryID: user.category,
+    this.setState({ categories:categoriesCollectionArray, user, categoryID:user.category });
+  }
+
+  async shotToast(){
+    const {categories} = this.state;
+    //get position
+    categories.map((item, index) => {
+      item.collections.map((i, id) => {
+        if (i.category_id) {
+          const posXY = {
+            x: index + 1,
+            y: id + 1
+          };
+          this.setState({
+            position: posXY
+          });
+        }
+        return true;
+      });
+      return true;
     });
-    
-    if(object && image) this.showToast()
-  }
 
-  startConfetti() {
-    if(this._confettiView) {
-      this._confettiView.startConfetti();
-    }
-  }
+    this.setState({confetti:true}, () => {
+      this.setState({
+        isVisible: true,
+        title: strings.startCollection
+      });
+    });
 
-  componentWillUnmount ()
-  {
-      if (this._confettiView)
-      {
-          this._confettiView.stopConfetti();
-      }
-  }
-
-  showFirstCollectionTips(){
-    setTimeout(() => {
-      getStorageItem('tappingTip').then(value => {
+    if(await getStorageItem('firstCollection').then(value => value)) {
+      setTimeout(() => {
+        getStorageItem('firstCollection_2').then(value => {
+          this.setState({
+            isVisible: typeof value !== 'string',
+            title: strings.tappingOnTheObject
+          });
+        });
+        setTimeout(() => {
+          getStorageItem('firstCollection_3').then(value => {
+            this.setState({
+              isVisible: typeof value !== 'string',
+              title: strings.allObjectsBelong
+            });
+          });
+        }, 5500)
+      }, 5500)
+    } else {
+      getStorageItem('firstCollection_4').then(value => {
         this.setState({
           isVisible: typeof value !== 'string',
-          title: strings.tappingOnTheObject
+          title: strings.youHaveTwoObjects
         });
       });
       setTimeout(() => {
-        getStorageItem('allObjectsBelongTip').then(value => {
+        getStorageItem('firstCollection_5').then(value => {
           this.setState({
             isVisible: typeof value !== 'string',
-            title: strings.allObjectsBelong
+            title: strings.toCollectMore
           });
         });
       }, 5500)
-    }, 5500)
-  }
-
-  showTwoObjectsInCategoryTips(){
-    getStorageItem('twoObjectsTip').then(value => {
-      this.setState({
-        isVisible: typeof value !== 'string',
-        title: strings.youHaveTwoObjects
-      });
-    });
-    setTimeout(() => {
-      getStorageItem('collectMoreTip').then(value => {
-        this.setState({
-          isVisible: typeof value !== 'string',
-          title: strings.toCollectMore
-        });
-      });
-    }, 5500)
-  }
-
-  async showToast(){
-    let {categories} = this.state;
-    categories = convertToArray(categories)
-    
-    let x = 0;
-    let y = convertToArray(categories[x].collections).findIndex(collection => !collection.category_id);
-
-    this.setState({position: {vertical: x + 1, horizontal: y}});
-    
-    // First time adding an object to a collection
-    if(!await getStorageItem('firstCollection')){
-      this.showFirstCollectionTips();
-    } 
-
-    // First object in a new category
-    if (y == 1) {
-      this.setState({
-        isVisible: true,
-        title: strings.startCollection,
-      });
-    }
-
-    // Second object in a category (1 more and level up)
-    if(y === 2){
-      this.showTwoObjectsInCategoryTips();
     }
   }
 
@@ -191,11 +147,12 @@ class CollectionScene extends Component {
   hundleCheckBoxPress(categoryID, checked, title){
     const { updateUser } = this.props;
     const { user } = this.state;
-    if(!checked) {showToast('firstFilterTip', strings.greatYouSelected); Toaster.showMessage(`${strings.filterFor} ${title} ${strings.set}`, ToasterTypes.SUCCESS)}
+    if(!checked) {showToast('firstCollection_6', strings.greatYouSelected); Toaster.showMessage(`${strings.filterFor} ${title} ${strings.set}`, ToasterTypes.SUCCESS)}
     updateUser({ ...user, category:categoryID });
     this.dialog.isActive = false;
     this.setState({ categoryID })
   } 
+  
   // eslint-disable-next-line
   handleCollectionButtonPress(collection){
     const objects = convertToArray(getObjects());
@@ -206,16 +163,13 @@ class CollectionScene extends Component {
 
   render() {
     const {categories, categoryID, user, congratulationsDialog, isModalOpen, confetti, isVisible, title, position} = this.state;
+
     return (
       <Scene label={strings.collection} isFooterShow index={4}>
-        {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false, confetti: true}, () => this.startConfetti())} screen='collection' position={position} /> : null}
+        {isVisible ? <Tips title={title} visible={isVisible} onRequestClose={() => this.setState({isVisible: false})} screen='collection' position={position} /> : null}
         <CongratulationsDialog visible={congratulationsDialog} onRequestClose={()=>this.setState({congratulationsDialog:!congratulationsDialog})} />
         {AsyncStorage.getItem('toObject').then(value => value) <= MAX_OPENING ? <Dialog visible={isModalOpen} onRequestClose={()=>{this.setState({isModalOpen:false}); showToObject();}} onPress={Actions.TinderScene} bodyText={strings.youWill} btnTetx={strings.toObject} /> : null}
-          {confetti && 
-            <View pointerEvents='none' style={{position:'absolute', zIndex: 1000, width: '100%', height: '100%'}}>
-              <Confetti ref={(node) => this._confettiView = node} duration={5000} timeout={20} confettiCount={100}/>
-            </View>
-          }
+        {confetti && <ConfettiCannon count={150} origin={{x: -10, y: 0}} />}
         <ScrollView>
           {categories.map( category => {
             const complieted = typeof category.collections === 'object' && category.collections.filter(item=>item.image).length;
@@ -260,7 +214,7 @@ CollectionScene.defaultProps = {
   image:null
 }
 
-export default connect(({ user, museums }) => ({ settings: user.settings, categories: museums.categories  }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
+export default connect(({ user }) => ({ settings: user.settings }) , {getCollections, createCollection, updateUser, getUser})(CollectionScene);
 
 export const CheckBox = (props)=>{
   const {value, onValueChange} = props;

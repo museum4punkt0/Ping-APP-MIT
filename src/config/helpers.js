@@ -1,31 +1,13 @@
-import { Platform, NativeModules, Dimensions } from 'react-native';
+import { Platform, NativeModules } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import RNFS from 'react-native-fs'
+import RNFetchBlob from "rn-fetch-blob";
 import {PERMISSIONS} from 'react-native-permissions';
 import Toaster, {ToasterTypes} from "../components/Popup";
-import strings from "./localization"
 
 export const convertToArray = ( object ) => {
   let array = object || [];
   if(typeof object === 'object') array = Array.from(object);
   return array;
-}
-
-export const calculateTotalObjectsToLoad = (museum, settings) => {
-  let total = museum
-    ? museum.objects.length +
-      museum.objects.filter(item => item.cropped_avatar).length +
-      museum.objects.reduce((sum, item) => item.images ? sum + item.images.length : sum , 0) +
-      museum.objects.reduce((sum, item) => item.localizations ? sum + item.localizations.length : sum, 0) +
-      museum.images.length +
-      museum.sections.length
-    : 0;
-
-  total += settings
-    ? settings.predefined_avatars.length
-    : 0;
-
-  return total
 }
 
 export const updateArrayItem = (array, item, key = 'sync_id') => {
@@ -34,16 +16,6 @@ export const updateArrayItem = (array, item, key = 'sync_id') => {
   if(index !== -1) result[index] = {...result[index], ...item};
   return result;
 };
-
-export const chunkArray = (myArray, chunk_size) => {
-  const tempArray = [];
-  
-  for (let index = 0; index < myArray.length; index += chunk_size) {
-      myChunk = myArray.slice(index, index+chunk_size);
-      tempArray.push(myChunk);
-  }
-  return tempArray;
-}
 
 export const updateItemOrPush = (array, item, key = 'sync_id') => {
   const result = [...array];
@@ -84,8 +56,8 @@ export const showToObject = async () => {
 }
 
 export const getImage = (sync_id) => Platform.OS === 'android' ? 
-'file://' + RNFS.DocumentDirectoryPath + "/images/" + sync_id + ".jpg" 
-: RNFS.DocumentDirectoryPath + "/images/" + sync_id + ".jpg";
+'file://' + RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg" 
+: RNFetchBlob.fs.dirs.DocumentDir + "/images/" + sync_id + ".jpg";
 
 export const calculateMessageDelay = (message = '', minimumDelay, divider = 4) => {
   // calculate delay to show the next messages (reading delay)
@@ -93,16 +65,6 @@ export const calculateMessageDelay = (message = '', minimumDelay, divider = 4) =
   const messageDelay = (wordCount / divider * 1000) < minimumDelay ? minimumDelay : (wordCount / divider * 1000);
   return messageDelay;
 }
-
-export const planString = (plan, isFromPlanScene=false) => {
-  switch(plan){   
-      case 1: return isFromPlanScene ? strings.completePlan : strings.quitPlan;
-      case 2: return strings.quitTour;
-      case 3: return strings.quitDiscovery;
-      case 4: return strings.quitPlannedTour;
-      default: return strings.quit;      
-  }
-};
 
 export const getDeviceLocale = () => Platform.OS === 'ios'
     ? NativeModules.SettingsManager.settings.AppleLanguages ? NativeModules.SettingsManager.settings.AppleLanguages[0].split('-')[0] : 'en'
@@ -128,29 +90,3 @@ export const getPermission = (type = 'location') => {
     });
   }
 }
-
-export const scale = size => {
-  const { width, height } = Dimensions.get("window");
-  const guidelineBaseWidth = 350;
-  return width / guidelineBaseWidth * size;
-}
-export const getOptions = () => ({
-  lang: [
-    { label: "English", value: "en", key: "en" },
-    { label: "Deutsch", value: "de", key: "de" },
-  ],
-  fontSizes: [
-    { label: strings.fontSizesNormal, value: "normal", key: "normal" },
-    { label: strings.fontSizesBig, value: "big", key: "big" },
-    { label: strings.fontSizesLarge, value: "large", key: "large" },
-  ],
-  chatInterval: [
-    { label: strings.chatInervalsAuto, value: "", key: "auto" },
-    { label: strings.chatInervalsSlow, value: "2300", key: "slow" },
-    { label: strings.chatInervalsNormal, value: "1500", key: "normal" },
-    { label: strings.chatInervalsFast, value: "800", key: "fast" },
-    { label: strings.chatInervalsVeryFast, value: "300", key: "very fast" },
-  ],
-});
-
-export const format_url_for_linking = url => url.startsWith('http') ? url : 'http://' + url

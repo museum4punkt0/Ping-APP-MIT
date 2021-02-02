@@ -18,11 +18,6 @@ import { updateUser } from '../../actions/user';
 import { updateChat, getChats } from '../../actions/chats';
 import { WriteBase64Image, setObject } from '../../actions/museums';
 import { sync } from '../../actions/synchronize';
-import Tips from '../../components/Tips';
-import strings from '../../config/localization';
-import { getStorageItem } from "../../config/helpers";
-import { SafeAreaView } from 'react-native';
-import { colors } from '../../config/styles';
 
 const isMessageIncoming = (message)=> message.isIncoming === 1 || message.isIncoming === undefined
 
@@ -39,9 +34,8 @@ class Chats extends Component {
       isIndicatorShow:false,
       isZoomImageDialogShow:false,
       zoomImage:'',
-      isModalShow: false,
       chat:{},
-      speed: '',
+      speed:1500
     };
     this.minimumMessageDelay = 2500;
     this.messageDelay = 0;
@@ -51,10 +45,8 @@ class Chats extends Component {
     const {img, object, chatID, from, user, setObject, getChats} = this.props;
     const chats = getChats();
     const chat = chats.find(item => item.sync_id === chatID);
-    this.setState({chat});
-
     const speed = await AsyncStorage.getItem('speed');
-    if (speed) this.setState({speed: parseInt(speed)});
+    if (speed) this.setState({chat, speed: parseInt(speed)});
     
     if(chat.history.length !== 0 && !object.onboarding ) await this.setState({msgArray: img ? [...JSON.parse(chat.history), {type:'Image', isIncoming:2, uri:img}] : JSON.parse(chat.history)});
 
@@ -63,6 +55,7 @@ class Chats extends Component {
     if(!object.onboarding) setObject(object);
 
     Dialogue.parse(object.sync_id, getLocalization(object.localizations, user.language, 'conversation')); 
+    
     if (object.from && DIALOGUE_IDS_FOR_SPECIAL_ACTIONS[from] != null) return this.nextMessage(DIALOGUE_IDS_FOR_SPECIAL_ACTIONS[from], object.sync_id, true);
     return this.nextMessage(!object.onboarding ? chat.last_step || null : 1, object.sync_id);
   }
@@ -78,32 +71,26 @@ class Chats extends Component {
     const { chat, speed } = this.state;
     const {msgArray, messageInput} = this.state; 
     const nextStep = Dialogue.interact(id, 'player', messageID, isNext); 
-    
+    if (nextStep == null) return;
+    if (this.isSpecialAction(nextStep.text)) return this.setState({isIndicatorShow:false}); 
+    if (nextStep.text) nextStep.text = nextStep.text.replace('{name}', messageInput);
+        
     await this.updateChat({...chat,
       history: JSON.stringify(msgArray),
       last_step: Dialogue.__getState(chat.object_id, 'player')
     });
-
-    if(msgArray.length && msgArray[msgArray.length - 1]["type"] === "Image") {
-      const value = await getStorageItem('firstChatImage')
-      this.setState({
-        isModalShow: typeof value !== 'string',
-      });
-    }
-    
-    if (nextStep == null) return;
-    if (this.isSpecialAction(nextStep.text)) return this.setState({isIndicatorShow:false}); 
-    if (nextStep.text) nextStep.text = nextStep.text.replace('{name}', messageInput);
     
     const isOption = nextStep.responses.length > 0;
-    this.messageDelay = calculateMessageDelay(nextStep.text, this.minimumMessageDelay);
+
     setTimeout(() => {
+      this.messageDelay = calculateMessageDelay(nextStep.text, this.minimumMessageDelay);
         if (isOption) {
             this.setState({ msgArray: [...msgArray, nextStep], options: nextStep.responses, isIndicatorShow:false});
         } else {
             this.setState({ msgArray: [...msgArray, nextStep], isIndicatorShow:false }, () => this.nextMessage());
         }        
-    }, speed || this.messageDelay);
+    //  }, this.messageDelay);
+    }, speed);
   }
 
   async updateChat(chat){
@@ -114,7 +101,7 @@ class Chats extends Component {
   async handleAvatar(response){
     const { user } = this.props;
     const { chat } = this.state;
-    if(response.error || response.didCancel) return this.nextMessage(chat.last_step);
+    if(response.error || response.didCancel) return this.nextMessage(chat.last_step);     
     const avatar = await WriteBase64Image(response.data, user.sync_id);    
     this.imgPath = avatar;
     this.addMessage({type:'Image', isIncoming:2, uri: avatar})
@@ -146,9 +133,9 @@ handleCameraFunc(){
       case 'Cam': return  Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step);  this.handleCameraFunc();});
       case 'Map': return this.handleDiscoverFunc();
       case 'Input': return this.setState({isInputShow:true});
-      case 'TakePhoto': return Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchCamera({}, response => this.handleAvatar(response, object.sync_id))});
+      case 'TakePhoto': return Permissions.request(getPermission('camera')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchCamera({quality:0.3}, response => this.handleAvatar(response, object.sync_id))});
       case 'Avatar': return this.setState({isChooseAvatarShow:true});
-      case 'Galery': return Permissions.request(getPermission('photo')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchImageLibrary({}, response => this.handleAvatar(response, object.sync_id))});
+      case 'Galery': return Permissions.request(getPermission('photo')).then(per => {if(per === 'denied') return this.nextMessage(chat.last_step); ImagePicker.launchImageLibrary({quality:0.3}, response => this.handleAvatar(response, object.sync_id))});
       case 'Image': return setTimeout(() => this.addMessage({type:'Image', uri:image.image}), 150);
       case `Image${number}`: return setTimeout(() => this.addMessage({type:'Image', uri:image.image}), 150);
       case 'ImageTaken': return this.addMessage({type:'Image', uri: this.imgPath});
@@ -170,7 +157,7 @@ handleCameraFunc(){
     setObject({})
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
     const chats = getChats();
-    if(object.positionX && object.positionY && object.section) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), section:object.section, chats });
+    if(object.positionX && object.positionY && object.floor) await updateUser({ ...user, positionX:parseFloat(object.positionX), positionY:parseFloat(object.positionY), floor:object.floor, chats });
     return Actions.CollectionScene({ object, image: this.imgPath });
   }
   
@@ -211,7 +198,7 @@ handleCameraFunc(){
     const styles = Array.from(settings.language_styles)
     if(styles) styles.forEach(style => language_style.push({style, score:0, sync_id:uuidv1()}));
     await this.updateChat({...chat, history: JSON.stringify(msgArray), finished: true});
-    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style, section: museums.sections.filter(section => section.isMainEntrance)[0] });
+    await updateUser({ ...user, name:messageInput, avatar:this.imgPath, language_style });
     AsyncStorage.setItem('firstEntry', 'true');
     sync({ museum:museums, user, settings})
     if(plan === 2) return Actions.Tours({first:true});
@@ -220,7 +207,7 @@ handleCameraFunc(){
 
 
   render(){
-    const {msgArray, options, isInputShow, isChooseAvatarShow, messageInput, isIndicatorShow, isZoomImageDialogShow, zoomImage, isModalShow } = this.state;
+    const {msgArray, options, isInputShow, isChooseAvatarShow, messageInput, isIndicatorShow, isZoomImageDialogShow, zoomImage } = this.state;
     const {object, user, settings} = this.props;
     let backBtnFunc = null;
     if(object.from) switch (object.from) {      
@@ -231,7 +218,7 @@ handleCameraFunc(){
     }
       return(
         <KeyboardAvoidingView style={{flex:1}} behavior={Platform.OS === 'ios'&&'padding'}>
-          <Scene label={getLocalization(object.localizations, user.language, 'title')} description={getLocalization(object.localizations, user.language, 'object_kind')} backBtnFunc={backBtnFunc} headerStyle={{paddingVertical: 10}}> 
+          <Scene label={getLocalization(object.localizations, user.language, 'title')} description={getLocalization(object.localizations, user.language, 'object_kind')} backBtnFunc={backBtnFunc}> 
             <ScrollView 
               style={{flex:1}}
               contentContainerStyle={{paddingVertical: 20}}
@@ -250,10 +237,9 @@ handleCameraFunc(){
             ))} 
               {isIndicatorShow && (<AnimatedEllipsis numberOfDots={3} minOpacity={0.4} animationDelay={200} />)}
             </ScrollView>
-            {(options && options.length > 0) && <SafeAreaView><Options options={options} optionSelected={(key)=>this.optionSelected(key)} /></SafeAreaView>}
-            {isInputShow && <SafeAreaView style={{backgroundColor: colors.dark}}><Input messageInput={messageInput} onStateChanged={(messageInput)=>this.setState({messageInput})} handleSendMessageButtonPress={()=>this.handleSendMessageButtonPress()} /></SafeAreaView>}
-            {isChooseAvatarShow && <SafeAreaView><ChooseAvatar settings={settings} handleChooseAvatarPress={(avatar)=>this.handleChooseAvatarPress(avatar)} /></SafeAreaView>}   
-            {isModalShow && <Tips title={strings.youCanPinch} visible={isModalShow} onRequestClose={() => this.setState({isModalShow: false})} screen='chat'/>}
+            {(options && options.length > 0) && <Options options={options} optionSelected={(key)=>this.optionSelected(key)} />}
+            {isInputShow && <Input messageInput={messageInput} onStateChanged={(messageInput)=>this.setState({messageInput})} handleSendMessageButtonPress={()=>this.handleSendMessageButtonPress()} />}
+            {isChooseAvatarShow && <ChooseAvatar settings={settings} handleChooseAvatarPress={(avatar)=>this.handleChooseAvatarPress(avatar)} />}   
             <ZoomImageDialog visible={isZoomImageDialogShow} onRequestClose={() => this.setState({isZoomImageDialogShow:!isZoomImageDialogShow})} image={zoomImage} />
           </Scene>
         </KeyboardAvoidingView>

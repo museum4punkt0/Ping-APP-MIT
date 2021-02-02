@@ -1,11 +1,4 @@
 apply plugin: "com.android.application"
-apply plugin: 'com.google.firebase.appdistribution'
-
-project.ext.envConfigFiles = [
-    prod: ".env.prod",
-    stage: ".env.stage",
-]
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -138,8 +131,8 @@ android {
         applicationId "com.meinobjekt"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 82
-        versionName "1.2.1 "
+        versionCode 21
+        versionName "1.1"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
@@ -198,31 +191,9 @@ android {
 
         }
     }
-    flavorDimensions "default"
-    productFlavors { //add this object
-        stage {
-            applicationIdSuffix ".stage"
-            resValue "string", "build_config_package", "com.meinobjekt"
-            firebaseAppDistribution {
-              testers="denys.bodnar@teamvoy.com"
-              appId=project.env.get("APP_ID")
-            }
-        }
-        prod {
-            applicationIdSuffix ""
-            resValue "string", "build_config_package", "com.meinobjekt"
-            firebaseAppDistribution {
-              testers="denys.bodnar@teamvoy.com"
-              appId=project.env.get("APP_ID")
-            }
-        }
-    }
 }
 
 dependencies {
-    implementation project(':react-native-config')
-    implementation project(':react-native-image-size')
-    implementation project(':react-native-fs')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-tensorflow')
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -245,5 +216,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
     into 'libs'
 }
 
-apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

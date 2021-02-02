@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, View, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
+import { Image, ImageBackground, View, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import Geolocation from 'react-native-geolocation-service';
+import Geolocation from '@react-native-community/geolocation';
 import { Actions } from 'react-native-router-flux';
+import Permissions from 'react-native-permissions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toaster, {ToasterTypes} from "../../components/Popup";
@@ -19,7 +20,7 @@ import styles, { colors } from '../../config/styles';
 import { getMuseums } from '../../db/controllers/museums';
 import { getMuseumsList, setAllData, getMuseum, setObject } from '../../actions/museums';
 import { sync } from "../../actions/synchronize";
-import { getSettings, getUser, setTour, setPlanMode, updateUser } from "../../actions/user";
+import { getSettings, getUser, setTour, setPlanMode } from "../../actions/user";
 import { createChat, getChats } from "../../actions/chats";
 
 
@@ -29,23 +30,15 @@ class DetectLocation extends Component {
     this.state = { 
       loading:false,
       type:null,
-      museum:{},
-      loadingCaption: '',
-      totalLoadingObjects: 0,
-      currentlyLoadedObjects: 0,
-      chosenMuseumLogo: null,
+      museum:{}
     }
   }
 
-async componentWillMount(){  
+componentWillMount(){  
   // eslint-disable-next-line 
   setTimeout(()=>{if(!this.state.type) this.setState({type:0})}, 6000); //For Xiaomi hack
-    if(Platform.OS === 'android') {
-      await PermissionsAndroid.request(getPermission('location'));
-    } else {
-      await Geolocation.requestAuthorization('whenInUse');
-    }
-    
+  
+    Permissions.request(getPermission('location'));
     Geolocation.getCurrentPosition(
       location => getMuseumsList(location.coords.latitude, location.coords.longitude)
         .then(museums => {
@@ -57,16 +50,6 @@ async componentWillMount(){
       { timeout: 5000 }
     );
 }
-
-  updateTotalLoadingObjects(number) {
-    this.setState({totalLoadingObjects: number})
-  }
-
-  incrementCurrentlyLoadedObjects() {
-    this.setState((prevState, props) => ({
-      currentlyLoadedObjects: prevState.currentlyLoadedObjects + 1
-    }))
-  }
   
   handlePlanTourButton(){
     const {setPlanMode, setTour} = this.props;
@@ -84,79 +67,29 @@ async componentWillMount(){
 
   async handleChooseMuseum(museum_id, plan){
     const { setAllData, getUser, getSettings, getMuseum, sync, setObject, getChats, setTour, setPlanMode } = this.props;
-    const { museum: currentMuseum } = this.state
     setPlanMode(plan);
     if(plan === 1) setTour({localizations:[{title:strings.planMode, language:'en'}]});
-    
-    this.setState({
-      loading: true,
-      loadingCaption: strings.downloading,
-      totalLoadingObjects: 0,
-      currentlyLoadedObjects: 0,
-      chosenMuseumLogo: currentMuseum.museumimages.find(
-        (image) => image.image_type === "logo"
-      ).image,
-    });
-
-    museums = convertToArray(getMuseums()), settings = getSettings();
+    this.setState({loading:true});
+    const museums = convertToArray(getMuseums()), settings = getSettings();
     let museum = museums.find(item => item.sync_id === museum_id);
-
     if(museum) museum = getMuseum(museum_id);
-    
-    if (!museum)
-    {
-      museum = await setAllData(
-        museum_id,
-        this.updateTotalLoadingObjects.bind(this),
-        this.incrementCurrentlyLoadedObjects.bind(this)
-      ).catch((err) =>
-        this.setState({ loading: false }, () =>
-          Toaster.showMessage(
-            `${strings.wentWrong}: '${err}'`,
-            ToasterTypes.ERROR
-          )
-        )
-      );
-    }
-      
+    if(!museum) museum = await setAllData(museum_id)
+    .catch((err) => this.setState({loading: false}, () => Toaster.showMessage(`${strings.wentWrong}: '${err}'`, ToasterTypes.ERROR)))
+
     const user = getUser(), chats = getChats();
     
-    if(user) updateUser({...user, section: museum.sections.filter(section => section.isMainEntrance)[0]})
-    
-    this.setState({
-      loadingCaption: strings.synchronising,
-      totalLoadingObjects: 0,
-      currentlyLoadedObjects: 0,
-    });
-    
-    await sync(
-      { museum, user, settings },
-      this.updateTotalLoadingObjects.bind(this),
-      this.incrementCurrentlyLoadedObjects.bind(this)
-    )
-      .then(() =>
-        this.setState({ loading: false }, () =>
-          AsyncStorage.setItem("museum", museum_id)
-        )
-      )
-      .catch((err) =>
-        Toaster.showMessage(
-          strings.updatingError + ":" + err,
-          ToasterTypes.ERROR
-        )
-      )
-      .finally(() =>
-        this.setState({ loading: false }, () =>
-          AsyncStorage.setItem("museum", museum_id)
-        )
-      );
-    
-    let object = null; 
-    chats.forEach(chat => {if(!chat.finished) object = museum.objects.find(object => (!object.onboarding && object.sync_id === chat.object_id))});
+    await sync({ museum, user, settings })
+    .then(() => this.setState({loading: false},() => AsyncStorage.setItem('museum', museum_id)))
+    .catch(() => Toaster.showMessage(strings.updatingError, ToasterTypes.ERROR))
+    .finally(() => this.setState({loading: false},() => AsyncStorage.setItem('museum', museum_id)));
+
+    let object = null;
+    const chat = chats.find(chat => !chat.finished);
+    if(chat) object = museum.objects.find(object => (!object.onboarding && object.sync_id === chat.object_id))
     setObject(object || {});
     
     const first = await AsyncStorage.getItem('firstEntry');
-    if(!first) return this.handleUserLogin(museum, chats);
+    if(!first) return this.handleUserLogin(museum, chats, plan);
     if(plan === 2) return Actions.Tours();
     
     return Actions.TinderScene();    
@@ -181,10 +114,7 @@ async componentWillMount(){
   }
 
   render() {
-    const {type, museum, loading, loadingCaption, chosenMuseumLogo, currentlyLoadedObjects, totalLoadingObjects} = this.state;
-    const percentage = parseInt(
-      (currentlyLoadedObjects / totalLoadingObjects) * 100
-    );
+    const {type, museum, loading} = this.state;
     let logo = {};
     if(museum.museumimages) logo = museum.museumimages.find( image => image.image_type === 'logo');
     const detect = () => {
@@ -203,14 +133,7 @@ async componentWillMount(){
     };
     
     return (
-      <Scene
-        navigator={false}
-        isHaderShow={false}
-        loading={loading}
-        loadingCaption={loadingCaption}
-        loadingPercentage={percentage}
-        loadingLogo={chosenMuseumLogo}
-      >
+      <Scene navigator={false} isHaderShow={false} loading={loading}>
         {detect()}
       </Scene>
     );
@@ -247,8 +170,10 @@ export const CouldntDetect = ({handlePlanTourButton, handleSelectMuseumButton}) 
       <Text style={styles.main.locationTitleRow}>{strings.weCouldntDetect}</Text>
     </View>
     <View style={{padding:15}}>
+      <Text style={styles.main.locationInfoRow}>{strings.areYouInside.toUpperCase()}</Text>
+      <Button containerStyle={{marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.selectMuseum} />
+      <Text style={styles.main.locationInfoRow}>{strings.areYouOutside.toUpperCase()}</Text>
       <Button containerStyle={{backgroundColor:colors.blue, marginVertical:10}} onPress={handlePlanTourButton} title={strings.planTour} />
-      <Button containerStyle={{backgroundColor:'transparent', marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.selectMuseum} />
     </View>
   </View>
 )
@@ -263,8 +188,14 @@ export const DetectedMuseum = ({title, logo, handleSelectMuseumButton, handleCho
       <Text style={styles.main.locationTitleRow}>{`${strings.weDetectedThatYou} ${title}`}</Text>
     </View>
     <View style={{padding:15}}>
-      <Button onPress={() => handleChooseMuseum(museum_id, 2)} title={strings.startTour} />
-      <Button containerStyle={{backgroundColor:'transparent', marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.areWeWrong} />
+      <Button containerStyle={{height: 100}} onPress={() => handleChooseMuseum(museum_id, 2)} title={strings.startTour} />
+      <TouchableOpacity onPress={() => handleChooseMuseum(museum_id, 1)} style={{marginVertical:10, height: 50, justifyContent: 'center'}}>
+        <Text style={styles.chat.messageInputButtonText}>{strings.planTour}</Text>
+      </TouchableOpacity>
+      <Text style={styles.main.locationInfoRow}>{strings.areWeWrong.toUpperCase()}</Text>
+      <TouchableOpacity onPress={handleSelectMuseumButton} style={{marginVertical:10, height: 50, justifyContent: 'center'}}>
+        <Text style={styles.chat.messageInputButtonText}>{strings.chooseAnotherMuseum}</Text>
+      </TouchableOpacity>
     </View>
   </View>
 )
@@ -285,7 +216,8 @@ export const DetectedOutside = ({handleSelectMuseumButton, handlePlanTourButton}
     </View>
     <View style={{padding:15}}>
       <Button containerStyle={{backgroundColor:colors.blue, marginVertical:10}} onPress={handlePlanTourButton} title={strings.planTour} />
-      <Button containerStyle={{backgroundColor:'transparent', marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.selectMuseum} />
+      <Text style={styles.main.locationInfoRow}>{strings.areYouOutside.toUpperCase()}</Text>
+      <Button containerStyle={{backgroundColor:colors.dark, marginVertical:10}} onPress={handleSelectMuseumButton} title={strings.selectMuseum} />
     </View>
   </View>
 )

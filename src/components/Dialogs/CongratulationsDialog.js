@@ -79,7 +79,7 @@ class Dialog extends Component {
                   <Items items={items} position={['bottom', 'left', 'top', 'left']} />
                 </View>
                 <Button onPress={onRequestClose} title={strings.share} />  
-                <Button onPress={onRequestClose} containerStyle={{backgroundColor:colors.green}} title={strings.close} />           
+                <Button onPress={onRequestClose} containerStyle={{backgroundColor:colors.darkGrey}} title={strings.close} />           
               </View>
             </View>
           </Modal>

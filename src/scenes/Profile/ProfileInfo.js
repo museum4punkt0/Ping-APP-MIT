@@ -13,7 +13,8 @@ import Scene from "../../components/Scene";
 import Text from "../../components/Text";
 import styles, { colors } from '../../config/styles';
 import strings from '../../config/localization';
-import {getImage, getLocalization, getOptions, planString} from '../../config/helpers';
+import {getImage, getLocalization} from '../../config/helpers';
+import constant from '../../config/constants';
 import Button from '../../components/Button'
 import ChooseAvatarDialog from '../../components/Dialogs/ChooseAvatarDialog'
 import Option from '../../components/Profile/OptionContainer'
@@ -24,11 +25,11 @@ import gold from '../../assets/images/frame/gold.png'
 import silver from '../../assets/images/frame/silver.png'
 import bronze from '../../assets/images/frame/bronze.png'
 import Toaster, {ToasterTypes} from "../../components/Popup";
-import user_logo from '../../assets/images/user.png'
 
 const options = {
   title: 'Profile Picture',
   customButtons: [{ name: 'avatar', title: 'Choose Avatar' }],
+  quality: 0.3,
   storageOptions: {
     skipBackup: true,
   },
@@ -40,25 +41,28 @@ class ProfileInfoScene extends Component {
       loading:false,
       input:'',
       language:'en',
-      font_size:'normal',
-      avatar:'',
+      font_size:'medium',
+      avatar:'http:///www.lol.kek.cheburek',
       isChooseAvatarModalOpen:false,
       chosenIndex:99,
       user:{},
-      speed: null
+      speed: '1500'
     }
     this.spinValue = new Animated.Value(0)
   }
 
   async componentWillMount(){
-    const {getUser, updateUser} = this.props;
+    const {getUser} = this.props;
     const user = getUser();
-    this.setState({speed: await AsyncStorage.getItem('speed') || ''});
-
-    if(!user.font_size) await updateUser({...user, font_size: 'normal'})
-
     if(user.levelup) this.showAnimation()
-    this.setState({avatar: user.avatar, input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
+    this.setState({avatar: user.avatar || 'http:///www.lol.kek.cheburek', input:user.name, language:user.language, font_size:user.font_size, user:{...user}})
+  }
+
+  // Remove it later!
+  async componentDidMount(){
+    const speed = await AsyncStorage.getItem('speed');
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({speed: speed || '1500'});
   }
 
   showAnimation(){
@@ -80,20 +84,17 @@ class ProfileInfoScene extends Component {
   }
 
   onUserChanged(key, value){
-    if(this.state[key] !== value){
-      const { updateUser, getUser } = this.props;
-      const { user } = this.state; 
-      const dbUser = getUser();
-      if(dbUser.sync_id !== user.sync_id || !value) return;
-      this.setState({[key]: value})
-      if(key === 'language' && strings.getLanguage() !== value) strings.setLanguage(value); 
-      updateUser({ ...user, [key]: value})
-    }
+    const { updateUser, getUser } = this.props;
+    const { user } = this.state; 
+    const dbUser = getUser();
+    if(dbUser.sync_id !== user.sync_id || !value) return;
+    this.setState({[key]: value})
+    if(key === 'language') strings.setLanguage(value); 
+    updateUser({ ...user, [key]: value})
   }
 
   handleChangeAvatarButtonPress(){
     ImagePicker.showImagePicker(options, async response => {
-      if(response.didCancel) return
       if(response.customButton) return this.setState({isChooseAvatarModalOpen: true});
       const avatar = await WriteBase64Image(response.data, uuidv1());
       if(!response.error && !response.didCancel) this.setState({avatar})
@@ -117,8 +118,8 @@ class ProfileInfoScene extends Component {
         .then(response => setUser(response.users)
           .then(async () => {
             await AsyncStorage.multiRemove([
-              'firstEntry','museum', 'firstLike', 'firstDislike', 'firstDiscovery', 'firstDiscoverySwipe', 'firstMatch', 'firstVip', 'firstChatImage',
-              'firstCollection', 'tappingTip', 'allObjectsBelongTip', 'twoObjectsTip', 'collectMoreTip', 'firstFilterTip'
+              'firstEntry','museum', 'firstLike', 'firstDislike', 'firstDiscovery', 'firstMatch', 'firstVip',
+              'firstCollection', 'firstCollection_2', 'firstCollection_3', 'firstCollection_4', 'firstCollection_5', 'firstCollection_6'
             ]);
             Actions.PreloaderScene()
           }))))
@@ -137,21 +138,20 @@ class ProfileInfoScene extends Component {
     setPlanMode(3)
     Actions.DetectLocation()
   }
-  
-  async handleChatIntervalChange(speed){
-    if(speed !== null && speed !== this.state.speed){
-      this.setState({speed});
-      await AsyncStorage.setItem('speed', speed);
-    }
-  }
 
   render() {
     const {input, language, font_size, avatar, isChooseAvatarModalOpen, chosenIndex, loading, speed, user} = this.state;
     const {settings, museums, plan} = this.props;
+    const planString = () => {
+        switch(plan){   
+            case 1: return "Quit Plan Mode";
+            case 2: return "Quit Tour";
+            case 3: return "Quit Discovery";
+            case 4: return "Quit Planned Tour";
+            default: return "Quit";      
+        }
+    };
     const spin = this.spinValue.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] });
-    const options = getOptions()
-    const currentMuseumTitle = getLocalization(museums.localizations, language, 'title')
-    const currentMuseumDescription = getLocalization(museums.localizations, language, 'description')
     return (
       <Scene label={strings.info} isFooterShow index={5} loading={loading}>
         <ChooseAvatarDialog
@@ -189,7 +189,7 @@ class ProfileInfoScene extends Component {
 
               <Option title={strings.languageLabel} style={{marginTop:5}}>
                 <Picker
-                  items={options.lang}
+                  items={constant.lang}
                   onValueChange={(value) => this.onUserChanged('language', value)}
                   value={language}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
@@ -200,7 +200,7 @@ class ProfileInfoScene extends Component {
 
               <Option title={strings.fontSizeLabel} style={{marginTop:5}}>
                 <Picker
-                  items={options.fontSizes}
+                  items={constant.fontSizes}
                   onValueChange={(value) => this.onUserChanged('font_size',value)}
                   value={font_size}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
@@ -211,8 +211,8 @@ class ProfileInfoScene extends Component {
 
               <Option title={strings.chatIntervalLabel} style={{marginTop:5}}>
                 <Picker
-                  items={options.chatInterval}
-                  onValueChange={(speed) => this.handleChatIntervalChange(speed)}
+                  items={constant.chatInterval}
+                  onValueChange={(speed) => this.setState({speed})}
                   value={speed}
                   style={{ iconContainer:{ top: 5 }, inputIOS:{ paddingVertical:10, color:colors.white }, inputAndroid:{ color:colors.white} }}
                   Icon={() => (<Icon style={{fontFamily:'meinobjekt', fontSize:24, color:colors.white}}>c</Icon>)}
@@ -221,34 +221,14 @@ class ProfileInfoScene extends Component {
               </Option> 
             </View>
           </View>  
-
-          <View>
-            <Button onPress={() => this.handleQuitTourButton()} title={planString(plan)} containerStyle={styles.profileWithProps({plan}).profileButton} /> 
-            <TouchableOpacity onPress={()=>Toaster.showMessage(strings.quitDiscoveryExplanation, ToasterTypes.MESSAGE)}>
-              <Text style={styles.profile.explanationText}>{strings.whatDoes}</Text>
-            </TouchableOpacity>
-          </View>
-          
-          <View style={{marginTop: 10}}>
-            <Button onPress={() => Actions.AppGuideScreen()} title={strings.openGuide} containerStyle={styles.profileWithProps({plan}).profileButton} />  
-            <TouchableOpacity onPress={()=>Toaster.showMessage(strings.openVisitorsGuideExplanation, ToasterTypes.MESSAGE)}>
-              <Text style={styles.profile.explanationText}>{strings.whatDoes}</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={{marginTop: 10}}>
-            <Button onPress={() => this.handleClick(museums.museum_site_url)} title={`${currentMuseumTitle} ${strings.website}`} containerStyle={styles.profileWithProps({plan}).profileButton} />  
-            {currentMuseumDescription ? <Text style={styles.profile.profileDescription}>{currentMuseumDescription}</Text> : undefined}
-          </View>
-
-          <View style={{marginTop: 10}}>
-            <Button onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')} title={strings.termsAnd} containerStyle={styles.profileWithProps({plan}).profileButton} />  
-          </View>
-
-          <View style={{marginTop: 10}}>
-            <Button onPress={() => this.handleResetUserButtonPress()} title={strings.resetDevice} containerStyle={styles.profileWithProps({isRed: true}).profileButton} />  
-          </View>
-
+          <Button onPress={() => this.handleQuitTourButton()} title={planString()} containerStyle={{marginHorizontal:15, backgroundColor:colors.darkGrey}} /> 
+          <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.green}]} onPress={() => this.handleClick(museums.museum_site_url)}>{getLocalization(museums.localizations, user.language, 'title')}</Text>
+          <Text style={styles.profile.profileDescription}>{getLocalization(museums.localizations, user.language, 'description')}</Text>
+          <Text style={[styles.profile.profileTitle, {textDecorationLine: 'underline', color:colors.brownGrey}]} onPress={() => this.handleClick('http://playersjourney.de/dataprotection_datenschutzerklaerung/')}>{strings.termsAnd}</Text>
+          <Button onPress={() => Actions.AppGuideScreen()} title={strings.openGuide} containerStyle={{marginHorizontal:15, backgroundColor: plan === 1 ? colors.blue : colors.green}} />  
+          <TouchableOpacity style={{alignSelf:'center'}} onPress={() => this.handleResetUserButtonPress()}>
+            <Text style={styles.profile.btnTitle}>{strings.resetDevice}</Text>
+          </TouchableOpacity>
         </ScrollView>
       </Scene>
     );
@@ -276,11 +256,12 @@ export const AvatarView = (props) => {
       } else if(level === 3 ) { return <Animated.Image source={silver} style={[ styles.profile.profileAvatarBorder,{transform: [{rotate: spin}]} ]} />
       } else if(level >= 4 ) { return <Animated.Image source={gold} style={[ styles.profile.profileAvatarBorder,{transform: [{rotate: spin}]} ]} />
       } else { return null; }
+      
   };
   return(
     <View style={{width:130, height:130, alignItems:'center', justifyContent:'center'}}>
       {borderView()}
-      <Image source={avatar ? {uri: getImage(avatar), cache: 'reload'} : user_logo} style={styles.profile.profileAvatar} />
+      <Image source={{uri: getImage(avatar), cache: 'reload'}} style={styles.profile.profileAvatar} />
       <TouchableOpacity style={styles.profile.cameraIcon} onPress={handleChangeAvatarButtonPress}>
         <Icon style={{fontFamily:'meinobjekt', fontSize:24, color:'rgba(255,255,255,0.8)'}}>a</Icon>
       </TouchableOpacity>
