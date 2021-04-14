@@ -1,0 +1,29 @@
+variables:
+  ANDROID_HOME: "/opt/android-sdk"
+  LOCAL_PATH: "/home/gitlab-runner/projects/mein-object"
+  OUTPUTS_PATH: android/app/build/outputs/apk
+  PRODUCTION_BUILD: $OUTPUTS_PATH/app-release.apk
+
+before_script:
+  - cp -rf $LOCAL_PATH/.signing android/.signing
+  - npm cache clean --force
+  - npm install
+
+after_script:
+  - rm -rf android/.signing
+
+stages:
+  - deploy
+
+androidBuildRelease:
+  stage: deploy
+  tags:
+    - shell
+  artifacts:
+    paths:
+      - android/app/build/outputs/apk
+  script:
+    - react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+    - cd android && ./gradlew clean
+    - GRADLE_OPTS="-Xmx2048m" ./gradlew app:assembleRelease --stacktrace
+  when: manual
