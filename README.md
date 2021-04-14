@@ -144,4 +144,4 @@ Humboldt-Universität zu Berlin, gamelab.berlin am Helmholtz-Zentrum für Kultur
 # Lizenz 
 Ping! Die Museumsapp Copyright © 2021 Stiftung Humboldt Forum im Berliner Schloss; entwickelt von Humboldt Innovation GmbH, Thomas Lilge, Christian Stein, im Rahmen des Verbundprojekts museum4punkt0, weiterentwickelt in Kooperation mit dem Badischen Landesmuseum im Rahmen des Projekts Creative Collections.
 
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/museum4punkt0/Ping-APP-MIT/blob/master/LICENSE.md)
