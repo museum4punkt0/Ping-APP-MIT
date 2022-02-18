@@ -1,6 +1,6 @@
 MIT License
 
-Die Museumsapp Copyright © 2021 Stiftung Humboldt Forum im Berliner Schloss; entwickelt von Humboldt Innovation GmbH, Thomas Lilge, Christian Stein, im Rahmen des Verbundprojekts museum4punkt0, weiterentwickelt in Kooperation mit dem Badischen Landesmuseum im Rahmen des Projekts Creative Collections.
+Ping! Die Museumsapp Copyright © 2021 Stiftung Humboldt Forum im Berliner Schloss; entwickelt von Humboldt Innovation GmbH, Thomas Lilge, Christian Stein, im Rahmen des Verbundprojekts museum4punkt0, weiterentwickelt in Kooperation mit dem Badischen Landesmuseum im Rahmen des Projekts Creative Collections.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
