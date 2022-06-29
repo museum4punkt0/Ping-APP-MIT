@@ -133,6 +133,7 @@ Auftraggeber*in/Rechteinhaber*in
 Stiftung Humboldt Forum im Berliner Schloss 
 Urheber*innen 
 Humboldt-Universität zu Berlin, gamelab.berlin am Helmholtz-Zentrum für Kulturtechnik, Zentralinstitut der HU. 
+Code und Dokumentation in diesem Repositorium wurden begutachtet durch TICE Software UG (haftungsbeschränkt) (https://tice.software/de/)
 
 
 # Markenname 
